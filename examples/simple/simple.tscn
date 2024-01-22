@@ -1,6 +1,43 @@
-[gd_scene load_steps=2 format=3 uid="uid://dfy6ygeu8pya5"]
+[gd_scene load_steps=10 format=3 uid="uid://dfy6ygeu8pya5"]
 
 [ext_resource type="Script" path="res://examples/simple/simple.gd" id="1_fvr5o"]
+[ext_resource type="LabelSettings" uid="uid://tysg4xge4hsu" path="res://title_label_settings.tres" id="2_6x4oj"]
+[ext_resource type="LabelSettings" uid="uid://bldprl7vev3uv" path="res://description_label_settings.tres" id="3_ljjap"]
+[ext_resource type="Script" path="res://addons/audio_manager/sound_manager/sound_event_resource.gd" id="3_qyv4q"]
+[ext_resource type="Script" path="res://addons/audio_manager/sound_manager/sound_bank.gd" id="4_cwmja"]
+[ext_resource type="AudioStream" uid="uid://de550fklyhu88" path="res://audio/sounds/note_c5.wav" id="4_it7rc"]
+[ext_resource type="AudioStream" uid="uid://b35ao3bdtstka" path="res://audio/sounds/note_e5.wav" id="5_vxpmp"]
+[ext_resource type="AudioStream" uid="uid://bmg3dvylup5k" path="res://audio/sounds/note_g5.wav" id="6_kifph"]
 
-[node name="Simple" type="Node3D"]
+[sub_resource type="Resource" id="Resource_1ir4x"]
+script = ExtResource("3_qyv4q")
+name = "note"
+bus = ""
+streams = Array[AudioStream]([ExtResource("4_it7rc"), ExtResource("5_vxpmp"), ExtResource("6_kifph")])
+
+[node name="Simple" type="Node2D"]
 script = ExtResource("1_fvr5o")
+
+[node name="SoundBank" type="Node" parent="."]
+script = ExtResource("4_cwmja")
+label = "example"
+events = Array[ExtResource("3_qyv4q")]([SubResource("Resource_1ir4x")])
+
+[node name="Title" type="Label" parent="."]
+offset_left = 100.0
+offset_top = 50.0
+offset_right = 208.0
+offset_bottom = 103.0
+text = "Simple"
+label_settings = ExtResource("2_6x4oj")
+uppercase = true
+
+[node name="Description" type="Label" parent="."]
+offset_left = 100.0
+offset_top = 125.0
+offset_right = 824.0
+offset_bottom = 185.0
+text = "This example plays the \"note\" sound event.
+Press \"1\" on your keyboard to play it.
+Each time an event is played, one of its variations will be chosen at random."
+label_settings = ExtResource("3_ljjap")
