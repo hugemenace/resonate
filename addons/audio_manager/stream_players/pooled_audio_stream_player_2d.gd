@@ -13,8 +13,8 @@ func _ready() -> void:
 	finished.connect(on_finished)
 	
 
-func configure(p_streams: Array, p_reserved: bool, p_bus: String, p_poly: bool) -> void:
-	var is_polyphonic = PoolEntity.configure(self, p_streams, p_reserved, p_bus, p_poly)
+func configure(p_streams: Array, p_bus: String, p_poly: bool) -> void:
+	var is_polyphonic = PoolEntity.configure(self, p_streams, p_bus, p_poly)
 	
 	if is_polyphonic:
 		super.play()

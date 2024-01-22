@@ -119,10 +119,10 @@ func instance_manual(p_bank_label: String, p_event_name: String, p_trigger: bool
 		
 	var bus = p_bus if p_bus != "" else event.bus
 	
-	player.configure(event.streams, not p_trigger, bus, p_poly)
+	player.configure(event.streams, bus, p_poly)
 	
 	if p_trigger:
-		player.trigger()
+		player.trigger(p_trigger)
 	
 	return player
 
