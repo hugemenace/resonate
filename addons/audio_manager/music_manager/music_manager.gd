@@ -61,8 +61,13 @@ func play(p_name: String) -> AudioStreamPlayer:
 	add_child(player)
 	
 	stream.polyphony = stems.size()
+	
 	player.max_polyphony = stems.size()
 	player.stream = stream
+	player.bus = ProjectSettings.get_setting(
+		AudioManagerPlugin.MUSIC_BANK_SETTING_NAME,
+		AudioManagerPlugin.MUSIC_BANK_SETTING_DEFAULT)
+		
 	player.play()
 	
 	var playback = player.get_stream_playback() as AudioStreamPlaybackPolyphonic
