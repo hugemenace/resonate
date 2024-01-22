@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://coebcgearnost"]
+
+[ext_resource type="Script" path="res://examples/2D/2d.gd" id="1_3xxt8"]
+
+[node name="2D" type="Node2D"]
+script = ExtResource("1_3xxt8")

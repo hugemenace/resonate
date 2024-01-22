@@ -1,0 +1,48 @@
+[gd_scene load_steps=10 format=3 uid="uid://jw5kbo20k3hh"]
+
+[ext_resource type="Script" path="res://examples/music/music.gd" id="1_b17ub"]
+[ext_resource type="Script" path="res://addons/audio_manager/music_manager/music_bank.gd" id="2_cql1n"]
+[ext_resource type="Script" path="res://addons/audio_manager/music_manager/music_resource.gd" id="3_o75hm"]
+[ext_resource type="Script" path="res://addons/audio_manager/music_manager/music_stem_resource.gd" id="4_ksop8"]
+[ext_resource type="LabelSettings" uid="uid://bldprl7vev3uv" path="res://description_label_settings.tres" id="5_cg2qn"]
+[ext_resource type="LabelSettings" uid="uid://tysg4xge4hsu" path="res://title_label_settings.tres" id="5_vbmlt"]
+
+[sub_resource type="Resource" id="Resource_ognhn"]
+script = ExtResource("4_ksop8")
+name = "synths"
+enabled = true
+
+[sub_resource type="Resource" id="Resource_4apoh"]
+script = ExtResource("4_ksop8")
+name = "drums"
+enabled = false
+
+[sub_resource type="Resource" id="Resource_1ncxf"]
+script = ExtResource("3_o75hm")
+name = "boss"
+stems = Array[ExtResource("4_ksop8")]([SubResource("Resource_ognhn"), SubResource("Resource_4apoh")])
+
+[node name="Music" type="Node2D"]
+script = ExtResource("1_b17ub")
+
+[node name="MusicBank" type="Node" parent="."]
+script = ExtResource("2_cql1n")
+tracks = Array[ExtResource("3_o75hm")]([SubResource("Resource_1ncxf")])
+
+[node name="Title" type="Label" parent="."]
+offset_left = 100.0
+offset_top = 50.0
+offset_right = 208.0
+offset_bottom = 103.0
+text = "Music"
+label_settings = ExtResource("5_vbmlt")
+uppercase = true
+
+[node name="Description" type="Label" parent="."]
+offset_left = 100.0
+offset_top = 125.0
+offset_right = 824.0
+offset_bottom = 185.0
+text = "This example automatically plays the \"boss\" music track.
+Hold down \"1\" on your keyboard to enable the \"drums\" stem."
+label_settings = ExtResource("5_cg2qn")
