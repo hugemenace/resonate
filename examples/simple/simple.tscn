@@ -37,7 +37,7 @@ offset_left = 100.0
 offset_top = 125.0
 offset_right = 824.0
 offset_bottom = 185.0
-text = "This example plays the \"note\" sound event.
-Press \"1\" on your keyboard to play it.
-Each time an event is played, one of its variations will be chosen at random."
+text = "This example uses the \"note\" sound event.
+Press \"1\" on your keyboard to trigger (play) the event.
+Each time an event is triggered, one of its variations will be chosen at random."
 label_settings = ExtResource("3_ljjap")
