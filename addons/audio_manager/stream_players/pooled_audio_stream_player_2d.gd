@@ -29,7 +29,14 @@ func configure(p_streams: Array, p_bus: String, p_poly: bool) -> void:
 	
 
 func trigger(p_auto_release: bool = false) -> void:
-	var should_play = PoolEntity.trigger(self, p_auto_release)
+	var should_play = PoolEntity.trigger(self, false, 1.0, 0.0, p_auto_release)
+	
+	if should_play:
+		super.play()
+		
+
+func trigger_varied(p_pitch: float = 1.0, p_volume: float = 0.0, p_auto_release: bool = false) -> void:
+	var should_play = PoolEntity.trigger(self, true, p_pitch, p_volume, p_auto_release)
 	
 	if should_play:
 		super.play()
