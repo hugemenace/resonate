@@ -6,12 +6,11 @@ extends Node2D
 # contains two stems (MusicStemResource), each of which has an audio stream.
 
 
-@onready var moving_target = $MovingTarget
 @onready var note_interval = $NoteInterval
+@onready var moving_target = $MovingTarget
 
 var _sound_ready: bool = false
 var _instance: PooledAudioStreamPlayer2D
-var _time: float
 
 
 func _ready() -> void:
@@ -22,17 +21,6 @@ func _ready() -> void:
 	
 	note_interval.timeout.connect(on_note_interval_timeout)
 
-
-func _process(p_delta) -> void:
-	_time += p_delta
-	
-	var weight = (1.0 + sin(_time)) / 2.0
-	var x_position = lerpf(-100.0, 1300.0, weight)
-	
-	# Slide the target back and forth across the screen to demonstrate the 2D
-	# panning effect achieved by instancing a pooled 2D audio stream player.
-	moving_target.global_position.x = x_position
-	
 
 func on_note_interval_timeout() -> void:
 	if not _sound_ready:
