@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://ys1gdvqjju2q"]
+[gd_scene load_steps=8 format=3 uid="uid://ys1gdvqjju2q"]
 
 [ext_resource type="Script" path="res://examples/polyphonic/polyphonic.gd" id="1_apacb"]
 [ext_resource type="Script" path="res://addons/audio_manager/sound_manager/sound_bank.gd" id="2_pol04"]
@@ -6,7 +6,6 @@
 [ext_resource type="AudioStream" uid="uid://cy4r18lxb4rbh" path="res://audio/sounds/blaster.wav" id="4_pis6r"]
 [ext_resource type="LabelSettings" uid="uid://tysg4xge4hsu" path="res://shared/title_label_settings.tres" id="7_v2tg6"]
 [ext_resource type="LabelSettings" uid="uid://bldprl7vev3uv" path="res://shared/description_label_settings.tres" id="8_qupom"]
-[ext_resource type="PackedScene" uid="uid://dc5e756ijwblu" path="res://shared/pool_stats/pool_stats.tscn" id="9_262w8"]
 
 [sub_resource type="Resource" id="Resource_hqydm"]
 script = ExtResource("3_s5fje")
@@ -41,7 +40,3 @@ Press \"1\" on your keyboard to trigger (play) the event.
 Press \"2\" on you keyboard to trigger the event with slight pitch and volume changes.
 Each time an event is triggered, one of its variations will be chosen at random."
 label_settings = ExtResource("8_qupom")
-
-[node name="PoolStats" parent="." instance=ExtResource("9_262w8")]
-offset_top = 280.0
-offset_bottom = 374.0
