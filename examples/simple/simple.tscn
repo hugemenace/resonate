@@ -21,7 +21,7 @@ script = ExtResource("1_fvr5o")
 
 [node name="SoundBank" type="Node" parent="."]
 script = ExtResource("4_cwmja")
-label = "example"
+label = "simple"
 events = Array[ExtResource("3_qyv4q")]([SubResource("Resource_1ir4x")])
 
 [node name="Title" type="Label" parent="."]
