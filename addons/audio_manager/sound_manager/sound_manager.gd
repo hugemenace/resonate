@@ -103,6 +103,10 @@ func get_bus(p_bank_bus: String, p_event_bus: String) -> String:
 
 
 func instance_manual(p_bank_label: String, p_event_name: String, p_trigger: bool = true, p_bus: String = "", p_poly: bool = false, p_attachment = null) -> Variant:
+	if not _loaded:
+		push_warning("AudioManager - The event [%s] on bank [%s] can't be played as the SoundManager has not loaded yet. Use the [loaded] signal/event to determine when it is ready to play sounds." % [p_event_name, p_bank_label])
+		return null
+		
 	var event = get_event(p_bank_label, p_event_name)
 	var player = get_player(p_attachment)
 	

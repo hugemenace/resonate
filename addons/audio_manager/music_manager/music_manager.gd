@@ -41,6 +41,10 @@ func add_music(p_name: String, p_stems: Array[MusicStemResource]) -> void:
 	
 
 func play(p_name: String) -> AudioStreamPlayer:
+	if not _loaded:
+		push_warning("AudioManager - The music track [%s] can't be played as the MusicManager has not loaded yet. Use the [loaded] signal/event to determine when it is ready to play music." % p_name)
+		return null
+		
 	if not _music_table.has(p_name):
 		push_error("AudioManager - Tried to play an unknown music track: [%s]." % p_name)
 		return
