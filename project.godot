@@ -26,6 +26,11 @@ manager/sound/max_polyphony=32
 SoundManager="*res://addons/audio_manager/sound_manager/sound_manager.gd"
 MusicManager="*res://addons/audio_manager/music_manager/music_manager.gd"
 
+[display]
+
+window/size/viewport_width=1200
+window/size/viewport_height=800
+
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/audio_manager/plugin.cfg")
