@@ -1,9 +1,10 @@
 extends Node3D
 
 
-# To understand this example completely, take a look at the MusicBank child node
-# on this scene. The music bank contains a single track (MusicResource) which
-# contains two stems (MusicStemResource), each of which has an audio stream.
+# To understand this example completely, take a look at the SoundBank child node
+# on this scene. The sound bank contains a single event (SoundEventResource) 
+# containing three variations (audio streams) that will play randomly when 
+# the event is triggered. This allows for less repetitive sounding events.
 
 
 @onready var note_interval = $NoteInterval
