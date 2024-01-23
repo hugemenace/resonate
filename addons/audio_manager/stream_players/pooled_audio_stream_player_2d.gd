@@ -4,6 +4,7 @@ extends AudioStreamPlayer2D
 
 signal released(p_player: Node)
 
+var pool_type: SoundManager.pool_type
 var reserved: bool
 var poly: bool
 var streams: Array
@@ -11,6 +12,13 @@ var streams: Array
 
 func _ready() -> void:
 	finished.connect(on_finished)
+
+
+static func create(p_type: SoundManager.pool_type) -> PooledAudioStreamPlayer2D:
+	var player = PooledAudioStreamPlayer2D.new()
+	player.pool_type = p_type
+	
+	return player
 	
 
 func configure(p_streams: Array, p_bus: String, p_poly: bool) -> void:
