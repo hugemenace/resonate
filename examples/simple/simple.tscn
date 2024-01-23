@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://dfy6ygeu8pya5"]
+[gd_scene load_steps=11 format=3 uid="uid://dfy6ygeu8pya5"]
 
 [ext_resource type="Script" path="res://examples/simple/simple.gd" id="1_fvr5o"]
 [ext_resource type="LabelSettings" uid="uid://tysg4xge4hsu" path="res://title_label_settings.tres" id="2_6x4oj"]
@@ -8,6 +8,7 @@
 [ext_resource type="AudioStream" uid="uid://de550fklyhu88" path="res://audio/sounds/note_c5.wav" id="4_it7rc"]
 [ext_resource type="AudioStream" uid="uid://b35ao3bdtstka" path="res://audio/sounds/note_e5.wav" id="5_vxpmp"]
 [ext_resource type="AudioStream" uid="uid://bmg3dvylup5k" path="res://audio/sounds/note_g5.wav" id="6_kifph"]
+[ext_resource type="PackedScene" uid="uid://dc5e756ijwblu" path="res://shared/pool_stats/pool_stats.tscn" id="9_snama"]
 
 [sub_resource type="Resource" id="Resource_1ir4x"]
 script = ExtResource("3_qyv4q")
@@ -41,3 +42,5 @@ text = "This example uses the \"note\" sound event.
 Press \"1\" on your keyboard to trigger (play) the event.
 Each time an event is triggered, one of its variations will be chosen at random."
 label_settings = ExtResource("3_ljjap")
+
+[node name="PoolStats" parent="." instance=ExtResource("9_snama")]

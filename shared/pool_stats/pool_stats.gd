@@ -6,7 +6,7 @@ var _size_2d: int = 0
 var _size_3d: int = 0
 
 
-func _ready():
+func _ready() -> void:
 	text = "Pool stats loading..."
 	
 	SoundManager.loaded.connect(on_sound_manager_loaded)
