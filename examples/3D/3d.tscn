@@ -1,6 +1,66 @@
-[gd_scene load_steps=2 format=3 uid="uid://3kswph4l3ba6"]
+[gd_scene load_steps=12 format=3 uid="uid://3kswph4l3ba6"]
 
 [ext_resource type="Script" path="res://examples/3d/3d.gd" id="1_4y185"]
+[ext_resource type="Script" path="res://addons/audio_manager/sound_manager/sound_bank.gd" id="2_xngck"]
+[ext_resource type="Script" path="res://addons/audio_manager/sound_manager/sound_event_resource.gd" id="3_3oot1"]
+[ext_resource type="AudioStream" uid="uid://de550fklyhu88" path="res://audio/sounds/note_c5.wav" id="4_rl4lw"]
+[ext_resource type="AudioStream" uid="uid://b35ao3bdtstka" path="res://audio/sounds/note_e5.wav" id="5_b2t1o"]
+[ext_resource type="AudioStream" uid="uid://bmg3dvylup5k" path="res://audio/sounds/note_g5.wav" id="6_yqxja"]
+[ext_resource type="LabelSettings" uid="uid://tysg4xge4hsu" path="res://shared/title_label_settings.tres" id="7_ythoj"]
+[ext_resource type="LabelSettings" uid="uid://bldprl7vev3uv" path="res://shared/description_label_settings.tres" id="8_6qcxl"]
+[ext_resource type="Script" path="res://examples/3d/pivot.gd" id="9_leetf"]
+
+[sub_resource type="Resource" id="Resource_5hea7"]
+script = ExtResource("3_3oot1")
+name = "note"
+bus = ""
+streams = Array[AudioStream]([ExtResource("4_rl4lw"), ExtResource("5_b2t1o"), ExtResource("6_yqxja")])
+
+[sub_resource type="BoxMesh" id="BoxMesh_aceq4"]
 
 [node name="3D" type="Node3D"]
 script = ExtResource("1_4y185")
+
+[node name="SoundBank" type="Node" parent="."]
+script = ExtResource("2_xngck")
+label = "2d"
+events = Array[ExtResource("3_3oot1")]([SubResource("Resource_5hea7")])
+
+[node name="Title" type="Label" parent="."]
+offset_left = 100.0
+offset_top = 50.0
+offset_right = 208.0
+offset_bottom = 103.0
+text = "3d"
+label_settings = ExtResource("7_ythoj")
+uppercase = true
+
+[node name="Description" type="Label" parent="."]
+offset_left = 100.0
+offset_top = 125.0
+offset_right = 824.0
+offset_bottom = 185.0
+text = "This example uses the \"note\" sound event.
+It is being triggered on the box below, causing the sound to move along with it in 3D space.
+Each time an event is triggered, one of its variations will be chosen at random."
+label_settings = ExtResource("8_6qcxl")
+
+[node name="NoteInterval" type="Timer" parent="."]
+wait_time = 0.25
+autostart = true
+
+[node name="AudioListener3D" type="AudioListener3D" parent="."]
+
+[node name="Pivot" type="Node3D" parent="."]
+script = ExtResource("9_leetf")
+
+[node name="MovingTarget" type="MeshInstance3D" parent="Pivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -7)
+mesh = SubResource("BoxMesh_aceq4")
+skeleton = NodePath("../..")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 40, 0)
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 10, 0)
