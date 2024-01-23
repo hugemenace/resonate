@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://dc5e756ijwblu"]
 
-[ext_resource type="LabelSettings" uid="uid://bnsew6gimofj5" path="res://stats_label_settings.tres" id="1_y2qc7"]
+[ext_resource type="LabelSettings" uid="uid://bnsew6gimofj5" path="res://shared/stats_label_settings.tres" id="1_y2qc7"]
 [ext_resource type="Script" path="res://shared/pool_stats/pool_stats.gd" id="2_ritks"]
 
 [node name="PoolStats" type="Label"]
