@@ -222,7 +222,7 @@ func is_node_attachment(p_attachment = null) -> bool:
 func add_player_to_pool(p_player, p_pool) -> Variant:
 	add_child(p_player)
 	
-	p_player.released.connect(on_player_released)
+	p_player.released.connect(on_player_released.bind(p_player))
 	p_pool.append(p_player)
 	
 	return p_player

@@ -2,7 +2,7 @@ class_name PooledAudioStreamPlayer
 extends AudioStreamPlayer
 
 
-signal released(p_player: Node)
+signal released
 
 var pool_type: SoundManager.pool_type
 var reserved: bool
@@ -44,7 +44,7 @@ func trigger_varied(p_pitch: float = 1.0, p_volume: float = 0.0, p_auto_release:
 
 func release() -> void:
 	reserved = false
-	released.emit(self)
+	released.emit()
 
 
 func on_finished() -> void:
