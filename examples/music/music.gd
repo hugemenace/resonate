@@ -48,8 +48,16 @@ func _input(p_event: InputEvent) -> void:
 
 
 func _process(_p_delta):
+	if not MusicManager.is_playing():
+		stem_details.text = "No music playing."
+		return
+		
 	var melody_stem = MusicManager.get_stem_details("melody")
 	var drums_stem = MusicManager.get_stem_details("drums")
+	
+	if melody_stem == null or drums_stem == null:
+		stem_details.text = "Stem details unavailable."
+		return
 	
 	stem_details.text = """Melody stem:
 	 - Volume: %ddB

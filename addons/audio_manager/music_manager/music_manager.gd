@@ -104,6 +104,10 @@ func disable_stem(p_name: String, p_fade_time: float = 3.0) -> void:
 	set_stem(p_name, false, p_fade_time)
 
 
+func is_playing() -> bool:
+	return _music_streams.size() > 0
+
+
 func get_stem_details(p_name: String) -> Variant:
 	if _music_streams.size() == 0:
 		push_warning("AudioManager - Cannot get the details for stem [%s] as there is no music currently playing." % p_name)
