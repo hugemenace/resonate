@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://jw5kbo20k3hh"]
+[gd_scene load_steps=22 format=3 uid="uid://jw5kbo20k3hh"]
 
 [ext_resource type="Script" path="res://examples/music/music.gd" id="1_b17ub"]
 [ext_resource type="Script" path="res://addons/audio_manager/music_manager/music_bank.gd" id="2_cql1n"]
@@ -6,9 +6,13 @@
 [ext_resource type="Script" path="res://addons/audio_manager/music_manager/music_stem_resource.gd" id="4_ksop8"]
 [ext_resource type="LabelSettings" uid="uid://bldprl7vev3uv" path="res://shared/description_label_settings.tres" id="5_cg2qn"]
 [ext_resource type="LabelSettings" uid="uid://tysg4xge4hsu" path="res://shared/title_label_settings.tres" id="5_vbmlt"]
-[ext_resource type="AudioStream" uid="uid://sjkaeg8p0qig" path="res://audio/music_stems/music_pad_stem.mp3" id="5_wctds"]
-[ext_resource type="AudioStream" uid="uid://ba8e5llasqjhk" path="res://audio/music_stems/music_melody_stem.mp3" id="6_hgf2k"]
-[ext_resource type="AudioStream" uid="uid://clkjvyfm227dt" path="res://audio/music_stems/music_drums_stem.mp3" id="7_57fs0"]
+[ext_resource type="AudioStream" uid="uid://sjkaeg8p0qig" path="res://audio/music_stems/breakbeat_pad_stem.mp3" id="5_wctds"]
+[ext_resource type="AudioStream" uid="uid://ba8e5llasqjhk" path="res://audio/music_stems/breakbeat_melody_stem.mp3" id="6_hgf2k"]
+[ext_resource type="AudioStream" uid="uid://clkjvyfm227dt" path="res://audio/music_stems/breakbeat_drums_stem.mp3" id="7_57fs0"]
+[ext_resource type="AudioStream" uid="uid://bhbxnxeuk62q0" path="res://audio/music_stems/house_bass_pad_stem.mp3" id="8_hxbnm"]
+[ext_resource type="AudioStream" uid="uid://dq5s5n0folm21" path="res://audio/music_stems/house_melody_stem.mp3" id="9_3rpxp"]
+[ext_resource type="AudioStream" uid="uid://bcv4ev20vqxx2" path="res://audio/music_stems/house_drums_stem.mp3" id="10_13th8"]
+[ext_resource type="LabelSettings" uid="uid://bnsew6gimofj5" path="res://shared/stats_label_settings.tres" id="13_787wl"]
 
 [sub_resource type="Resource" id="Resource_ognhn"]
 script = ExtResource("4_ksop8")
@@ -30,15 +34,38 @@ stream = ExtResource("7_57fs0")
 
 [sub_resource type="Resource" id="Resource_1ncxf"]
 script = ExtResource("3_o75hm")
-name = "exploration"
+name = "track_a"
 stems = Array[ExtResource("4_ksop8")]([SubResource("Resource_ognhn"), SubResource("Resource_4apoh"), SubResource("Resource_x14g1")])
+
+[sub_resource type="Resource" id="Resource_ee683"]
+script = ExtResource("4_ksop8")
+name = "pad"
+enabled = true
+stream = ExtResource("8_hxbnm")
+
+[sub_resource type="Resource" id="Resource_64pmf"]
+script = ExtResource("4_ksop8")
+name = "melody"
+enabled = false
+stream = ExtResource("9_3rpxp")
+
+[sub_resource type="Resource" id="Resource_slh24"]
+script = ExtResource("4_ksop8")
+name = "drums"
+enabled = false
+stream = ExtResource("10_13th8")
+
+[sub_resource type="Resource" id="Resource_pmaoq"]
+script = ExtResource("3_o75hm")
+name = "track_b"
+stems = Array[ExtResource("4_ksop8")]([SubResource("Resource_ee683"), SubResource("Resource_64pmf"), SubResource("Resource_slh24")])
 
 [node name="Music" type="Node2D"]
 script = ExtResource("1_b17ub")
 
 [node name="MusicBank" type="Node" parent="."]
 script = ExtResource("2_cql1n")
-tracks = Array[ExtResource("3_o75hm")]([SubResource("Resource_1ncxf")])
+tracks = Array[ExtResource("3_o75hm")]([SubResource("Resource_1ncxf"), SubResource("Resource_pmaoq")])
 
 [node name="Title" type="Label" parent="."]
 offset_left = 100.0
@@ -56,5 +83,15 @@ offset_right = 824.0
 offset_bottom = 185.0
 text = "This example automatically plays the \"exploration\" music track.
 Hold down \"1\" on your keyboard to enable the \"melody\" stem.
-Hold down \"2\" on your keyboard to enable the \"drums\" stem."
+Hold down \"2\" on your keyboard to enable the \"drums\" stem.
+Press \"3\" on your keyboard to start the next track.
+Press \"4\" on your keyboard to stop the current track."
 label_settings = ExtResource("5_cg2qn")
+
+[node name="StemDetails" type="Label" parent="."]
+offset_left = 100.0
+offset_top = 315.0
+offset_right = 824.0
+offset_bottom = 375.0
+text = "{ stem details }"
+label_settings = ExtResource("13_787wl")

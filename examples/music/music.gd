@@ -5,6 +5,12 @@ extends Node2D
 # on this scene. The music bank contains a single track (MusicResource) which
 # contains two stems (MusicStemResource), each of which has an audio stream.
 
+@onready var stem_details = $StemDetails
+
+const _TRACKS: Array[String] = ["track_a", "track_b"]
+
+var _track_number: int = 1
+
 
 func _ready() -> void:
 	# As the MusicManager requires some time to set things up behind the scenes,
@@ -18,19 +24,40 @@ func _input(p_event: InputEvent) -> void:
 		# Enabling a stem is technically unmuting it. Therefore, don't expect
 		# the stem to begin playback at the start of its stream. Stems will
 		# unmute immediately and should be already synced with the track.
-		MusicManager.enable_stem("exploration", "melody")
+		MusicManager.enable_stem("melody")
 		
 	if p_event.is_action_released("one"):
 		# Disabling a stem is technically muting it. It will continuing playing
 		# in the background, however, inaudible. This ensures the stem stays
 		# in-sync with all other stems associated with the music track.
-		MusicManager.disable_stem("exploration", "melody")
+		MusicManager.disable_stem("melody")
 		
 	if p_event.is_action_pressed("two"):
-		MusicManager.enable_stem("exploration", "drums")
+		MusicManager.enable_stem("drums")
 		
 	if p_event.is_action_released("two"):
-		MusicManager.disable_stem("exploration", "drums")
+		MusicManager.disable_stem("drums")
+		
+	if p_event.is_action_pressed("three"):
+		MusicManager.play(_TRACKS[_track_number])
+		# Loop back around to the start if we've hit the end of the track list.
+		_track_number = _track_number + 1 if (_track_number + 1) < _TRACKS.size() else 0
+				
+	if p_event.is_action_pressed("four"):
+		MusicManager.stop()
+
+
+func _process(_p_delta):
+	var melody_stem = MusicManager.get_stem_details("melody")
+	var drums_stem = MusicManager.get_stem_details("drums")
+	
+	stem_details.text = """Melody stem:
+	 - Volume: %ddB
+	 - Enabled: %s
+	Drums stem:
+	 - Volume: %ddB
+	 - Enabled: %s
+	""" % [melody_stem.volume, melody_stem.enabled, drums_stem.volume, drums_stem.enabled]
 
 
 func on_music_manager_loaded() -> void:
@@ -38,4 +65,4 @@ func on_music_manager_loaded() -> void:
 	# begin playing all associated stems that have been marked as "enabled".
 	# All music is automatically played through the bus configured in the
 	# project settings (Audio/Manager/Music/Bank), otherwise "Master".
-	MusicManager.play("exploration")
+	MusicManager.play(_TRACKS[0])

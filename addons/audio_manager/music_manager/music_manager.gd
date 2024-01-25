@@ -4,7 +4,7 @@ extends Node
 signal loaded
 
 var _music_table: Dictionary = {}
-var _music_streams: Dictionary = {}
+var _music_streams: Array[StemmedMusicStreamPlayer] = []
 var _loaded: bool = false
 
 
@@ -38,9 +38,9 @@ func add_music(p_name: String, p_stems: Array[MusicStemResource]) -> void:
 		"enabled": stem.enabled,
 		"stream": stem.stream,
 	})
-	
 
-func play(p_name: String) -> AudioStreamPlayer:
+
+func play(p_name: String, p_crossfade_time: float = 3.0) -> StemmedMusicStreamPlayer:
 	if not _loaded:
 		push_warning("AudioManager - The music track [%s] can't be played as the MusicManager has not loaded yet. Use the [loaded] signal/event to determine when it is ready to play music." % p_name)
 		return null
@@ -49,9 +49,7 @@ func play(p_name: String) -> AudioStreamPlayer:
 		push_error("AudioManager - Tried to play an unknown music track: [%s]." % p_name)
 		return
 	
-	var player = AudioStreamPlayer.new()
-	var stream = AudioStreamPolyphonic.new()
-	var stems = _music_table[p_name] as Array[Dictionary]
+	var stems = _music_table[p_name] as Array
 	
 	if stems.size() == 0:
 		push_error("AudioManager - The music track [%s] has no stems, you'll need to add one at minimum." % p_name)
@@ -62,63 +60,63 @@ func play(p_name: String) -> AudioStreamPlayer:
 			push_error("AudioManager - The stem [%s] on the music track [%s] does not have an audio stream, you'll need to add one." % [stem.name, p_name])
 			return
 	
+	var player = StemmedMusicStreamPlayer.create(p_name)
+	
+	if _music_streams.size() > 0:
+		for stream in _music_streams:
+			stream.stop_stems(p_crossfade_time)
+	
+	_music_streams.append(player)
+	
 	add_child(player)
 	
-	stream.polyphony = stems.size()
-	
-	player.max_polyphony = stems.size()
-	player.stream = stream
-	player.bus = ProjectSettings.get_setting(
-		AudioManagerPlugin.MUSIC_BANK_SETTING_NAME,
-		AudioManagerPlugin.MUSIC_BANK_SETTING_DEFAULT)
-		
-	player.play()
-	
-	var playback = player.get_stream_playback() as AudioStreamPlaybackPolyphonic
-	
-	var music_stream = {
-		"player": player,
-		"stems": {},
-	}
-	
-	for stem in stems:
-		var stream_id = playback.play_stream(stem.stream)
-		
-		playback.set_stream_volume(stream_id, 0.0 if stem.enabled else -128.0)
-		
-		music_stream["stems"][stem.name] = {
-			"name": stem.name,
-			"enabled": stem.enabled,
-			"stream_id": stream_id,
-		}
-	
-	_music_streams[p_name] = music_stream
+	player.start_stems(stems, p_crossfade_time)
+	player.stopped.connect(on_player_stopped.bind(player))
 	
 	return player
 
 
-func set_stem(p_name: String, p_stem_name: String, p_enabled: bool = true) -> void:
-	if not _music_streams.has(p_name):
-		push_error("AudioManager - Cannot toggle the stem [%s] as the music track [%s] is not currently playing." % [p_stem_name, p_name])
+func stop(p_fade_time: float = 3.0) -> void:
+	if _music_streams.size() == 0:
+		push_warning("AudioManager - Cannot stop the music track as there is no music currently playing.")
 		return
-	
-	var playback = _music_streams[p_name]["player"].get_stream_playback() as AudioStreamPlaybackPolyphonic
-	
-	for stem in _music_streams[p_name]["stems"].values():
-		var enabled = _music_streams[p_name]["stems"][stem.name]["enabled"]
 		
-		if stem.name == p_stem_name:
-			enabled = p_enabled
-			_music_streams[p_name]["stems"][stem.name]["enabled"] = enabled
-			
-		var stream_id = _music_streams[p_name]["stems"][stem.name]["stream_id"]
-		
-		playback.set_stream_volume(stream_id, 0.0 if enabled else -100.0)
-
-
-func enable_stem(p_name: String, p_stem_name: String) -> void:
-	set_stem(p_name, p_stem_name, true)
+	var current_player = _music_streams.back() as StemmedMusicStreamPlayer
 	
+	current_player.stop_stems(p_fade_time)
 
-func disable_stem(p_name: String, p_stem_name: String) -> void:
-	set_stem(p_name, p_stem_name, false)
+
+func set_stem(p_name: String, p_enabled: bool, p_fade_time: float) -> void:
+	if _music_streams.size() == 0:
+		push_warning("AudioManager - Cannot toggle the stem [%s] as there is no music currently playing." % p_name)
+		return
+		
+	var current_player = _music_streams.back() as StemmedMusicStreamPlayer
+	
+	current_player.toggle_stem(p_name, p_enabled, p_fade_time)
+
+
+func enable_stem(p_name: String, p_fade_time: float = 3.0) -> void:
+	set_stem(p_name, true, p_fade_time)
+
+
+func disable_stem(p_name: String, p_fade_time: float = 3.0) -> void:
+	set_stem(p_name, false, p_fade_time)
+
+
+func get_stem_details(p_name: String) -> Variant:
+	if _music_streams.size() == 0:
+		push_warning("AudioManager - Cannot get the details for stem [%s] as there is no music currently playing." % p_name)
+		return
+		
+	var current_player = _music_streams.back() as StemmedMusicStreamPlayer
+	
+	return current_player.get_stem_details(p_name)
+
+
+func on_player_stopped(p_player: StemmedMusicStreamPlayer) -> void:
+	if _music_streams.size() == 0:
+		return
+		
+	_music_streams.erase(p_player)
+	remove_child(p_player)
