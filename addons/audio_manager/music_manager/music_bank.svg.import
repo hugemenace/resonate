@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cwypjcl2j2mfn"
-path="res://.godot/imported/music_bank.png-70f214c9a179815de78d919fbe725f53.ctex"
+uid="uid://bxfmecl088q55"
+path="res://.godot/imported/music_bank.svg-a8b823f182811434f761497c6d5fa326.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://addons/audio_manager/music_manager/music_bank.png"
-dest_files=["res://.godot/imported/music_bank.png-70f214c9a179815de78d919fbe725f53.ctex"]
+source_file="res://addons/audio_manager/music_manager/music_bank.svg"
+dest_files=["res://.godot/imported/music_bank.svg-a8b823f182811434f761497c6d5fa326.ctex"]
 
 [params]
 
@@ -32,3 +32,6 @@ process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
 detect_3d/compress_to=1
+svg/scale=1.0
+editor/scale_with_editor_scale=false
+editor/convert_colors_with_editor_theme=false
