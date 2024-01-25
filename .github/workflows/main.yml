@@ -1,0 +1,32 @@
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  checks: write
+  contents: write
+  pull-requests: write
+
+name: Release
+
+jobs:
+  release-please:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create Tag & Changelog
+        uses: google-github-actions/release-please-action@v4
+        id: release
+      - uses: actions/checkout@main
+      - name: Create Release Artifact
+        if: ${{ steps.release.outputs.release_created }}
+        uses: thedoctor0/zip-release@0.7.6
+        with:
+          type: 'zip'
+          filename: 'audio-manager-${{ steps.release.outputs.tag_name }}.zip'
+          directory: 'addons'
+      - name: Publish Release
+        if: ${{ steps.release.outputs.release_created }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh release upload ${{ steps.release.outputs.tag_name }} addons/audio-manager-${{ steps.release.outputs.tag_name }}.zip

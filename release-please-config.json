@@ -1,0 +1,10 @@
+{
+    "packages": {
+        ".": {
+            "release-type": "simple",
+            "extra-files": [
+                "addons/audio_manager/plugin.cfg"
+            ]
+        }
+    }
+}
