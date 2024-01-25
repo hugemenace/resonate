@@ -9,6 +9,7 @@ An audio management add-on for the Godot game engine.
 
 ### Features
 - Pooled audio stream players.
-- Automatic 1D, 2D, and 3D space detection.
+- Automatic 2D and 3D space detection.
 - Polyphonic playback.
-- Dynamic (stemmed) music tracks.
+- Stemmed music tracks.
+- Music crossfading.
