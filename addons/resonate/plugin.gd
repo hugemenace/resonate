@@ -1,5 +1,5 @@
 @tool
-class_name AudioManagerPlugin
+class_name ResonatePlugin
 extends EditorPlugin
 
 
@@ -84,4 +84,4 @@ func add_project_setting(p_name: String, p_default, p_type: int, p_hint: int = P
 	var error: int = ProjectSettings.save()
 	
 	if error: 
-		push_error("AudioManager - Encountered error %d when saving project settings." % error)
+		push_error("Resonate - Encountered error %d when saving project settings." % error)

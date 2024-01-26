@@ -12,8 +12,8 @@ static func configure(p_base, p_streams: Array, p_bus: String, p_poly: bool, p_m
 		return false
 	
 	var max_polyphony = ProjectSettings.get_setting(
-		AudioManagerPlugin.MAX_POLYPHONY_SETTING_NAME,
-		AudioManagerPlugin.MAX_POLYPHONY_SETTING_DEFAULT)
+		ResonatePlugin.MAX_POLYPHONY_SETTING_NAME,
+		ResonatePlugin.MAX_POLYPHONY_SETTING_DEFAULT)
 	
 	p_base.stream = AudioStreamPolyphonic.new()
 	p_base.max_polyphony = max_polyphony
@@ -24,7 +24,7 @@ static func configure(p_base, p_streams: Array, p_bus: String, p_poly: bool, p_m
 
 static func trigger(p_base, p_varied: bool, p_pitch: float, p_volume: float, p_auto_release: bool) -> bool:
 	if p_base.streams.size() == 0:
-		push_warning("AudioManager - The player [%s] does not contain any streams, ensure you're using the SoundManager to instance it correctly." % p_base.name)
+		push_warning("Resonate - The player [%s] does not contain any streams, ensure you're using the SoundManager to instance it correctly." % p_base.name)
 		return false
 		
 	p_base.reserved = not p_auto_release

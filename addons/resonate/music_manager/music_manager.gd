@@ -51,23 +51,23 @@ func add_music(p_name: String, p_stems: Array[MusicStemResource], p_mode: Node.P
 
 func play(p_name: String, p_crossfade_time: float = 3.0) -> StemmedMusicStreamPlayer:
 	if not _loaded:
-		push_warning("AudioManager - The music track [%s] can't be played as the MusicManager has not loaded yet. Use the [loaded] signal/event to determine when it is ready to play music." % p_name)
+		push_warning("Resonate - The music track [%s] can't be played as the MusicManager has not loaded yet. Use the [loaded] signal/event to determine when it is ready to play music." % p_name)
 		return null
 		
 	if not _music_table.has(p_name):
-		push_error("AudioManager - Tried to play an unknown music track: [%s]." % p_name)
+		push_error("Resonate - Tried to play an unknown music track: [%s]." % p_name)
 		return
 	
 	var track = _music_table[p_name] as Dictionary
 	var stems = track["stems"] as Array
 	
 	if stems.size() == 0:
-		push_error("AudioManager - The music track [%s] has no stems, you'll need to add one at minimum." % p_name)
+		push_error("Resonate - The music track [%s] has no stems, you'll need to add one at minimum." % p_name)
 		return
 		
 	for stem in stems:
 		if stem.stream == null:
-			push_error("AudioManager - The stem [%s] on the music track [%s] does not have an audio stream, you'll need to add one." % [stem.name, p_name])
+			push_error("Resonate - The stem [%s] on the music track [%s] does not have an audio stream, you'll need to add one." % [stem.name, p_name])
 			return
 	
 	var player = StemmedMusicStreamPlayer.create(p_name, track.mode)
@@ -88,7 +88,7 @@ func play(p_name: String, p_crossfade_time: float = 3.0) -> StemmedMusicStreamPl
 
 func stop(p_fade_time: float = 3.0) -> void:
 	if _music_streams.size() == 0:
-		push_warning("AudioManager - Cannot stop the music track as there is no music currently playing.")
+		push_warning("Resonate - Cannot stop the music track as there is no music currently playing.")
 		return
 		
 	var current_player = _music_streams.back() as StemmedMusicStreamPlayer
@@ -98,7 +98,7 @@ func stop(p_fade_time: float = 3.0) -> void:
 
 func set_stem(p_name: String, p_enabled: bool, p_fade_time: float) -> void:
 	if _music_streams.size() == 0:
-		push_warning("AudioManager - Cannot toggle the stem [%s] as there is no music currently playing." % p_name)
+		push_warning("Resonate - Cannot toggle the stem [%s] as there is no music currently playing." % p_name)
 		return
 		
 	var current_player = _music_streams.back() as StemmedMusicStreamPlayer
@@ -120,7 +120,7 @@ func is_playing() -> bool:
 
 func get_stem_details(p_name: String) -> Variant:
 	if _music_streams.size() == 0:
-		push_warning("AudioManager - Cannot get the details for stem [%s] as there is no music currently playing." % p_name)
+		push_warning("Resonate - Cannot get the details for stem [%s] as there is no music currently playing." % p_name)
 		return
 		
 	var current_player = _music_streams.back() as StemmedMusicStreamPlayer

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ntgipyp6jv34"
-path="res://.godot/imported/sound_bank.svg-1578496ae945211019ae01139e3dda40.ctex"
+uid="uid://bxfmecl088q55"
+path="res://.godot/imported/music_bank.svg-4038ad3a11ca952c7a39bede8a3b962e.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://addons/audio_manager/sound_manager/sound_bank.svg"
-dest_files=["res://.godot/imported/sound_bank.svg-1578496ae945211019ae01139e3dda40.ctex"]
+source_file="res://addons/resonate/music_manager/music_bank.svg"
+dest_files=["res://.godot/imported/music_bank.svg-4038ad3a11ca952c7a39bede8a3b962e.ctex"]
 
 [params]
 

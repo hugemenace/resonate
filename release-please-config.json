@@ -3,7 +3,7 @@
         ".": {
             "release-type": "simple",
             "extra-files": [
-                "addons/audio_manager/plugin.cfg"
+                "addons/resonate/plugin.cfg"
             ]
         }
     }

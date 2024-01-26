@@ -1,8 +1,8 @@
 [gd_scene load_steps=8 format=3 uid="uid://ys1gdvqjju2q"]
 
 [ext_resource type="Script" path="res://examples/polyphonic/polyphonic.gd" id="1_apacb"]
-[ext_resource type="Script" path="res://addons/audio_manager/sound_manager/sound_bank.gd" id="2_pol04"]
-[ext_resource type="Script" path="res://addons/audio_manager/sound_manager/sound_event_resource.gd" id="3_s5fje"]
+[ext_resource type="Script" path="res://addons/resonate/sound_manager/sound_bank.gd" id="2_pol04"]
+[ext_resource type="Script" path="res://addons/resonate/sound_manager/sound_event_resource.gd" id="3_s5fje"]
 [ext_resource type="AudioStream" uid="uid://cy4r18lxb4rbh" path="res://audio/sounds/blaster.wav" id="4_pis6r"]
 [ext_resource type="LabelSettings" uid="uid://tysg4xge4hsu" path="res://shared/title_label_settings.tres" id="7_v2tg6"]
 [ext_resource type="LabelSettings" uid="uid://bldprl7vev3uv" path="res://shared/description_label_settings.tres" id="8_qupom"]

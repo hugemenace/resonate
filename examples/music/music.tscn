@@ -1,9 +1,9 @@
 [gd_scene load_steps=22 format=3 uid="uid://jw5kbo20k3hh"]
 
 [ext_resource type="Script" path="res://examples/music/music.gd" id="1_b17ub"]
-[ext_resource type="Script" path="res://addons/audio_manager/music_manager/music_bank.gd" id="2_cql1n"]
-[ext_resource type="Script" path="res://addons/audio_manager/music_manager/music_resource.gd" id="3_o75hm"]
-[ext_resource type="Script" path="res://addons/audio_manager/music_manager/music_stem_resource.gd" id="4_ksop8"]
+[ext_resource type="Script" path="res://addons/resonate/music_manager/music_bank.gd" id="2_cql1n"]
+[ext_resource type="Script" path="res://addons/resonate/music_manager/music_resource.gd" id="3_o75hm"]
+[ext_resource type="Script" path="res://addons/resonate/music_manager/music_stem_resource.gd" id="4_ksop8"]
 [ext_resource type="LabelSettings" uid="uid://bldprl7vev3uv" path="res://shared/description_label_settings.tres" id="5_cg2qn"]
 [ext_resource type="LabelSettings" uid="uid://tysg4xge4hsu" path="res://shared/title_label_settings.tres" id="5_vbmlt"]
 [ext_resource type="AudioStream" uid="uid://sjkaeg8p0qig" path="res://audio/music_stems/breakbeat_pad_stem.mp3" id="5_wctds"]

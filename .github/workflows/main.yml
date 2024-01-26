@@ -23,10 +23,10 @@ jobs:
         uses: thedoctor0/zip-release@0.7.6
         with:
           type: 'zip'
-          filename: 'audio-manager-${{ steps.release.outputs.tag_name }}.zip'
+          filename: 'resonate-${{ steps.release.outputs.tag_name }}.zip'
           directory: 'addons'
       - name: Publish Release
         if: ${{ steps.release.outputs.release_created }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh release upload ${{ steps.release.outputs.tag_name }} addons/audio-manager-${{ steps.release.outputs.tag_name }}.zip
+        run: gh release upload ${{ steps.release.outputs.tag_name }} addons/resonate-${{ steps.release.outputs.tag_name }}.zip

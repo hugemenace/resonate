@@ -10,7 +10,7 @@ config_version=5
 
 [application]
 
-config/name="AudioManager"
+config/name="Resonate"
 config/features=PackedStringArray("4.2", "Forward Plus")
 config/icon="res://icon.svg"
 
@@ -23,8 +23,8 @@ manager/sound/max_polyphony=32
 
 [autoload]
 
-SoundManager="*res://addons/audio_manager/sound_manager/sound_manager.gd"
-MusicManager="*res://addons/audio_manager/music_manager/music_manager.gd"
+SoundManager="*res://addons/resonate/sound_manager/sound_manager.gd"
+MusicManager="*res://addons/resonate/music_manager/music_manager.gd"
 
 [display]
 
@@ -33,7 +33,7 @@ window/size/viewport_height=800
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/audio_manager/plugin.cfg")
+enabled=PackedStringArray("res://addons/resonate/plugin.cfg")
 
 [input]
 

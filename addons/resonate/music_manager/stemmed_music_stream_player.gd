@@ -21,8 +21,8 @@ static func create(p_name: String, p_mode: Node.ProcessMode) -> StemmedMusicStre
 	player.stream = stream
 	player.process_mode = p_mode
 	player.bus = ProjectSettings.get_setting(
-		AudioManagerPlugin.MUSIC_BANK_SETTING_NAME,
-		AudioManagerPlugin.MUSIC_BANK_SETTING_DEFAULT)
+		ResonatePlugin.MUSIC_BANK_SETTING_NAME,
+		ResonatePlugin.MUSIC_BANK_SETTING_DEFAULT)
 	
 	player.volume_db = _DISABLED_VOLUME
 	
@@ -60,7 +60,7 @@ func start_stems(p_stems: Array, p_crossfade_time: float) -> void:
 
 func toggle_stem(p_name: String, p_enabled: bool, p_fade_time: float) -> void:
 	if not _stems.has(p_name):
-		push_warning("AudioManager - Cannot toggle the stem [%s] on music track [%s] as it does not exist." % [p_name, _name])
+		push_warning("Resonate - Cannot toggle the stem [%s] on music track [%s] as it does not exist." % [p_name, _name])
 		return
 		
 	var playback = get_stream_playback() as AudioStreamPlaybackPolyphonic
@@ -105,7 +105,7 @@ func stop_stems(p_fade_time: float) -> void:
 
 func get_stem_details(p_name: String) -> Variant:
 	if not _stems.has(p_name):
-		push_warning("AudioManager - Cannot get the details for stem [%s] on music track [%s] as it does not exist." % [p_name, _name])
+		push_warning("Resonate - Cannot get the details for stem [%s] on music track [%s] as it does not exist." % [p_name, _name])
 		return null
 		
 	var stem = _stems[p_name]

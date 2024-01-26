@@ -1,8 +1,8 @@
 [gd_scene load_steps=11 format=3 uid="uid://3kswph4l3ba6"]
 
 [ext_resource type="Script" path="res://examples/3d/3d.gd" id="1_4y185"]
-[ext_resource type="Script" path="res://addons/audio_manager/sound_manager/sound_bank.gd" id="2_xngck"]
-[ext_resource type="Script" path="res://addons/audio_manager/sound_manager/sound_event_resource.gd" id="3_3oot1"]
+[ext_resource type="Script" path="res://addons/resonate/sound_manager/sound_bank.gd" id="2_xngck"]
+[ext_resource type="Script" path="res://addons/resonate/sound_manager/sound_event_resource.gd" id="3_3oot1"]
 [ext_resource type="AudioStream" uid="uid://bcv4ev20vqxx2" path="res://audio/music_stems/house_drums_stem.mp3" id="4_lnff3"]
 [ext_resource type="LabelSettings" uid="uid://tysg4xge4hsu" path="res://shared/title_label_settings.tres" id="7_ythoj"]
 [ext_resource type="LabelSettings" uid="uid://bldprl7vev3uv" path="res://shared/description_label_settings.tres" id="8_6qcxl"]

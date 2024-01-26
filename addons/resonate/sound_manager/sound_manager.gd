@@ -19,18 +19,18 @@ func _init():
 
 func _ready() -> void:
 	initialise_pool(ProjectSettings.get_setting(
-			AudioManagerPlugin.POOL_1D_SIZE_SETTING_NAME,
-			AudioManagerPlugin.POOL_1D_SIZE_SETTING_DEFAULT),
+			ResonatePlugin.POOL_1D_SIZE_SETTING_NAME,
+			ResonatePlugin.POOL_1D_SIZE_SETTING_DEFAULT),
 			create_player_1d)
 			
 	initialise_pool(ProjectSettings.get_setting(
-			AudioManagerPlugin.POOL_2D_SIZE_SETTING_NAME,
-			AudioManagerPlugin.POOL_2D_SIZE_SETTING_DEFAULT),
+			ResonatePlugin.POOL_2D_SIZE_SETTING_NAME,
+			ResonatePlugin.POOL_2D_SIZE_SETTING_DEFAULT),
 			create_player_2d)
 			
 	initialise_pool(ProjectSettings.get_setting(
-			AudioManagerPlugin.POOL_3D_SIZE_SETTING_NAME,
-			AudioManagerPlugin.POOL_3D_SIZE_SETTING_DEFAULT),
+			ResonatePlugin.POOL_3D_SIZE_SETTING_NAME,
+			ResonatePlugin.POOL_3D_SIZE_SETTING_DEFAULT),
 			create_player_3d)
 	
 	auto_add_events()
@@ -79,7 +79,7 @@ func add_event(p_bank_label: String, p_event_name: String, p_bus: String, p_stre
 
 func get_mode(p_bank_label: String) -> Node.ProcessMode:
 	if not _event_table.has(p_bank_label):
-		push_error("AudioManager - Tried to get the process mode from an unknown bank [%s]" % p_bank_label)
+		push_error("Resonate - Tried to get the process mode from an unknown bank [%s]" % p_bank_label)
 		return PROCESS_MODE_INHERIT
 		
 	return _event_table[p_bank_label]["mode"] as Node.ProcessMode
@@ -92,17 +92,17 @@ func get_event(p_bank_label: String, p_event_name: String) -> Dictionary:
 	}
 		
 	if not _event_table.has(p_bank_label):
-		push_error("AudioManager - Tried to get the event [%s] from an unknown bank [%s]" % [p_event_name, p_bank_label])
+		push_error("Resonate - Tried to get the event [%s] from an unknown bank [%s]" % [p_event_name, p_bank_label])
 		return empty_event
 		
 	if not _event_table[p_bank_label]["events"].has(p_event_name):
-		push_error("AudioManager - Tried to get an unknown event [%s] from the bank [%s]" % [p_event_name, p_bank_label])
+		push_error("Resonate - Tried to get an unknown event [%s] from the bank [%s]" % [p_event_name, p_bank_label])
 		return empty_event
 		
 	var event = _event_table[p_bank_label]["events"][p_event_name]
 	
 	if event.streams.size() == 0:
-		push_error("AudioManager - The event [%s] on bank [%s] has no playable streams, you'll need to add at least one." % [p_event_name, p_bank_label])
+		push_error("Resonate - The event [%s] on bank [%s] has no playable streams, you'll need to add at least one." % [p_event_name, p_bank_label])
 		return empty_event
 	
 	return event
@@ -116,20 +116,20 @@ func get_bus(p_bank_bus: String, p_event_bus: String) -> String:
 		return p_bank_bus
 		
 	return ProjectSettings.get_setting(
-		AudioManagerPlugin.SOUND_BANK_SETTING_NAME,
-		AudioManagerPlugin.SOUND_BANK_SETTING_DEFAULT)
+		ResonatePlugin.SOUND_BANK_SETTING_NAME,
+		ResonatePlugin.SOUND_BANK_SETTING_DEFAULT)
 
 
 func instance_manual(p_bank_label: String, p_event_name: String, p_trigger: bool = true, p_bus: String = "", p_poly: bool = false, p_attachment = null) -> Variant:
 	if not _loaded:
-		push_warning("AudioManager - The event [%s] on bank [%s] can't be played as the SoundManager has not loaded yet. Use the [loaded] signal/event to determine when it is ready to play sounds." % [p_event_name, p_bank_label])
+		push_warning("Resonate - The event [%s] on bank [%s] can't be played as the SoundManager has not loaded yet. Use the [loaded] signal/event to determine when it is ready to play sounds." % [p_event_name, p_bank_label])
 		return null
 		
 	var event = get_event(p_bank_label, p_event_name)
 	var player = get_player(p_attachment)
 	
 	if event.streams.size() == 0 or player == null:
-		push_error("AudioManager - The event [%s] on bank [%s] can't be played; no streams or players available." % [p_event_name, p_bank_label])
+		push_error("Resonate - The event [%s] on bank [%s] can't be played; no streams or players available." % [p_event_name, p_bank_label])
 		return null
 	
 	if is_vector_attachment(p_attachment):
@@ -194,14 +194,14 @@ func is_player_free(p_player) -> bool:
 
 func get_player_from_pool(p_pool: Array) -> Variant:
 	if p_pool.size() == 0:
-		push_error("AudioManager - Player pool has not been initialised. This can occur when calling a [play/instance*] function from [_ready].")
+		push_error("Resonate - Player pool has not been initialised. This can occur when calling a [play/instance*] function from [_ready].")
 		return null
 	
 	for player in p_pool:
 		if is_player_free(player):
 			return player
 	
-	push_warning("AudioManager - Player pool exhausted, consider increasing the pool size in the project settings (Audio/Manager/Pooling) or releasing unused audio stream players.")
+	push_warning("Resonate - Player pool exhausted, consider increasing the pool size in the project settings (Audio/Manager/Pooling) or releasing unused audio stream players.")
 	return null
 	
 

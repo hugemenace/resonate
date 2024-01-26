@@ -1,4 +1,4 @@
-# AudioManager
+# Resonate
 An audio management add-on for the Godot game engine.
 
 [![Static Badge](https://img.shields.io/badge/Godot-Asset_Library-red?style=for-the-badge&logo=godotengine&logoColor=white&color=%23558bbe)](https://godotengine.org/asset-library/asset)
