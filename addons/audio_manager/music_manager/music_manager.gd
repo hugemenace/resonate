@@ -8,6 +8,10 @@ var _music_streams: Array[StemmedMusicStreamPlayer] = []
 var _loaded: bool = false
 
 
+func _init():
+	process_mode = Node.PROCESS_MODE_ALWAYS
+
+
 func _ready() -> void:
 	auto_add_music()
 
@@ -29,15 +33,20 @@ func auto_add_music() -> void:
 	
 	for music_bank in music_banks:
 		for event in music_bank.tracks:
-			add_music(event.name, event.stems)
+			add_music(event.name, event.stems, music_bank.mode)
 
 
-func add_music(p_name: String, p_stems: Array[MusicStemResource]) -> void:
-	_music_table[p_name] = p_stems.map(func (stem: MusicStemResource): return {
+func add_music(p_name: String, p_stems: Array[MusicStemResource], p_mode: Node.ProcessMode) -> void:
+	var stems = p_stems.map(func (stem: MusicStemResource): return {
 		"name": stem.name,
 		"enabled": stem.enabled,
 		"stream": stem.stream,
 	})
+	
+	_music_table[p_name] = {
+		"mode": p_mode,
+		"stems": stems,
+	}
 
 
 func play(p_name: String, p_crossfade_time: float = 3.0) -> StemmedMusicStreamPlayer:
@@ -49,7 +58,8 @@ func play(p_name: String, p_crossfade_time: float = 3.0) -> StemmedMusicStreamPl
 		push_error("AudioManager - Tried to play an unknown music track: [%s]." % p_name)
 		return
 	
-	var stems = _music_table[p_name] as Array
+	var track = _music_table[p_name] as Dictionary
+	var stems = track["stems"] as Array
 	
 	if stems.size() == 0:
 		push_error("AudioManager - The music track [%s] has no stems, you'll need to add one at minimum." % p_name)
@@ -60,7 +70,7 @@ func play(p_name: String, p_crossfade_time: float = 3.0) -> StemmedMusicStreamPl
 			push_error("AudioManager - The stem [%s] on the music track [%s] does not have an audio stream, you'll need to add one." % [stem.name, p_name])
 			return
 	
-	var player = StemmedMusicStreamPlayer.create(p_name)
+	var player = StemmedMusicStreamPlayer.create(p_name, track.mode)
 	
 	if _music_streams.size() > 0:
 		for stream in _music_streams:

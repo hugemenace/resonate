@@ -2,10 +2,11 @@ class_name PoolEntity
 extends RefCounted
 
 
-static func configure(p_base, p_streams: Array, p_bus: String, p_poly: bool) -> bool:
+static func configure(p_base, p_streams: Array, p_bus: String, p_poly: bool, p_mode: Node.ProcessMode) -> bool:
 	p_base.streams = p_streams
 	p_base.poly = p_poly
 	p_base.bus = p_bus
+	p_base.process_mode = p_mode
 	
 	if not p_base.poly:
 		return false

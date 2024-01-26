@@ -13,6 +13,10 @@ var _event_table: Dictionary = {}
 var _loaded: bool = false
 
 
+func _init():
+	process_mode = Node.PROCESS_MODE_ALWAYS
+
+
 func _ready() -> void:
 	initialise_pool(ProjectSettings.get_setting(
 			AudioManagerPlugin.POOL_1D_SIZE_SETTING_NAME,
@@ -53,21 +57,32 @@ func auto_add_events() -> void:
 		sound_banks.append_array(node.find_children("*", "SoundBank"))
 	
 	for sound_bank in sound_banks:
-		add_bank(sound_bank.label)
+		add_bank(sound_bank.label, sound_bank.mode)
 		for event in sound_bank.events:
 			var bus = get_bus(sound_bank.bus, event.bus)
 			add_event(sound_bank.label, event.name, bus, event.streams)
 			
 
-func add_bank(p_bank_label: String) -> void:
-	_event_table[p_bank_label] = {}
+func add_bank(p_bank_label: String, p_mode: Node.ProcessMode) -> void:
+	_event_table[p_bank_label] = {
+		"mode": p_mode,
+		"events": {}
+	}
 
 
 func add_event(p_bank_label: String, p_event_name: String, p_bus: String, p_streams: Array[AudioStream]) -> void:
-	_event_table[p_bank_label][p_event_name] = {
+	_event_table[p_bank_label]["events"][p_event_name] = {
 		"bus": p_bus,
 		"streams": p_streams,
 	}
+
+
+func get_mode(p_bank_label: String) -> Node.ProcessMode:
+	if not _event_table.has(p_bank_label):
+		push_error("AudioManager - Tried to get the process mode from an unknown bank [%s]" % p_bank_label)
+		return PROCESS_MODE_INHERIT
+		
+	return _event_table[p_bank_label]["mode"] as Node.ProcessMode
 
 
 func get_event(p_bank_label: String, p_event_name: String) -> Dictionary:
@@ -77,14 +92,14 @@ func get_event(p_bank_label: String, p_event_name: String) -> Dictionary:
 	}
 		
 	if not _event_table.has(p_bank_label):
-		push_error("AudioManager - Tried to play the event [%s] from an unknown bank [%s]" % [p_event_name, p_bank_label])
+		push_error("AudioManager - Tried to get the event [%s] from an unknown bank [%s]" % [p_event_name, p_bank_label])
 		return empty_event
 		
-	if not _event_table[p_bank_label].has(p_event_name):
-		push_error("AudioManager - Tried to play an unknown event [%s] from the bank [%s]" % [p_event_name, p_bank_label])
+	if not _event_table[p_bank_label]["events"].has(p_event_name):
+		push_error("AudioManager - Tried to get an unknown event [%s] from the bank [%s]" % [p_event_name, p_bank_label])
 		return empty_event
 		
-	var event = _event_table[p_bank_label][p_event_name]
+	var event = _event_table[p_bank_label]["events"][p_event_name]
 	
 	if event.streams.size() == 0:
 		push_error("AudioManager - The event [%s] on bank [%s] has no playable streams, you'll need to add at least one." % [p_event_name, p_bank_label])
@@ -125,8 +140,9 @@ func instance_manual(p_bank_label: String, p_event_name: String, p_trigger: bool
 		player.reparent(p_attachment)
 		
 	var bus = p_bus if p_bus != "" else event.bus
+	var mode = get_mode(p_bank_label)
 	
-	player.configure(event.streams, bus, p_poly)
+	player.configure(event.streams, bus, p_poly, mode)
 	
 	if p_trigger:
 		player.trigger(p_trigger)

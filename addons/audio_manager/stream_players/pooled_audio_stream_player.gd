@@ -16,13 +16,15 @@ func _ready() -> void:
 
 static func create(p_type: SoundManager.pool_type) -> PooledAudioStreamPlayer:
 	var player = PooledAudioStreamPlayer.new()
+	
 	player.pool_type = p_type
+	player.process_mode = Node.PROCESS_MODE_ALWAYS
 	
 	return player
 
 
-func configure(p_streams: Array, p_bus: String, p_poly: bool) -> void:
-	var is_polyphonic = PoolEntity.configure(self, p_streams, p_bus, p_poly)
+func configure(p_streams: Array, p_bus: String, p_poly: bool, p_mode: Node.ProcessMode) -> void:
+	var is_polyphonic = PoolEntity.configure(self, p_streams, p_bus, p_poly, p_mode)
 	
 	if is_polyphonic:
 		super.play()
@@ -44,6 +46,7 @@ func trigger_varied(p_pitch: float = 1.0, p_volume: float = 0.0, p_auto_release:
 
 func release() -> void:
 	reserved = false
+	process_mode = Node.PROCESS_MODE_ALWAYS
 	released.emit()
 
 
