@@ -6,11 +6,12 @@ signal pool_updated(p_type: PoolType, p_size: int)
 
 enum PoolType {ONE_D, TWO_D, THREE_D}
 
+var has_loaded: bool = false
+
 var _1d_players: Array[PooledAudioStreamPlayer] = []
 var _2d_players: Array[PooledAudioStreamPlayer2D] = []
 var _3d_players: Array[PooledAudioStreamPlayer3D] = []
 var _event_table: Dictionary = {}
-var _loaded: bool = false
 
 
 func _init():
@@ -37,10 +38,10 @@ func _ready() -> void:
 	
 
 func _process(_p_delta) -> void:
-	if _loaded:
+	if has_loaded:
 		return
 		
-	_loaded = true
+	has_loaded = true
 	loaded.emit()
 
 
@@ -121,7 +122,7 @@ func get_bus(p_bank_bus: String, p_event_bus: String) -> String:
 
 
 func instance_manual(p_bank_label: String, p_event_name: String, p_trigger: bool = true, p_bus: String = "", p_poly: bool = false, p_attachment = null) -> Variant:
-	if not _loaded:
+	if not has_loaded:
 		push_warning("Resonate - The event [%s] on bank [%s] can't be played as the SoundManager has not loaded yet. Use the [loaded] signal/event to determine when it is ready to play sounds." % [p_event_name, p_bank_label])
 		return null
 		
