@@ -121,7 +121,7 @@ func get_bus(p_bank_bus: String, p_event_bus: String) -> String:
 		ResonatePlugin.SOUND_BANK_SETTING_DEFAULT)
 
 
-func instance_manual(p_bank_label: String, p_event_name: String, p_trigger: bool = true, p_bus: String = "", p_poly: bool = false, p_attachment = null) -> Variant:
+func instance_manual(p_bank_label: String, p_event_name: String, p_reserved: bool = false, p_bus: String = "", p_poly: bool = false, p_attachment = null) -> Variant:
 	if not has_loaded:
 		push_warning("Resonate - The event [%s] on bank [%s] can't be played as the SoundManager has not loaded yet. Use the [loaded] signal/event to determine when it is ready to play sounds." % [p_event_name, p_bank_label])
 		return null
@@ -143,10 +143,10 @@ func instance_manual(p_bank_label: String, p_event_name: String, p_trigger: bool
 	var bus = p_bus if p_bus != "" else event.bus
 	var mode = get_mode(p_bank_label)
 	
-	player.configure(event.streams, bus, p_poly, mode)
+	player.configure(event.streams, p_reserved, bus, p_poly, mode)
 	
-	if p_trigger:
-		player.trigger(p_trigger)
+	if not p_reserved:
+		player.trigger()
 		
 	pool_updated.emit(player.pool_type, get_pool_size(player.pool_type))
 	
@@ -154,39 +154,39 @@ func instance_manual(p_bank_label: String, p_event_name: String, p_trigger: bool
 
 
 func play(p_bank_label: String, p_event_name: String, p_bus: String = "") -> void:
-	instance_manual(p_bank_label, p_event_name, true, p_bus, false, null)
+	instance_manual(p_bank_label, p_event_name, false, p_bus, false, null)
 	
 
 func play_at_position(p_bank_label: String, p_event_name: String, p_position, p_bus: String = "") -> void:
-	instance_manual(p_bank_label, p_event_name, true, p_bus, false, p_position)
+	instance_manual(p_bank_label, p_event_name, false, p_bus, false, p_position)
 	
 
 func play_on_node(p_bank_label: String, p_event_name: String, p_node, p_bus: String = "") -> void:
-	instance_manual(p_bank_label, p_event_name, true, p_bus, false, p_node)
+	instance_manual(p_bank_label, p_event_name, false, p_bus, false, p_node)
 
 
 func instance(p_bank_label: String, p_event_name: String, p_bus: String = "") -> Variant:
-	return instance_manual(p_bank_label, p_event_name, false, p_bus, false, null)
+	return instance_manual(p_bank_label, p_event_name, true, p_bus, false, null)
 	
 
 func instance_at_position(p_bank_label: String, p_event_name: String, p_position, p_bus: String = "") -> Variant:
-	return instance_manual(p_bank_label, p_event_name, false, p_bus, false, p_position)
+	return instance_manual(p_bank_label, p_event_name, true, p_bus, false, p_position)
 	
 
 func instance_on_node(p_bank_label: String, p_event_name: String, p_node, p_bus: String = "") -> Variant:
-	return instance_manual(p_bank_label, p_event_name, false, p_bus, false, p_node)
+	return instance_manual(p_bank_label, p_event_name, true, p_bus, false, p_node)
 	
 	
 func instance_poly(p_bank_label: String, p_event_name: String, p_bus: String = "") -> Variant:
-	return instance_manual(p_bank_label, p_event_name, false, p_bus, true, null)
+	return instance_manual(p_bank_label, p_event_name, true, p_bus, true, null)
 	
 
 func instance_at_position_poly(p_bank_label: String, p_event_name: String, p_position, p_bus: String = "") -> Variant:
-	return instance_manual(p_bank_label, p_event_name, false, p_bus, true, p_position)
+	return instance_manual(p_bank_label, p_event_name, true, p_bus, true, p_position)
 	
 
 func instance_on_node_poly(p_bank_label: String, p_event_name: String, p_node, p_bus: String = "") -> Variant:
-	return instance_manual(p_bank_label, p_event_name, false, p_bus, true, p_node)
+	return instance_manual(p_bank_label, p_event_name, true, p_bus, true, p_node)
 
 
 func is_player_free(p_player) -> bool:

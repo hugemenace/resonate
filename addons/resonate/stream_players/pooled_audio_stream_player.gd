@@ -23,22 +23,22 @@ static func create(p_type: SoundManager.PoolType) -> PooledAudioStreamPlayer:
 	return player
 
 
-func configure(p_streams: Array, p_bus: String, p_poly: bool, p_mode: Node.ProcessMode) -> void:
-	var is_polyphonic = PoolEntity.configure(self, p_streams, p_bus, p_poly, p_mode)
+func configure(p_streams: Array, p_reserved: bool, p_bus: String, p_poly: bool, p_mode: Node.ProcessMode) -> void:
+	var is_polyphonic = PoolEntity.configure(self, p_streams, p_reserved, p_bus, p_poly, p_mode)
 	
 	if is_polyphonic:
 		super.play()
 	
 
-func trigger(p_auto_release: bool = false) -> void:
-	var should_play = PoolEntity.trigger(self, false, 1.0, 0.0, p_auto_release)
+func trigger() -> void:
+	var should_play = PoolEntity.trigger(self, false, 1.0, 0.0)
 	
 	if should_play:
 		super.play()
 		
 
-func trigger_varied(p_pitch: float = 1.0, p_volume: float = 0.0, p_auto_release: bool = false) -> void:
-	var should_play = PoolEntity.trigger(self, true, p_pitch, p_volume, p_auto_release)
+func trigger_varied(p_pitch: float = 1.0, p_volume: float = 0.0) -> void:
+	var should_play = PoolEntity.trigger(self, true, p_pitch, p_volume)
 	
 	if should_play:
 		super.play()
