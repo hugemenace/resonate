@@ -4,7 +4,7 @@
 
 The **SoundManager** is responsible for triggering sounds. It does so through **PooledAudioStreamPlayers** (PASPs), which extend Godot's native **AudioStreamPlayers** (ASPs). PASPs, like ASPs, support audio playback in 1D, 2D, and 3D space, making them useful for any game sound effect.
 
-![SoundManager](../images/sound-manager.png)
+![SoundManager](images/sound-manager.png)
 
 Sound events can be configured with multiple variations (audio streams) such that a variation is chosen at random when they are played. This is extremely useful when requiring organic-sounding events such as footsteps, gunshots, collisions, etc.
 
@@ -12,7 +12,7 @@ Sound events can be configured with multiple variations (audio streams) such tha
 
 The way you configure sound events and their variations is through the use of **SoundBanks**. Each SoundBank you create has a name and several associated events, among other configuration options.
 
-![SoundManager](../images/sound-banks.png)
+![SoundManager](images/sound-banks.png)
 
 **SoundBanks** are automatically discovered and loaded by the **SoundManager** when your game starts. This allows you to co-locate your **SoundBanks** with the entities or systems they belong to.
 
@@ -34,25 +34,25 @@ By default, every PASP, when told to trigger an event, will play the event once.
 
 Add a new **SoundBank** node into your scene.
 
-![SoundBankNode](../images/add-sound-bank-node.jpg)
+![SoundBankNode](images/add-sound-bank-node.jpg)
 
 #### Step 2
 
 Set the label for your new **SoundBank**. SoundBanks are flexible in that they allow you to group your sounds however you want. The label in this case is the group name. Example labels could be "player", "UI", "gunshots", etc. The name you provide here is what you will use when calling the play or instance functions from your script(s).
 
-![SoundBankNode](../images/set-soundbank-label.jpg)
+![SoundBankNode](images/set-soundbank-label.jpg)
 
 #### Step 3
 
 Create a new **SoundEventResource**. Each **SoundEventResource** is a single **event** in a **SoundBank**. The name you provide here is what you will use when calling the play or instance functions from your script(s).
 
-![SoundBankNode](../images/add-sound-event-resource.gif)
+![SoundBankNode](images/add-sound-event-resource.gif)
 
 #### Step 4
 
 Add as many streams (variations) to the event as you need. These variations, chosen at random, are played when you trigger the event from your script(s).
 
-![SoundBankNode](../images/add-sound-event-resource-streams.gif)
+![SoundBankNode](images/add-sound-event-resource-streams.gif)
 
 You are now ready to trigger the event from your script(s).
 
