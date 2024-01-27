@@ -2,9 +2,9 @@ extends Node
 
 
 signal loaded
-signal pool_updated(p_type: pool_type, p_size: int)
+signal pool_updated(p_type: PoolType, p_size: int)
 
-enum pool_type {ONE_D, TWO_D, THREE_D}
+enum PoolType {ONE_D, TWO_D, THREE_D}
 
 var _1d_players: Array[PooledAudioStreamPlayer] = []
 var _2d_players: Array[PooledAudioStreamPlayer2D] = []
@@ -244,29 +244,29 @@ func add_player_to_pool(p_player, p_pool) -> Variant:
 	return p_player
 
 
-func get_pool_size(p_type: pool_type) -> int:
-	if p_type == pool_type.ONE_D:
+func get_pool_size(p_type: PoolType) -> int:
+	if p_type == PoolType.ONE_D:
 		return _1d_players.filter(is_player_free).size()
 	
-	if p_type == pool_type.TWO_D:
+	if p_type == PoolType.TWO_D:
 		return _2d_players.filter(is_player_free).size()
 		
-	if p_type == pool_type.THREE_D:
+	if p_type == PoolType.THREE_D:
 		return _3d_players.filter(is_player_free).size()
 		
 	return 0
 
 
 func create_player_1d() -> PooledAudioStreamPlayer:
-	return add_player_to_pool(PooledAudioStreamPlayer.create(pool_type.ONE_D), _1d_players)
+	return add_player_to_pool(PooledAudioStreamPlayer.create(PoolType.ONE_D), _1d_players)
 	
 
 func create_player_2d() -> PooledAudioStreamPlayer2D:
-	return add_player_to_pool(PooledAudioStreamPlayer2D.create(pool_type.TWO_D), _2d_players)
+	return add_player_to_pool(PooledAudioStreamPlayer2D.create(PoolType.TWO_D), _2d_players)
 	
 	
 func create_player_3d() -> PooledAudioStreamPlayer3D:
-	return add_player_to_pool(PooledAudioStreamPlayer3D.create(pool_type.THREE_D), _3d_players)
+	return add_player_to_pool(PooledAudioStreamPlayer3D.create(PoolType.THREE_D), _3d_players)
 	
 
 func on_player_released(p_player: Node) -> void:
