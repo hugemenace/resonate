@@ -1,20 +1,18 @@
-[gd_scene load_steps=12 format=3 uid="uid://coebcgearnost"]
+[gd_scene load_steps=10 format=3 uid="uid://coebcgearnost"]
 
 [ext_resource type="Script" path="res://examples/2d/2d.gd" id="1_3xxt8"]
 [ext_resource type="Script" path="res://addons/resonate/sound_manager/sound_bank.gd" id="2_8j415"]
 [ext_resource type="Script" path="res://addons/resonate/sound_manager/sound_event_resource.gd" id="3_cnd76"]
-[ext_resource type="AudioStream" uid="uid://de550fklyhu88" path="res://audio/sounds/note_c5.wav" id="4_8qh3e"]
-[ext_resource type="AudioStream" uid="uid://b35ao3bdtstka" path="res://audio/sounds/note_e5.wav" id="5_l537r"]
-[ext_resource type="AudioStream" uid="uid://bmg3dvylup5k" path="res://audio/sounds/note_g5.wav" id="6_ue615"]
+[ext_resource type="AudioStream" uid="uid://bcv4ev20vqxx2" path="res://audio/music_stems/house_drums_stem.mp3" id="4_q31s7"]
 [ext_resource type="LabelSettings" uid="uid://tysg4xge4hsu" path="res://shared/title_label_settings.tres" id="7_wknu3"]
 [ext_resource type="LabelSettings" uid="uid://bldprl7vev3uv" path="res://shared/description_label_settings.tres" id="8_h0mrm"]
 [ext_resource type="Script" path="res://examples/2d/moving_target.gd" id="9_kf013"]
 
 [sub_resource type="Resource" id="Resource_5hea7"]
 script = ExtResource("3_cnd76")
-name = "note"
+name = "drums"
 bus = ""
-streams = Array[AudioStream]([ExtResource("4_8qh3e"), ExtResource("5_l537r"), ExtResource("6_ue615")])
+streams = Array[AudioStream]([ExtResource("4_q31s7")])
 
 [sub_resource type="BoxMesh" id="BoxMesh_rk1yn"]
 size = Vector3(100, 100, 100)
@@ -51,10 +49,6 @@ position = Vector2(-100, 600)
 scale = Vector2(1.117, 1)
 mesh = SubResource("BoxMesh_rk1yn")
 script = ExtResource("9_kf013")
-
-[node name="NoteInterval" type="Timer" parent="."]
-wait_time = 0.25
-autostart = true
 
 [node name="AudioListener2D" type="AudioListener2D" parent="."]
 position = Vector2(600, 400)

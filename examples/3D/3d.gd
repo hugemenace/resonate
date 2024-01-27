@@ -9,8 +9,6 @@ extends Node3D
 
 @onready var moving_target = $Pivot/MovingTarget
 
-var _sound_ready: bool = false
-
 
 func _ready() -> void:
 	# As the SoundManager requires some time to set things up behind the scenes,
@@ -20,8 +18,6 @@ func _ready() -> void:
 	
 
 func on_sound_manager_loaded() -> void:
-	_sound_ready = true
-	
 	# The SoundManager's play_on_node and instance_on_node functions are designed
 	# so that you can pass them any Node2D or Node3D class (or child thereof)
 	# and they'll automatically detect whether the player should be spawned
