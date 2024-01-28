@@ -6,11 +6,11 @@ The **SoundManager** is responsible for triggering sounds. It does so through **
 
 ![SoundManager](images/sound-manager.png)
 
-Sound events can be configured with multiple variations (audio streams) such that a variation is chosen at random when they are played. This is extremely useful when requiring organic-sounding events such as footsteps, gunshots, collisions, etc.
+Sound events can be configured with multiple variations (audio streams) which are chosen at random when played. This can help create organic-sounding events such as footsteps, gunshots, collisions, etc.
 
 ### SoundBanks
 
-The way you configure sound events and their variations is through the use of **SoundBanks**. Each SoundBank you create has a name and several associated events, among other configuration options.
+The way you configure sound events and their variations is through the use of **SoundBanks**. Each **SoundBank** you create has a name and several associated events, among other configuration options.
 
 ![SoundManager](images/sound-banks.png)
 
@@ -32,13 +32,13 @@ By default, every PASP, when told to trigger an event, will play the event once.
 
 #### Step 1
 
-Add a new **SoundBank** node into your scene.
+Add a new **SoundBank** node to your scene.
 
 ![SoundBankNode](images/add-sound-bank-node.jpg)
 
 #### Step 2
 
-Set the label for your new **SoundBank**. SoundBanks are flexible in that they allow you to group your sounds however you want. The label in this case is the group name. Example labels could be "player", "UI", "gunshots", etc. The name you provide here is what you will use when calling the play or instance functions from your script(s).
+Set the label for your new **SoundBank**. **SoundBanks** are flexible in that they allow you to group your sounds however you want. The label in this case is the group name. Example labels could be "player", "UI", "gunshots", etc. The name you provide here is what you will use when calling the play or instance functions from your script(s).
 
 ![SoundBankNode](images/set-soundbank-label.jpg)
 
