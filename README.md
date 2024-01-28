@@ -22,8 +22,6 @@ The **SoundManager** automatically pools and orchestrates **AudioStreamPlayers**
 
 The **MusicManager** composes music tracks built from ***stems*** and supports the (cross)fading of tracks or stems out of the box.
 
-Resonate is the solution for when you need more than just the basics, but don't need a sophisticated or complicated audio system such as FMOD or Wwise.
-
 ## Docs
 
 - [SoundManager documentation](docs/sound-manager.md)
