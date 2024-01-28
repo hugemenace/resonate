@@ -1,6 +1,8 @@
-<img src='resonate-logo.png' width='128'>
+<img src='reasonate-github-header.jpg' width='100%'>
 
-# Resonate
+---
+
+# ***Resonate***
 
 An all-in-one sound and music management addon for the Godot game engine.
 
@@ -21,32 +23,36 @@ This addon is free for personal & commercial use (under the [MIT license](LICENS
 - Stemmed music tracks.
 - Music crossfading.
 
-## Overview
+## TL;DR
 
-Resonate has two core systems: the SoundManager and the MusicManager. Both of these systems are enabled by using Sound and Music banks present throughout your scene(s).
+Resonate has two core systems: the **SoundManager** and the **MusicManager**.
 
-The SoundManager automatically pools and orchestrates AudioStream players for you and gives you control over the players when needed. 
+The **SoundManager** automatically pools and orchestrates **AudioStreamPlayers** for you and gives you control over the players when needed. 
 
-The MusicManager composes music tracks built from stems and supports the (cross)fading of tracks or stems out of the box.
+The **MusicManager** composes music tracks built from ***stems*** and supports the (cross)fading of tracks or stems out of the box.
 
-Resonate is the solution when you need more than just the basics but don't need more sophisticated or complicated audio systems such as FMOD or Wwise.
+Resonate is the solution for when you need more than just the basics, but don't need a sophisticated or complicated audio system such as FMOD or Wwise.
 
 ## Docs
 
-- You can view a full breakdown, API reference, and walkthrough of the [SoundManager documentation here](docs/sound-manager.md).
-- You can view a full breakdown, API reference, and walkthrough of the [MusicManager documentation here.](docs/music-manager.md)
+- [SoundManager documentation](docs/sound-manager.md)
+- [MusicManager documentation](docs/music-manager.md)
 
 ## Examples
 
-This repo is a Godot project you can clone and run locally. Inside of the `examples/` folder is a scene demonstrating the various features of the Sound and Music managers.
+This repo is a Godot project you can clone and run.
+
+Inside of the `examples/` folder are scenes demonstrating all the Sound and Music manager's features.
 
 ## Getting the addon
 
-- You can download this addon from within the Godot editor by searching for it on the Asset Library. 
-- You can grab the latest version from the Github releases page.
-- You can also clone/download this repo and extract the `resonate` directory out of the `addons` folder.
-- You can grab the addon from Gumroad.
+You have a few different options:
+
+- You can download Resonate from the Godot Asset Library (or from within the editor). 
+- You can grab the latest version from the [Github releases page](https://github.com/hugemenace/resonate/releases).
+- You can also clone or download this repo, then extract the `addons/resonate` directory into the root folder of your Godot project.
+- You can grab the addon from [Gumroad](https://hugemenace.gumroad.com/l/resonate-godot-addon) (if you'd like to financially support this project).
 
 ## License
 
-This project is provided free for personal and commercial use under the [MIT license.](LICENSE)
+This project is provided ***free for personal and commercial use*** under the [MIT license](LICENSE) ❤
