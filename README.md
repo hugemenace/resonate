@@ -4,7 +4,7 @@
 
 An all-in-one sound and music management addon for the Godot game engine.
 
-[![Static Badge](https://img.shields.io/badge/Godot-Asset_Library-red?style=for-the-badge&logo=godotengine&logoColor=white&color=%23558bbe)](https://godotengine.org/asset-library/asset)
+[![Static Badge](https://img.shields.io/badge/Godot-Asset_Library-red?style=for-the-badge&logo=godotengine&logoColor=white&color=%23558bbe)](https://godotengine.org/asset-library/asset/2546)
 [![Discord](https://img.shields.io/discord/796535676136718356?style=for-the-badge&logo=discord&logoColor=white&label=Discord&color=%235865F2)](https://hugemenace.co/discord)
 
 ## Features
@@ -37,7 +37,7 @@ Inside of the `examples/` folder are scenes demonstrating all the Sound and Musi
 
 You have a few different options:
 
-- You can download Resonate from the Godot Asset Library (or from within the editor). 
+- You can download Resonate from the [Godot Asset Library](https://godotengine.org/asset-library/asset/2546) (or from within the editor). 
 - You can grab the latest version from the [Github releases page](https://github.com/hugemenace/resonate/releases).
 - You can also clone or download this repo, then extract the `addons/resonate` directory into the root folder of your Godot project.
 - You can grab the addon from [Gumroad](https://hugemenace.gumroad.com/l/resonate-godot-addon) (if you'd like to financially support this project).
