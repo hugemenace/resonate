@@ -15,12 +15,7 @@ func _ready() -> void:
 	
 
 static func create(p_type: SoundManager.PoolType) -> PooledAudioStreamPlayer3D:
-	var player = PooledAudioStreamPlayer3D.new()
-	
-	player.pool_type = p_type
-	player.process_mode = Node.PROCESS_MODE_ALWAYS
-	
-	return player
+	return PoolEntity.create(PooledAudioStreamPlayer3D.new(), p_type)
 
 
 func configure(p_streams: Array, p_reserved: bool, p_bus: String, p_poly: bool, p_mode: Node.ProcessMode) -> void:
@@ -45,13 +40,8 @@ func trigger_varied(p_pitch: float = 1.0, p_volume: float = 0.0) -> void:
 
 
 func release() -> void:
-	reserved = false
-	process_mode = Node.PROCESS_MODE_ALWAYS
-	released.emit()
+	PoolEntity.release(self)
 
 
 func on_finished() -> void:
-	if reserved:
-		return
-		
-	release()
+	PoolEntity.finished(self)
