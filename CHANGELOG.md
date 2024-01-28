@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.1](https://github.com/hugemenace/resonate/compare/v1.0.0...v1.0.1) (2024-01-28)
+
+
+### Bug Fixes
+
+* ensure the release zip includes the addons directory ([fc543d3](https://github.com/hugemenace/resonate/commit/fc543d33fde886c467fe071ee48e23371deda408))
+
 ## [1.0.0](https://github.com/hugemenace/resonate/compare/v0.1.0...v1.0.0) (2024-01-28)
 
 
