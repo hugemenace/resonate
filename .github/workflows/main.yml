@@ -24,9 +24,9 @@ jobs:
         with:
           type: 'zip'
           filename: 'resonate-${{ steps.release.outputs.tag_name }}.zip'
-          directory: 'addons'
+          path: 'addons'
       - name: Publish Release
         if: ${{ steps.release.outputs.release_created }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh release upload ${{ steps.release.outputs.tag_name }} addons/resonate-${{ steps.release.outputs.tag_name }}.zip
+        run: gh release upload ${{ steps.release.outputs.tag_name }} resonate-${{ steps.release.outputs.tag_name }}.zip
