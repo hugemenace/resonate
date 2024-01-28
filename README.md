@@ -1,20 +1,11 @@
 <img src='reasonate-github-header.jpg' width='100%'>
 
----
-
 # ***Resonate***
 
 An all-in-one sound and music management addon for the Godot game engine.
 
 [![Static Badge](https://img.shields.io/badge/Godot-Asset_Library-red?style=for-the-badge&logo=godotengine&logoColor=white&color=%23558bbe)](https://godotengine.org/asset-library/asset)
 [![Discord](https://img.shields.io/discord/796535676136718356?style=for-the-badge&logo=discord&logoColor=white&label=Discord&color=%235865F2)](https://hugemenace.co/discord)
-
-## Supporting this project
-This addon is free for personal & commercial use (under the [MIT license](LICENSE)). However, if you'd like to support this project financially, consider becoming a HugeMenace Patreon or purchasing this addon from Gumroad, where you can pay what you want 🌿
-
-[![Static Badge](https://img.shields.io/badge/Patreon-Support_this_project-red?style=for-the-badge&logo=patreon&logoColor=white&color=%23f3621d)](https://www.patreon.com/hugemenace)
-[![Static Badge](https://img.shields.io/badge/Gumroad-Support_this_project-pink?style=for-the-badge&logo=gumroad&logoColor=white&color=%23f795e8)
-](https://hugemenace.gumroad.com/l/resonate-godot-addon)
 
 ## Features
 - Pooled audio stream players.
@@ -52,6 +43,13 @@ You have a few different options:
 - You can grab the latest version from the [Github releases page](https://github.com/hugemenace/resonate/releases).
 - You can also clone or download this repo, then extract the `addons/resonate` directory into the root folder of your Godot project.
 - You can grab the addon from [Gumroad](https://hugemenace.gumroad.com/l/resonate-godot-addon) (if you'd like to financially support this project).
+
+## Supporting this project
+This addon is free for personal & commercial use (under the [MIT license](LICENSE)). However, if you'd like to support this project financially, consider becoming a HugeMenace Patreon or purchasing this addon from Gumroad, where you can pay what you want 🌿
+
+[![Static Badge](https://img.shields.io/badge/Patreon-Support_this_project-red?style=for-the-badge&logo=patreon&logoColor=white&color=%23f3621d)](https://www.patreon.com/hugemenace)
+[![Static Badge](https://img.shields.io/badge/Gumroad-Support_this_project-pink?style=for-the-badge&logo=gumroad&logoColor=white&color=%23f795e8)
+](https://hugemenace.gumroad.com/l/resonate-godot-addon)
 
 ## License
 
