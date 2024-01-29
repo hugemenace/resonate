@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.0.2](https://github.com/hugemenace/resonate/compare/v1.0.1...v1.0.2) (2024-01-29)
+
+
+### Bug Fixes
+
+* remove the extraneous pool_updated signal and PoolType enum from the SoundManager ([2066868](https://github.com/hugemenace/resonate/commit/2066868ff96f831d83624761addefd88af7e92b8))
+* remove the SoundManager type references from the pooled audio stream players to avoid errors when the addon is disabled ([c3e3cd9](https://github.com/hugemenace/resonate/commit/c3e3cd91a3098d59eb2e24dd225a9e8121f94d02))
+
 ## [1.0.1](https://github.com/hugemenace/resonate/compare/v1.0.0...v1.0.1) (2024-01-28)
 
 
