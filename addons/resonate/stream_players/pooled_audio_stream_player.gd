@@ -4,7 +4,7 @@ extends AudioStreamPlayer
 
 signal released
 
-var pool_type: SoundManager.PoolType
+var pool_type
 var reserved: bool
 var poly: bool
 var streams: Array
@@ -14,7 +14,7 @@ func _ready() -> void:
 	finished.connect(on_finished)
 
 
-static func create(p_type: SoundManager.PoolType) -> PooledAudioStreamPlayer:
+static func create(p_type) -> PooledAudioStreamPlayer:
 	return PoolEntity.create(PooledAudioStreamPlayer.new(), p_type)
 
 

@@ -2,7 +2,7 @@ class_name PoolEntity
 extends RefCounted
 
 
-static func create(p_base, p_type: SoundManager.PoolType) -> Variant:
+static func create(p_base, p_type) -> Variant:
 	p_base.pool_type = p_type
 	p_base.process_mode = Node.PROCESS_MODE_ALWAYS
 	
