@@ -35,6 +35,12 @@ window/size/viewport_height=800
 
 enabled=PackedStringArray("res://addons/resonate/plugin.cfg")
 
+[file_customization]
+
+folder_colors={
+"res://addons/resonate/": "orange"
+}
+
 [input]
 
 one={
