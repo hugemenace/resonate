@@ -29,9 +29,9 @@ func _input(p_event: InputEvent) -> void:
 		_instance.trigger()
 		
 	if p_event.is_action_pressed("two"):
-		# To play a reserved event, call the trigger function on the event instance,
-		# which in this case is a PooledAudioStreamPlayer. Calling the base play() 
-		# function will not work as expected, so trigger() must be called instead.
+		# To play a reserved event with varied pitch and/or volume, there is a 
+		# extended version of trigger called trigger_varied. As varying the 
+		# pitch is typically more common, that is the first parameter.
 		_instance.trigger_varied(randf_range(0.9, 1.2), randf_range(-2.0, 0.0))
 
 
