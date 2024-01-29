@@ -14,8 +14,8 @@ func _ready() -> void:
 	finished.connect(on_finished)
 	
 
-static func create(p_type) -> PooledAudioStreamPlayer3D:
-	return PoolEntity.create(PooledAudioStreamPlayer3D.new(), p_type)
+static func create() -> PooledAudioStreamPlayer3D:
+	return PoolEntity.create(PooledAudioStreamPlayer3D.new())
 
 
 func configure(p_streams: Array, p_reserved: bool, p_bus: String, p_poly: bool, p_mode: Node.ProcessMode) -> void:

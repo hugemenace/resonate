@@ -2,8 +2,7 @@ class_name PoolEntity
 extends RefCounted
 
 
-static func create(p_base, p_type) -> Variant:
-	p_base.pool_type = p_type
+static func create(p_base) -> Variant:
 	p_base.process_mode = Node.PROCESS_MODE_ALWAYS
 	
 	return p_base

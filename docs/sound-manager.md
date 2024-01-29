@@ -233,14 +233,3 @@ Will return a reserved polyphonic `PooledAudioStreamPlayer2D` or `PooledAudioStr
 Emitted when the SoundManager has loaded and is ready to play sounds.
 
 `signal loaded`
-
-#### Pool Updated
-
-Emitted every time one of the 1D, 2D, or 3D pools has been updated.
-
-`signal pool_updated(p_type: pool_type, p_size: int)`
-
-| Parameter | Description |
-| --- | --- |
-| `p_type` | One of the types included in the `PoolType` enum (`ONE_D`, `TWO_D`, `THREE_D`) |
-| `p_size` | The updated size of the pool (how many players are free for use.) |
