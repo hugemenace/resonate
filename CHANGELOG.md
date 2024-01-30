@@ -1,5 +1,25 @@
 # Changelog
 
+## [2.0.0](https://github.com/hugemenace/resonate/compare/v1.0.2...v2.0.0) (2024-01-30)
+
+
+### ⚠ BREAKING CHANGES
+
+* rename MusicResource to MusicTrackResource
+
+### Features
+
+* add a bus override option to MusicBanks and MusicTrackResources ([61ede7e](https://github.com/hugemenace/resonate/commit/61ede7ec1574f22fc84779427282b802a9523682))
+* add global MusicManager and individual stem volume management ([02696cd](https://github.com/hugemenace/resonate/commit/02696cdade253a2d5374f73229f24624c59f0e0b))
+* add labels to MusicBanks to allow the grouping/scoping of music tracks ([1192122](https://github.com/hugemenace/resonate/commit/1192122e5d5673184d3a820238154824cbe0c093))
+* expose the MusicManager's loaded status via a has_loaded public variable ([4145ac0](https://github.com/hugemenace/resonate/commit/4145ac0cb7dc8b5767de0d9a9628c79991bf119c))
+
+
+### Bug Fixes
+
+* rename MusicResource to MusicTrackResource ([8ba7355](https://github.com/hugemenace/resonate/commit/8ba73556b28ef5b830e75c53d2b50c6dd9f3697e))
+* update the build script to include a top-level name & version directory in the release .zip and also bundle-in a copy of the documentation ([8db1ae4](https://github.com/hugemenace/resonate/commit/8db1ae4fc04f11364cc556aff095dfe92a3e5431))
+
 ## [1.0.2](https://github.com/hugemenace/resonate/compare/v1.0.1...v1.0.2) (2024-01-29)
 
 
