@@ -39,9 +39,8 @@ offset_left = 100.0
 offset_top = 125.0
 offset_right = 824.0
 offset_bottom = 185.0
-text = "This example uses the \"note\" sound event.
-It is being triggered on the square below, causing the sound to move along with it in 2D space.
-Each time an event is triggered, one of its variations will be chosen at random."
+text = "This example uses the \"drums\" sound event (see the SoundBank.)
+It has been attached to the square below, causing the sound to move along with it in 2D space."
 label_settings = ExtResource("8_h0mrm")
 
 [node name="MovingTarget" type="MeshInstance2D" parent="."]

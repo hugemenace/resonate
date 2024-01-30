@@ -90,7 +90,7 @@ offset_left = 100.0
 offset_top = 125.0
 offset_right = 824.0
 offset_bottom = 185.0
-text = "This example automatically plays the \"exploration\" music track.
+text = "This example automatically plays the \"exploration\" music track (see MusicBank.)
 Hold down \"1\" on your keyboard to enable the \"melody\" stem.
 Hold down \"2\" on your keyboard to enable the \"drums\" stem.
 Press \"3\" on your keyboard to start the next track.

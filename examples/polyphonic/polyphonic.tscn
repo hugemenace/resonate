@@ -35,8 +35,7 @@ offset_left = 100.0
 offset_top = 125.0
 offset_right = 824.0
 offset_bottom = 185.0
-text = "This example uses the \"note\" sound event.
-Press \"1\" on your keyboard to trigger (play) the event.
-Press \"2\" on you keyboard to trigger the event with slight pitch and volume changes.
-Each time an event is triggered, one of its variations will be chosen at random."
+text = "This example uses the \"blaster\" sound event (see SoundBank.)
+Press \"1\" on your keyboard to trigger the event.
+Press \"2\" on you keyboard to trigger the event with slight pitch and volume variations."
 label_settings = ExtResource("8_qupom")
