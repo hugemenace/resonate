@@ -35,6 +35,7 @@ stream = ExtResource("7_57fs0")
 [sub_resource type="Resource" id="Resource_1ncxf"]
 script = ExtResource("3_o75hm")
 name = "track_a"
+bus = ""
 stems = Array[ExtResource("4_ksop8")]([SubResource("Resource_ognhn"), SubResource("Resource_4apoh"), SubResource("Resource_x14g1")])
 
 [sub_resource type="Resource" id="Resource_ee683"]
@@ -58,6 +59,7 @@ stream = ExtResource("10_13th8")
 [sub_resource type="Resource" id="Resource_pmaoq"]
 script = ExtResource("3_o75hm")
 name = "track_b"
+bus = ""
 stems = Array[ExtResource("4_ksop8")]([SubResource("Resource_ee683"), SubResource("Resource_64pmf"), SubResource("Resource_slh24")])
 
 [node name="Music" type="Node2D"]

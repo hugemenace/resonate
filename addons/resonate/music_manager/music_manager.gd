@@ -33,10 +33,10 @@ func auto_add_music() -> void:
 	
 	for music_bank in music_banks:
 		for track in music_bank.tracks:
-			add_music(track.name, track.stems, music_bank.mode)
+			add_music(track.name, track.stems, music_bank.bus, track.bus, music_bank.mode)
+			
 
-
-func add_music(p_name: String, p_stems: Array[MusicStemResource], p_mode: Node.ProcessMode) -> void:
+func add_music(p_name: String, p_stems: Array[MusicStemResource], p_bank_bus: String, p_track_bus: String, p_mode: Node.ProcessMode) -> void:
 	var stems = p_stems.map(func (stem: MusicStemResource): return {
 		"name": stem.name,
 		"enabled": stem.enabled,
@@ -44,9 +44,22 @@ func add_music(p_name: String, p_stems: Array[MusicStemResource], p_mode: Node.P
 	})
 	
 	_music_table[p_name] = {
+		"bus": get_bus(p_bank_bus, p_track_bus),
 		"mode": p_mode,
 		"stems": stems,
 	}
+
+
+func get_bus(p_bank_bus: String, p_track_bus: String) -> String:
+	if p_track_bus != null and p_track_bus != "":
+		return p_track_bus
+	
+	if p_bank_bus != null and p_bank_bus != "":
+		return p_bank_bus
+		
+	return ProjectSettings.get_setting(
+		ResonatePlugin.MUSIC_BANK_SETTING_NAME,
+		ResonatePlugin.MUSIC_BANK_SETTING_DEFAULT)
 
 
 func play(p_name: String, p_crossfade_time: float = 3.0) -> StemmedMusicStreamPlayer:
@@ -69,8 +82,8 @@ func play(p_name: String, p_crossfade_time: float = 3.0) -> StemmedMusicStreamPl
 		if stem.stream == null:
 			push_error("Resonate - The stem [%s] on the music track [%s] does not have an audio stream, you'll need to add one." % [stem.name, p_name])
 			return
-	
-	var player = StemmedMusicStreamPlayer.create(p_name, track.mode)
+			
+	var player = StemmedMusicStreamPlayer.create(p_name, track.bus, track.mode)
 	
 	if _music_streams.size() > 0:
 		for stream in _music_streams:

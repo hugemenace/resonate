@@ -13,17 +13,14 @@ const _STOP_EASE: Tween.EaseType = Tween.EASE_IN
 var _stems: Dictionary
 var _name: String
 
-static func create(p_name: String, p_mode: Node.ProcessMode) -> StemmedMusicStreamPlayer:
+static func create(p_name: String, p_bus: String, p_mode: Node.ProcessMode) -> StemmedMusicStreamPlayer:
 	var player = StemmedMusicStreamPlayer.new()
 	var stream = AudioStreamPolyphonic.new()
 	
 	player._name = p_name
 	player.stream = stream
 	player.process_mode = p_mode
-	player.bus = ProjectSettings.get_setting(
-		ResonatePlugin.MUSIC_BANK_SETTING_NAME,
-		ResonatePlugin.MUSIC_BANK_SETTING_DEFAULT)
-	
+	player.bus = p_bus
 	player.volume_db = _DISABLED_VOLUME
 	
 	return player
