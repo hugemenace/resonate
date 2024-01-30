@@ -3,4 +3,4 @@ extends Node
 
 
 @export var mode: Node.ProcessMode
-@export var tracks: Array[MusicResource]
+@export var tracks: Array[MusicTrackResource]

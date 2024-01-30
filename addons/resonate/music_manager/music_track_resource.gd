@@ -1,4 +1,4 @@
-class_name MusicResource
+class_name MusicTrackResource
 extends Resource
 
 
