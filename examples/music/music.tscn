@@ -67,6 +67,7 @@ script = ExtResource("1_b17ub")
 
 [node name="MusicBank" type="Node" parent="."]
 script = ExtResource("2_cql1n")
+label = "instrumental"
 tracks = Array[ExtResource("3_o75hm")]([SubResource("Resource_1ncxf"), SubResource("Resource_pmaoq")])
 
 [node name="Title" type="Label" parent="."]

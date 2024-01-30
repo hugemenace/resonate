@@ -23,7 +23,7 @@ func _input(p_event: InputEvent) -> void:
 	if p_event.is_action_pressed("one"):
 		# Enabling a stem is technically unmuting it. Therefore, don't expect
 		# the stem to begin playback at the start of its stream. Stems will
-		# unmute immediately and should be already synced with the track.
+		# unmute immediately and fade in over the duration (or default) set.
 		MusicManager.enable_stem("melody")
 		
 	if p_event.is_action_released("one"):
@@ -39,7 +39,7 @@ func _input(p_event: InputEvent) -> void:
 		MusicManager.disable_stem("drums")
 		
 	if p_event.is_action_pressed("three"):
-		MusicManager.play(_TRACKS[_track_number])
+		MusicManager.play("instrumental", _TRACKS[_track_number])
 		# Loop back around to the start if we've hit the end of the track list.
 		_track_number = _track_number + 1 if (_track_number + 1) < _TRACKS.size() else 0
 				
@@ -69,8 +69,7 @@ func _process(_p_delta):
 
 
 func on_music_manager_loaded() -> void:
-	# Calling play on the MusicManager with the name of a track will immediately
-	# begin playing all associated stems that have been marked as "enabled".
-	# All music is automatically played through the bus configured in the
-	# project settings (Audio/Manager/Music/Bank), otherwise "Master".
-	MusicManager.play(_TRACKS[0])
+	# Calling play on the music manager with the name of a music bank and a track
+	# will immediately begin playing the track. All stems on the track marked as
+	# enabled will be audible. Playback will fade in over the default duration.
+	MusicManager.play("instrumental", _TRACKS[0])

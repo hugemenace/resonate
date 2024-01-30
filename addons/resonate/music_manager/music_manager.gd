@@ -32,22 +32,42 @@ func auto_add_music() -> void:
 		music_banks.append_array(node.find_children("*", "MusicBank"))
 	
 	for music_bank in music_banks:
-		for track in music_bank.tracks:
-			add_music(track.name, track.stems, music_bank.bus, track.bus, music_bank.mode)
-			
+		add_bank(music_bank)
 
-func add_music(p_name: String, p_stems: Array[MusicStemResource], p_bank_bus: String, p_track_bus: String, p_mode: Node.ProcessMode) -> void:
-	var stems = p_stems.map(func (stem: MusicStemResource): return {
-		"name": stem.name,
-		"enabled": stem.enabled,
-		"stream": stem.stream,
-	})
-	
-	_music_table[p_name] = {
-		"bus": get_bus(p_bank_bus, p_track_bus),
-		"mode": p_mode,
-		"stems": stems,
+
+func add_bank(p_bank: MusicBank) -> void:
+	_music_table[p_bank.label] = {
+		"name": p_bank.label,
+		"bus": p_bank.bus,
+		"mode": p_bank.mode,
+		"tracks": create_tracks(p_bank.tracks)
 	}
+
+
+func create_tracks(p_tracks: Array[MusicTrackResource]) -> Dictionary:
+	var tracks = {}
+	
+	for track in p_tracks:
+		tracks[track.name] = {
+			"name": track.name,
+			"bus": track.bus,
+			"stems": create_stems(track.stems),
+		}
+
+	return tracks
+
+
+func create_stems(p_stems: Array[MusicStemResource]) -> Array:
+	var stems = []
+	
+	for stem in p_stems:
+		stems.append({
+			"name": stem.name,
+			"enabled": stem.enabled,
+			"stream": stem.stream,
+		})
+		
+	return stems
 
 
 func get_bus(p_bank_bus: String, p_track_bus: String) -> String:
@@ -62,28 +82,34 @@ func get_bus(p_bank_bus: String, p_track_bus: String) -> String:
 		ResonatePlugin.MUSIC_BANK_SETTING_DEFAULT)
 
 
-func play(p_name: String, p_crossfade_time: float = 3.0) -> StemmedMusicStreamPlayer:
+func play(p_bank_label: String, p_track_name: String, p_crossfade_time: float = 3.0) -> StemmedMusicStreamPlayer:
 	if not _loaded:
-		push_warning("Resonate - The music track [%s] can't be played as the MusicManager has not loaded yet. Use the [loaded] signal/event to determine when it is ready to play music." % p_name)
+		push_warning("Resonate - The music track [%s] on bank [%s] can't be played as the MusicManager has not loaded yet. Use the [loaded] signal/event to determine when it is ready to play music." % [p_track_name, p_bank_label])
 		return null
 		
-	if not _music_table.has(p_name):
-		push_error("Resonate - Tried to play an unknown music track: [%s]." % p_name)
-		return
+	if not _music_table.has(p_bank_label):
+		push_error("Resonate - Tried to play the music track [%s] from an unknown bank [%s]." % [p_track_name, p_bank_label])
+		return null
+		
+	if not _music_table[p_bank_label]["tracks"].has(p_track_name):
+		push_error("Resonate - Tried to play an unknown music track [%s] from the bank [%s]." % [p_track_name, p_bank_label])
+		return null
 	
-	var track = _music_table[p_name] as Dictionary
+	var bank = _music_table[p_bank_label] as Dictionary
+	var track = bank["tracks"][p_track_name] as Dictionary
 	var stems = track["stems"] as Array
 	
 	if stems.size() == 0:
-		push_error("Resonate - The music track [%s] has no stems, you'll need to add one at minimum." % p_name)
+		push_error("Resonate - The music track [%s] on bank [%s] has no stems, you'll need to add one at minimum." % [p_track_name, p_bank_label])
 		return
 		
 	for stem in stems:
 		if stem.stream == null:
-			push_error("Resonate - The stem [%s] on the music track [%s] does not have an audio stream, you'll need to add one." % [stem.name, p_name])
+			push_error("Resonate - The stem [%s] on the music track [%s] on bank [%s] does not have an audio stream, you'll need to add one." % [stem.name, p_track_name, p_bank_label])
 			return
-			
-	var player = StemmedMusicStreamPlayer.create(p_name, track.bus, track.mode)
+	
+	var bus = get_bus(bank.bus, track.bus)
+	var player = StemmedMusicStreamPlayer.create(p_track_name, bus, bank.mode)
 	
 	if _music_streams.size() > 0:
 		for stream in _music_streams:
