@@ -32,8 +32,8 @@ func auto_add_music() -> void:
 		music_banks.append_array(node.find_children("*", "MusicBank"))
 	
 	for music_bank in music_banks:
-		for event in music_bank.tracks:
-			add_music(event.name, event.stems, music_bank.mode)
+		for track in music_bank.tracks:
+			add_music(track.name, track.stems, music_bank.mode)
 
 
 func add_music(p_name: String, p_stems: Array[MusicStemResource], p_mode: Node.ProcessMode) -> void:
