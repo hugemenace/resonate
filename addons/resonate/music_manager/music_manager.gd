@@ -3,9 +3,10 @@ extends Node
 
 signal loaded
 
+var has_loaded: bool = false
+
 var _music_table: Dictionary = {}
 var _music_streams: Array[StemmedMusicStreamPlayer] = []
-var _loaded: bool = false
 
 
 func _init():
@@ -17,10 +18,10 @@ func _ready() -> void:
 
 
 func _process(_p_delta) -> void:
-	if _loaded:
+	if has_loaded:
 		return
 		
-	_loaded = true
+	has_loaded = true
 	loaded.emit()
 
 
@@ -83,8 +84,8 @@ func get_bus(p_bank_bus: String, p_track_bus: String) -> String:
 
 
 func play(p_bank_label: String, p_track_name: String, p_crossfade_time: float = 3.0) -> StemmedMusicStreamPlayer:
-	if not _loaded:
-		push_warning("Resonate - The music track [%s] on bank [%s] can't be played as the MusicManager has not loaded yet. Use the [loaded] signal/event to determine when it is ready to play music." % [p_track_name, p_bank_label])
+	if not has_loaded:
+		push_error("Resonate - The music track [%s] on bank [%s] can't be played as the MusicManager has not loaded yet. Use the [loaded] signal/event to determine when it is ready." % [p_track_name, p_bank_label])
 		return null
 		
 	if not _music_table.has(p_bank_label):
