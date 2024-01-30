@@ -10,10 +10,13 @@ const _START_EASE: Tween.EaseType = Tween.EASE_OUT
 const _STOP_TRANS: Tween.TransitionType = Tween.TRANS_QUART
 const _STOP_EASE: Tween.EaseType = Tween.EASE_IN
 
+var _fade_tween: Tween
 var _stems: Dictionary
 var _name: String
+var _max_volume: float
 
-static func create(p_name: String, p_bus: String, p_mode: Node.ProcessMode) -> StemmedMusicStreamPlayer:
+
+static func create(p_name: String, p_bus: String, p_mode: Node.ProcessMode, p_max_volume: float) -> StemmedMusicStreamPlayer:
 	var player = StemmedMusicStreamPlayer.new()
 	var stream = AudioStreamPolyphonic.new()
 	
@@ -22,6 +25,7 @@ static func create(p_name: String, p_bus: String, p_mode: Node.ProcessMode) -> S
 	player.process_mode = p_mode
 	player.bus = p_bus
 	player.volume_db = _DISABLED_VOLUME
+	player._max_volume = p_max_volume
 	
 	return player
 
@@ -36,7 +40,8 @@ func start_stems(p_stems: Array, p_crossfade_time: float) -> void:
 	
 	for stem in p_stems:
 		var stream_id = playback.play_stream(stem.stream)
-		var volume = 0.0 if stem.enabled else _DISABLED_VOLUME
+		var max_volume = stem.volume
+		var volume = max_volume if stem.enabled else _DISABLED_VOLUME
 		
 		playback.set_stream_volume(stream_id, volume)
 		
@@ -45,12 +50,13 @@ func start_stems(p_stems: Array, p_crossfade_time: float) -> void:
 			"enabled": stem.enabled,
 			"stream_id": stream_id,
 			"volume": volume,
+			"max_volume": max_volume,
 			"tween": null,
 		}
 	
-	var tween = create_tween()
-	tween \
-			.tween_property(self, "volume_db", 0.0, p_crossfade_time) \
+	_fade_tween = create_tween()
+	_fade_tween \
+			.tween_property(self, "volume_db", _max_volume, p_crossfade_time) \
 			.set_trans(_START_TRANS) \
 			.set_ease(_START_EASE)
 	
@@ -64,7 +70,7 @@ func toggle_stem(p_name: String, p_enabled: bool, p_fade_time: float) -> void:
 	var stem = _stems[p_name]
 	var old_tween = stem.tween as Tween
 	var new_tween = create_tween()
-	var target_volume = 0.0 if p_enabled else _DISABLED_VOLUME
+	var target_volume = stem.max_volume if p_enabled else _DISABLED_VOLUME
 	
 	if old_tween != null:
 		old_tween.kill()
@@ -76,18 +82,39 @@ func toggle_stem(p_name: String, p_enabled: bool, p_fade_time: float) -> void:
 	var easing = _START_EASE if p_enabled else _STOP_EASE
 	
 	new_tween \
-			.tween_method(update_stem_volume.bind(p_name), stem.volume, target_volume, p_fade_time) \
+			.tween_method(tween_stem_volume.bind(p_name), stem.volume, target_volume, p_fade_time) \
 			.set_trans(transition) \
 			.set_ease(easing)
+
+
+func set_volume(p_volume: float) -> void:
+	if _fade_tween != null and _fade_tween.is_running():
+		_fade_tween.kill()
+		
+	_max_volume = p_volume
+	volume_db = p_volume
 	
 
-func update_stem_volume(p_target_volume: float, p_name: String) -> void:
+func tween_stem_volume(p_target_volume: float, p_name: String) -> void:
 	var playback = get_stream_playback() as AudioStreamPlaybackPolyphonic
 	var stem = _stems[p_name]
 	
 	playback.set_stream_volume(stem.stream_id, p_target_volume)
 	
 	_stems[p_name]["volume"] = p_target_volume
+
+
+func set_stem_volume(p_name: String, p_volume: float) -> void:
+	var playback = get_stream_playback() as AudioStreamPlaybackPolyphonic
+	var stem = _stems[p_name]
+	
+	if stem["tween"] != null and stem["tween"].is_running():
+		stem["tween"].kill()
+	
+	playback.set_stream_volume(stem.stream_id, p_volume)
+	
+	_stems[p_name]["volume"] = p_volume
+	_stems[p_name]["max_volume"] = p_volume
 
 
 func stop_stems(p_fade_time: float) -> void:

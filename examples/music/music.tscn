@@ -18,18 +18,21 @@
 script = ExtResource("4_ksop8")
 name = "pad"
 enabled = true
+volume = 0.0
 stream = ExtResource("5_wctds")
 
 [sub_resource type="Resource" id="Resource_4apoh"]
 script = ExtResource("4_ksop8")
 name = "melody"
 enabled = false
+volume = 0.0
 stream = ExtResource("6_hgf2k")
 
 [sub_resource type="Resource" id="Resource_x14g1"]
 script = ExtResource("4_ksop8")
 name = "drums"
 enabled = false
+volume = 0.0
 stream = ExtResource("7_57fs0")
 
 [sub_resource type="Resource" id="Resource_1ncxf"]
@@ -42,18 +45,21 @@ stems = Array[ExtResource("4_ksop8")]([SubResource("Resource_ognhn"), SubResourc
 script = ExtResource("4_ksop8")
 name = "pad"
 enabled = true
+volume = 0.0
 stream = ExtResource("8_hxbnm")
 
 [sub_resource type="Resource" id="Resource_64pmf"]
 script = ExtResource("4_ksop8")
 name = "melody"
 enabled = false
+volume = 0.0
 stream = ExtResource("9_3rpxp")
 
 [sub_resource type="Resource" id="Resource_slh24"]
 script = ExtResource("4_ksop8")
 name = "drums"
 enabled = false
+volume = 0.0
 stream = ExtResource("10_13th8")
 
 [sub_resource type="Resource" id="Resource_pmaoq"]

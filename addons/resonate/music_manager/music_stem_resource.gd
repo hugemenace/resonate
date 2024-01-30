@@ -4,6 +4,7 @@ extends Resource
 
 @export var name: String
 @export var enabled: bool
+@export_range(-80.0, 6.0, 1.0, "suffix:dB") var volume: float
 @export var stream: AudioStream
 
 

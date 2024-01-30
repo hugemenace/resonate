@@ -7,6 +7,7 @@ var has_loaded: bool = false
 
 var _music_table: Dictionary = {}
 var _music_streams: Array[StemmedMusicStreamPlayer] = []
+var _volume: float
 
 
 func _init():
@@ -65,6 +66,7 @@ func create_stems(p_stems: Array[MusicStemResource]) -> Array:
 		stems.append({
 			"name": stem.name,
 			"enabled": stem.enabled,
+			"volume": stem.volume,
 			"stream": stem.stream,
 		})
 		
@@ -83,18 +85,29 @@ func get_bus(p_bank_bus: String, p_track_bus: String) -> String:
 		ResonatePlugin.MUSIC_BANK_SETTING_DEFAULT)
 
 
-func play(p_bank_label: String, p_track_name: String, p_crossfade_time: float = 3.0) -> StemmedMusicStreamPlayer:
+func is_playing_music() -> bool:
+	return _music_streams.size() > 0
+
+
+func get_current_player() -> StemmedMusicStreamPlayer:
+	if _music_streams.size() == 0:
+		return null
+		
+	return _music_streams.back() as StemmedMusicStreamPlayer
+
+
+func play(p_bank_label: String, p_track_name: String, p_crossfade_time: float = 3.0) -> void:
 	if not has_loaded:
 		push_error("Resonate - The music track [%s] on bank [%s] can't be played as the MusicManager has not loaded yet. Use the [loaded] signal/event to determine when it is ready." % [p_track_name, p_bank_label])
-		return null
+		return
 		
 	if not _music_table.has(p_bank_label):
 		push_error("Resonate - Tried to play the music track [%s] from an unknown bank [%s]." % [p_track_name, p_bank_label])
-		return null
+		return
 		
 	if not _music_table[p_bank_label]["tracks"].has(p_track_name):
 		push_error("Resonate - Tried to play an unknown music track [%s] from the bank [%s]." % [p_track_name, p_bank_label])
-		return null
+		return
 	
 	var bank = _music_table[p_bank_label] as Dictionary
 	var track = bank["tracks"][p_track_name] as Dictionary
@@ -110,7 +123,7 @@ func play(p_bank_label: String, p_track_name: String, p_crossfade_time: float = 
 			return
 	
 	var bus = get_bus(bank.bus, track.bus)
-	var player = StemmedMusicStreamPlayer.create(p_track_name, bus, bank.mode)
+	var player = StemmedMusicStreamPlayer.create(p_track_name, bus, bank.mode, _volume)
 	
 	if _music_streams.size() > 0:
 		for stream in _music_streams:
@@ -122,26 +135,35 @@ func play(p_bank_label: String, p_track_name: String, p_crossfade_time: float = 
 	
 	player.start_stems(stems, p_crossfade_time)
 	player.stopped.connect(on_player_stopped.bind(player))
-	
-	return player
 
 
 func stop(p_fade_time: float = 3.0) -> void:
-	if _music_streams.size() == 0:
+	if not is_playing_music():
 		push_warning("Resonate - Cannot stop the music track as there is no music currently playing.")
 		return
 		
-	var current_player = _music_streams.back() as StemmedMusicStreamPlayer
+	var current_player = get_current_player()
 	
 	current_player.stop_stems(p_fade_time)
 
 
+func set_volume(p_volume: float) -> void:
+	_volume = p_volume
+	
+	if not is_playing_music():
+		return
+		
+	var current_player = get_current_player()
+	
+	current_player.set_volume(_volume)
+
+
 func set_stem(p_name: String, p_enabled: bool, p_fade_time: float) -> void:
-	if _music_streams.size() == 0:
+	if not is_playing_music():
 		push_warning("Resonate - Cannot toggle the stem [%s] as there is no music currently playing." % p_name)
 		return
 		
-	var current_player = _music_streams.back() as StemmedMusicStreamPlayer
+	var current_player = get_current_player()
 	
 	current_player.toggle_stem(p_name, p_enabled, p_fade_time)
 
@@ -154,22 +176,32 @@ func disable_stem(p_name: String, p_fade_time: float = 3.0) -> void:
 	set_stem(p_name, false, p_fade_time)
 
 
+func set_stem_volume(p_name: String, p_volume: float) -> void:
+	if not is_playing_music():
+		push_warning("Resonate - Cannot set the volume of stem [%s] as there is no music currently playing." % p_name)
+		return
+		
+	var current_player = get_current_player()
+	
+	current_player.set_stem_volume(p_name, p_volume)
+
+
 func is_playing() -> bool:
 	return _music_streams.size() > 0
 
 
 func get_stem_details(p_name: String) -> Variant:
-	if _music_streams.size() == 0:
+	if not is_playing_music():
 		push_warning("Resonate - Cannot get the details for stem [%s] as there is no music currently playing." % p_name)
 		return
 		
-	var current_player = _music_streams.back() as StemmedMusicStreamPlayer
+	var current_player = get_current_player()
 	
 	return current_player.get_stem_details(p_name)
 
 
 func on_player_stopped(p_player: StemmedMusicStreamPlayer) -> void:
-	if _music_streams.size() == 0:
+	if not is_playing_music():
 		return
 		
 	_music_streams.erase(p_player)
