@@ -14,9 +14,9 @@ The `SoundManager` and `MusicManager` will now be available from any GDScript fi
 
 ## Script execution order
 
-Resonate needs to initialise `PooledAudioStreamPlayers` and search the node tree for every `SoundEventResource` available within `SoundBank` and `MusicBank` nodes during its own `_ready()` function.
+Resonate needs to initialise `PooledAudioStreamPlayers` and search the entire scene/node tree for every `SoundBank` and `MusicBank`. This process requires at least one game tick to complete.
 
-To immediately trigger sounds or music upon the launch of your runtime, you need to subscribe to the relevant `loaded` signal. The following concepts apply to both the `SoundManager` and `MusicManager`:
+Therefore, to immediately trigger sounds or music upon your game's launch, you need to subscribe to the relevant `loaded` signal. The following concepts apply to both the `SoundManager` and `MusicManager`:
 
 ```GDScript
 func _ready() -> void:
