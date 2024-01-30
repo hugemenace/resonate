@@ -7,9 +7,10 @@ extends Node2D
 
 @onready var stem_details = $StemDetails
 
-const _TRACKS: Array[String] = ["track_a", "track_b"]
+const _TRACKS: Array[String] = ["house", "breakbeat"]
 
-var _track_number: int = 1
+var _track_number: int = 0
+var _track_name: String = _TRACKS[_track_number]
 
 
 func _ready() -> void:
@@ -39,9 +40,12 @@ func _input(p_event: InputEvent) -> void:
 		MusicManager.disable_stem("drums")
 		
 	if p_event.is_action_pressed("three"):
-		MusicManager.play("instrumental", _TRACKS[_track_number])
 		# Loop back around to the start if we've hit the end of the track list.
 		_track_number = _track_number + 1 if (_track_number + 1) < _TRACKS.size() else 0
+		_track_name = _TRACKS[_track_number]
+		
+		# Play the next track in the list.
+		MusicManager.play("instrumental", _track_name)
 				
 	if p_event.is_action_pressed("four"):
 		MusicManager.stop()
@@ -59,17 +63,18 @@ func _process(_p_delta):
 		stem_details.text = "Stem details unavailable."
 		return
 	
-	stem_details.text = """Melody stem:
+	stem_details.text = """Current track: %s
+	Melody stem:
 	 - Volume: %ddB
 	 - Enabled: %s
 	Drums stem:
 	 - Volume: %ddB
 	 - Enabled: %s
-	""" % [melody_stem.volume, melody_stem.enabled, drums_stem.volume, drums_stem.enabled]
+	""" % [_track_name, melody_stem.volume, melody_stem.enabled, drums_stem.volume, drums_stem.enabled]
 
 
 func on_music_manager_loaded() -> void:
 	# Calling play on the music manager with the name of a music bank and a track
 	# will immediately begin playing the track. All stems on the track marked as
 	# enabled will be audible. Playback will fade in over the default duration.
-	MusicManager.play("instrumental", _TRACKS[0])
+	MusicManager.play("instrumental", _track_name)
