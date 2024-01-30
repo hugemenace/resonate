@@ -65,28 +65,39 @@ MusicManager.disable_stem("drums")
 
 Will start playing the specified music track and stop any tracks currently playing.
 
-`play(p_name: String, p_crossfade_time: float = 3.0) -> StemmedMusicStreamPlayer`
+`play(p_bank_label: String, p_track_name: String, p_crossfade_time: float = 5.0) -> void`
 
 | Parameter | Type | Description |
 | --- | --- | --- |
-| `p_name` | **Required** | The label of the music track you want to play |
+| `p_bank_label` | **Required** | The label of the music bank you want to play from |
+| `p_track_name` | **Required** | The label of the music track you want to play |
 | `p_crossfade_time` | Optional | How long to fade a new track in for, or how long to crossfade between the currently playing track and the one you're about to start |
 
 #### Stop
 
 Will stop the currently playing music track.
 
-`stop(p_fade_time: float = 3.0) -> void`
+`stop(p_fade_time: float = 5.0) -> void`
 
 | Parameter | Type | Description |
 | --- | --- | --- |
 | `p_fade_time` | Optional | How long to fade the track out for |
 
+#### Set volume
+
+Will set the volume level for all currently playing, or future music. If a track is in the middle of fading in or out, setting the volume will immediately cancel the fade and cause the volume to be set at the specified amount.
+
+`set_volume(p_volume: float) -> void`
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `p_volume` | **Required** | What volume to set the music to in dB |
+
 #### Enable stem
 
 Will start the specified stem on the currently playing music track.
 
-`enable_stem(p_name: String, p_fade_time: float = 3.0) -> void`
+`enable_stem(p_name: String, p_fade_time: float = 2.0) -> void`
 
 | Parameter | Type | Description |
 | --- | --- | --- |
@@ -97,12 +108,24 @@ Will start the specified stem on the currently playing music track.
 
 Will stop the specified stem on the currently playing music track.
 
-`disable_stem(p_name: String, p_fade_time: float = 3.0) -> void`
+`disable_stem(p_name: String, p_fade_time: float = 2.0) -> void`
 
 | Parameter | Type | Description |
 | --- | --- | --- |
 | `p_name` | **Required** | The name of the stem you want to disable |
 | `p_fade_time` | Optional | How long to fade the stem out for |
+
+
+#### Set stem volume
+
+Will set the volume level for the specified stem. If the stem is in the middle of fading in or out, setting the volume will immediately cancel the fade and cause the volume to be set at the specified amount.
+
+`set_stem_volume(p_name: String, p_volume: float) -> void`
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `p_name` | **Required** | The name of the stem you want to update |
+| `p_volume` | **Required** | What volume to set the stem to in dB |
 
 ### Signals
 
