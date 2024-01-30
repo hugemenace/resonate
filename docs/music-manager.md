@@ -32,7 +32,7 @@ Add a new MusicBank node to your scene.
 
 #### Step 2
 
-Create a new MusicResource. A MusicResource represents one track in your music bank. Each track requires a name, which you will use to play the music from your script(s).
+Give your new MusicBank a label and then create a new MusicTrackResource. A MusicTrackResource represents one track in your music bank. Each track requires a name, which you will use to start it from your script(s).
 
 ![AddMusicResource](images/add-music-resource.gif)
 
@@ -44,10 +44,10 @@ Create as many MusicStemResources as you track requires. Each stem requires a na
 
 ### Playing music
 
-To start a new music track, just call the `play` method on the MusicManager with the name of the track you want to start.
+To start a new music track, just call the `play` method on the MusicManager with the name of the bank and track you want to play.
 
 ```GDScript
-MusicManager.play("boss_fight")
+MusicManager.play("combat", "boss_fight")
 ```
 
 To enable or disable stems on the currently playing track, just call `enabled_stem` or `disable_stem`.
