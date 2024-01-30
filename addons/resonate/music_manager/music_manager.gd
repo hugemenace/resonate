@@ -96,7 +96,7 @@ func get_current_player() -> StemmedMusicStreamPlayer:
 	return _music_streams.back() as StemmedMusicStreamPlayer
 
 
-func play(p_bank_label: String, p_track_name: String, p_crossfade_time: float = 3.0) -> void:
+func play(p_bank_label: String, p_track_name: String, p_crossfade_time: float = 5.0) -> void:
 	if not has_loaded:
 		push_error("Resonate - The music track [%s] on bank [%s] can't be played as the MusicManager has not loaded yet. Use the [loaded] signal/event to determine when it is ready." % [p_track_name, p_bank_label])
 		return
@@ -137,7 +137,7 @@ func play(p_bank_label: String, p_track_name: String, p_crossfade_time: float = 
 	player.stopped.connect(on_player_stopped.bind(player))
 
 
-func stop(p_fade_time: float = 3.0) -> void:
+func stop(p_fade_time: float = 5.0) -> void:
 	if not is_playing_music():
 		push_warning("Resonate - Cannot stop the music track as there is no music currently playing.")
 		return
@@ -168,11 +168,11 @@ func set_stem(p_name: String, p_enabled: bool, p_fade_time: float) -> void:
 	current_player.toggle_stem(p_name, p_enabled, p_fade_time)
 
 
-func enable_stem(p_name: String, p_fade_time: float = 3.0) -> void:
+func enable_stem(p_name: String, p_fade_time: float = 2.0) -> void:
 	set_stem(p_name, true, p_fade_time)
 
 
-func disable_stem(p_name: String, p_fade_time: float = 3.0) -> void:
+func disable_stem(p_name: String, p_fade_time: float = 2.0) -> void:
 	set_stem(p_name, false, p_fade_time)
 
 
