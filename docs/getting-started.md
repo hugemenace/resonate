@@ -26,7 +26,7 @@ func on_music_manager_loaded() -> void:
 	MusicManager.play("boss_fight")
 ```
 
-You can also perform a safety check to ensure `MusicManager.loaded` is true before a function call.
+You can also perform a safety check to ensure `MusicManager.has_loaded` is true before a function call.
 
 ## Concepts
 
