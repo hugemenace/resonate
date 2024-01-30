@@ -24,6 +24,7 @@ The **MusicManager** composes music tracks built from ***stems*** and supports t
 
 ## Docs
 
+- [Getting started](docs/getting-started.md)
 - [SoundManager documentation](docs/sound-manager.md)
 - [MusicManager documentation](docs/music-manager.md)
 
