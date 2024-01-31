@@ -70,7 +70,7 @@ Will start playing the specified music track and stop any tracks currently playi
 | Parameter | Type | Description |
 | --- | --- | --- |
 | `p_bank_label` | **Required** | The label of the music bank you want to play from |
-| `p_track_name` | **Required** | The label of the music track you want to play |
+| `p_track_name` | **Required** | The name of the music track you want to play |
 | `p_crossfade_time` | Optional | How long to fade a new track in for, or how long to crossfade between the currently playing track and the one you're about to start |
 
 #### Stop
@@ -82,6 +82,17 @@ Will stop the currently playing music track.
 | Parameter | Type | Description |
 | --- | --- | --- |
 | `p_fade_time` | Optional | How long to fade the track out for |
+
+#### Is playing
+
+Check whether the music manager is currently playing. Optionally, you can also check whether it is currently playing from a specific bank, a specific track, or the combination of both.
+
+`is_playing(p_bank_label: String = "", p_track_name: String = "") -> bool`
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `p_bank_label` | **Required** | The label of the music bank you want to check is playing |
+| `p_track_name` | **Required** | The name of the music track you want to check is playing |
 
 #### Set volume
 
