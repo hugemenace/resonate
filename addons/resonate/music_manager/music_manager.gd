@@ -123,7 +123,7 @@ func play(p_bank_label: String, p_track_name: String, p_crossfade_time: float = 
 			return
 	
 	var bus = get_bus(bank.bus, track.bus)
-	var player = StemmedMusicStreamPlayer.create(p_track_name, bus, bank.mode, _volume)
+	var player = StemmedMusicStreamPlayer.create(p_bank_label, p_track_name, bus, bank.mode, _volume)
 	
 	if _music_streams.size() > 0:
 		for stream in _music_streams:
@@ -135,6 +135,30 @@ func play(p_bank_label: String, p_track_name: String, p_crossfade_time: float = 
 	
 	player.start_stems(stems, p_crossfade_time)
 	player.stopped.connect(on_player_stopped.bind(player))
+
+
+func is_playing(p_bank_label: String = "", p_track_name: String = "") -> bool:
+	if not has_loaded:
+		return false
+	
+	if _music_streams.size() == 0:
+		return false
+		
+	var current_player = get_current_player()
+	var is_playing = not current_player.is_stopping
+	var bank_label = current_player.bank_label
+	var track_name = current_player.track_name
+	
+	if p_bank_label == "" and p_track_name == "":
+		return is_playing
+		
+	if p_bank_label != "" and p_track_name == "":
+		return bank_label == p_bank_label and is_playing
+		
+	if p_bank_label == "" and p_track_name != "":
+		return track_name == p_track_name and is_playing
+		
+	return bank_label == p_bank_label and track_name == p_track_name and is_playing
 
 
 func stop(p_fade_time: float = 5.0) -> void:
@@ -184,10 +208,6 @@ func set_stem_volume(p_name: String, p_volume: float) -> void:
 	var current_player = get_current_player()
 	
 	current_player.set_stem_volume(p_name, p_volume)
-
-
-func is_playing() -> bool:
-	return _music_streams.size() > 0
 
 
 func get_stem_details(p_name: String) -> Variant:

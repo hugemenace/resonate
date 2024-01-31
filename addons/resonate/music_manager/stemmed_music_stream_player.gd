@@ -4,6 +4,10 @@ extends AudioStreamPlayer
 
 signal stopped
 
+var is_stopping: bool
+var bank_label: String
+var track_name: String
+
 const _DISABLED_VOLUME: float = -80
 const _START_TRANS: Tween.TransitionType = Tween.TRANS_QUART
 const _START_EASE: Tween.EaseType = Tween.EASE_OUT
@@ -12,20 +16,21 @@ const _STOP_EASE: Tween.EaseType = Tween.EASE_IN
 
 var _fade_tween: Tween
 var _stems: Dictionary
-var _name: String
 var _max_volume: float
 
 
-static func create(p_name: String, p_bus: String, p_mode: Node.ProcessMode, p_max_volume: float) -> StemmedMusicStreamPlayer:
+static func create(p_bank_label: String, p_track_name: String, p_bus: String, p_mode: Node.ProcessMode, p_max_volume: float) -> StemmedMusicStreamPlayer:
 	var player = StemmedMusicStreamPlayer.new()
 	var stream = AudioStreamPolyphonic.new()
 	
-	player._name = p_name
+	player.bank_label = p_bank_label
+	player.track_name = p_track_name
 	player.stream = stream
 	player.process_mode = p_mode
 	player.bus = p_bus
 	player.volume_db = _DISABLED_VOLUME
 	player._max_volume = p_max_volume
+	player.is_stopping = false
 	
 	return player
 
@@ -63,7 +68,7 @@ func start_stems(p_stems: Array, p_crossfade_time: float) -> void:
 
 func toggle_stem(p_name: String, p_enabled: bool, p_fade_time: float) -> void:
 	if not _stems.has(p_name):
-		push_warning("Resonate - Cannot toggle the stem [%s] on music track [%s] as it does not exist." % [p_name, _name])
+		push_warning("Resonate - Cannot toggle the stem [%s] on music track [%s] from bank [%s] as it does not exist." % [p_name, track_name, bank_label])
 		return
 		
 	var playback = get_stream_playback() as AudioStreamPlaybackPolyphonic
@@ -118,6 +123,8 @@ func set_stem_volume(p_name: String, p_volume: float) -> void:
 
 
 func stop_stems(p_fade_time: float) -> void:
+	is_stopping = true
+	
 	var tween = create_tween()
 	tween \
 			.tween_property(self, "volume_db", _DISABLED_VOLUME, p_fade_time) \
@@ -129,7 +136,7 @@ func stop_stems(p_fade_time: float) -> void:
 
 func get_stem_details(p_name: String) -> Variant:
 	if not _stems.has(p_name):
-		push_warning("Resonate - Cannot get the details for stem [%s] on music track [%s] as it does not exist." % [p_name, _name])
+		push_warning("Resonate - Cannot get the details for stem [%s] on music track [%s] from bank [%s] as it does not exist." % [p_name, track_name, bank_label])
 		return null
 		
 	var stem = _stems[p_name]
