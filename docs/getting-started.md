@@ -8,6 +8,8 @@ Godot provides a simple and functional audio engine with all the raw ingredients
 
 Once you have downloaded Resonate into your project `addons/` directory, open **Project > Project Settings** and go to the **Plugins** tab. Click on the **Enable** checkbox to enable the plugin.
 
+It's good practice to reload your project to ensure freshly installed plugins work correctly. Go to **Project > Reload Current Project**.
+
 Resonate has two core systems: the **SoundManager** and the **MusicManager** which are available as global singletons (Autoload). You can confirm if these are available and enabled under **Project > Project Settings > Autoload**.
 
 The `SoundManager` and `MusicManager` will now be available from any GDScript file. However, Resonate needs to initialise and load properly, so you should be aware of the script execution order.
