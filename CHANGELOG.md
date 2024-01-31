@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.1.0](https://github.com/hugemenace/resonate/compare/v2.0.0...v2.1.0) (2024-01-31)
+
+
+### Features
+
+* add automatic detection of new sound and music banks during scene changes & runtime node insertion/deletion ([f964908](https://github.com/hugemenace/resonate/commit/f964908558b95adc18c0f3c92365f7eb37e664ae))
+* enhance the is_playing method on the MusicManager to allow bank and track scoping ([90eb8d3](https://github.com/hugemenace/resonate/commit/90eb8d317203fc260f79a45e11ec07e4ff8fca98))
+
 ## [2.0.0](https://github.com/hugemenace/resonate/compare/v1.0.2...v2.0.0) (2024-01-30)
 
 
