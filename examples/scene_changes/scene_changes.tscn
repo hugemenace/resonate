@@ -1,0 +1,36 @@
+[gd_scene load_steps=5 format=3 uid="uid://bcqg6ao82u1by"]
+
+[ext_resource type="Script" path="res://examples/scene_changes/scene_changes.gd" id="1_p51s5"]
+[ext_resource type="LabelSettings" uid="uid://tysg4xge4hsu" path="res://shared/title_label_settings.tres" id="2_rh3pj"]
+[ext_resource type="LabelSettings" uid="uid://bldprl7vev3uv" path="res://shared/description_label_settings.tres" id="3_k4a5g"]
+[ext_resource type="LabelSettings" uid="uid://bnsew6gimofj5" path="res://shared/stats_label_settings.tres" id="4_gpwbw"]
+
+[node name="SceneChanges" type="Node2D"]
+script = ExtResource("1_p51s5")
+
+[node name="Title" type="Label" parent="."]
+offset_left = 100.0
+offset_top = 50.0
+offset_right = 208.0
+offset_bottom = 103.0
+text = "Scene Changes"
+label_settings = ExtResource("2_rh3pj")
+uppercase = true
+
+[node name="Description" type="Label" parent="."]
+offset_left = 100.0
+offset_top = 125.0
+offset_right = 824.0
+offset_bottom = 185.0
+text = "This example loads different scenes at runtime to demostrate the Sound and Music manager bank detection.
+Press \"1\" on your keyboard to cycle scenes.
+Each scene will play a single music track and trigger a sound regularly."
+label_settings = ExtResource("3_k4a5g")
+
+[node name="SceneDetails" type="Label" parent="."]
+offset_left = 100.0
+offset_top = 250.0
+offset_right = 824.0
+offset_bottom = 310.0
+text = "{ scene details }"
+label_settings = ExtResource("4_gpwbw")

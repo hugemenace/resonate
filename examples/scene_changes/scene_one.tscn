@@ -1,0 +1,45 @@
+[gd_scene load_steps=12 format=3 uid="uid://qfk8ucywmppo"]
+
+[ext_resource type="Script" path="res://examples/scene_changes/scene_one.gd" id="1_ac5rj"]
+[ext_resource type="Script" path="res://addons/resonate/sound_manager/sound_bank.gd" id="1_d2ivd"]
+[ext_resource type="Script" path="res://addons/resonate/sound_manager/sound_event_resource.gd" id="2_f5qj8"]
+[ext_resource type="AudioStream" uid="uid://de550fklyhu88" path="res://audio/sounds/note_c5.wav" id="3_2mrnr"]
+[ext_resource type="Script" path="res://addons/resonate/music_manager/music_bank.gd" id="4_fi4fr"]
+[ext_resource type="Script" path="res://addons/resonate/music_manager/music_track_resource.gd" id="5_wtd24"]
+[ext_resource type="Script" path="res://addons/resonate/music_manager/music_stem_resource.gd" id="6_4afm1"]
+[ext_resource type="AudioStream" uid="uid://bcv4ev20vqxx2" path="res://audio/music_stems/house_drums_stem.mp3" id="8_qa3at"]
+
+[sub_resource type="Resource" id="Resource_tn51l"]
+script = ExtResource("2_f5qj8")
+name = "note"
+bus = ""
+streams = Array[AudioStream]([ExtResource("3_2mrnr")])
+
+[sub_resource type="Resource" id="Resource_6vob4"]
+script = ExtResource("6_4afm1")
+name = "stem_a"
+enabled = true
+volume = 0.0
+stream = ExtResource("8_qa3at")
+
+[sub_resource type="Resource" id="Resource_q7ce0"]
+script = ExtResource("5_wtd24")
+name = "track_a"
+bus = ""
+stems = Array[ExtResource("6_4afm1")]([SubResource("Resource_6vob4")])
+
+[node name="SceneOne" type="Node2D"]
+script = ExtResource("1_ac5rj")
+
+[node name="SoundBank" type="Node" parent="."]
+script = ExtResource("1_d2ivd")
+label = "scene_one"
+events = Array[ExtResource("2_f5qj8")]([SubResource("Resource_tn51l")])
+
+[node name="MusicBank" type="Node" parent="."]
+script = ExtResource("4_fi4fr")
+label = "scene_one"
+tracks = Array[ExtResource("5_wtd24")]([SubResource("Resource_q7ce0")])
+
+[node name="Timer" type="Timer" parent="."]
+autostart = true
