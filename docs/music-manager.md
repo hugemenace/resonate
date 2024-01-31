@@ -134,3 +134,9 @@ Will set the volume level for the specified stem. If the stem is in the middle o
 Emitted when the MusicManager has loaded and is ready to play music tracks.
 
 `signal loaded`
+
+#### Banks updated
+
+Emitted when the MusicManager has detected scene changes (node insertion & deletion) that resulted in MusicBanks being added or removed.
+
+`signal banks_updated`

@@ -49,3 +49,37 @@ A **MusicTrack** is a piece of music comprised of one or more **Stems**. By defa
 Layers of a MusicTrack are called **Stems**, which typically represent different instruments or mix busses, e.g. "drums", "bass", "melody". This allows for stems to be enabled and disabled independently. By default, stems fade in/out and this fade time can be configured. Care should be taken to ensure Stems are set to loop (see import settings) and that they are either all of the same length or a measure division that enables them to loop in sync with each other. Stems can be used like layers in order to create a dynamic and changing composition. In the context of sound design for games this is sometimes referred to as *vertical composition*. As an example, you could enable a "drums" stem in response to an increase in gameplay tension, then disable it when the tension dissipates.
 
 A **MusicBank** is a collection of MusicTracks. As your project grows, MusicBanks help you organise related music tracks into groups. You can have as many MusicBanks as you want or need to keep your project organised in a way that suits your game's architecture. Banks also act a little bit like a namespace, e.g. creating separate MusicBanks for distinct levels or areas in your game world allows you to name and trigger an "ambient" or "combat" music track from either bank without name collisions. This can help you standardise how you integrate with other game systems, or simply organise audio with a consistent labelling schema.
+
+## Scene changes
+
+Resonate will scan the scene tree for all music and sound banks when your game launches. Resonate uses these internally to create lookup tables. It will also automatically update the lookup tables whenever a node is inserted or removed from the scene tree. Suppose you load a script at runtime attempting to use either the MusicManager or SoundManager. In that case, you can leverage the `banks_updated` signal on top of the `loaded` signal to ensure you're ready to play music or trigger sound events without issues:
+
+```GDScript
+var _instance: PooledAudioStreamPlayer
+
+func _ready():
+	# Leveraging the `banks_updated` and `loaded` events ensures that this script 
+	# will create an event instance irrespective of whether it's in the scene 
+	# tree when the game loads or is dynamically loaded at runtime.
+	
+	SoundManager.loaded.connect(on_sound_manager_updated)
+	SoundManager.banks_updated.connect(on_sound_manager_updated)
+
+func _process(delta):
+	if _instance == null:
+		return
+
+	_instance.trigger()
+
+func _exit_tree():
+	if _instance == null:
+		return
+		
+	_instance.release()
+
+func on_sound_manager_updated() -> void:
+	if _instance != null or not SoundManager.has_loaded:
+		return
+	
+	_instance = SoundManager.instance("scene_one", "note")
+```

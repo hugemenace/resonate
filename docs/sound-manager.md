@@ -233,3 +233,9 @@ Will return a reserved polyphonic `PooledAudioStreamPlayer2D` or `PooledAudioStr
 Emitted when the SoundManager has loaded and is ready to play sounds.
 
 `signal loaded`
+
+#### Banks updated
+
+Emitted when the MusicManager has detected scene changes (node insertion & deletion) that resulted in MusicBanks being added or removed.
+
+`signal banks_updated`
