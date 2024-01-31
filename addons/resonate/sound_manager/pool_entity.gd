@@ -49,7 +49,10 @@ static func trigger(p_base, p_varied: bool, p_pitch: float, p_volume: float) -> 
 	return false
 
 
-static func release(p_base) -> void:
+static func release(p_base, p_finish_playing: bool) -> void:
+	if not p_finish_playing:
+		p_base.stop()
+		
 	p_base.reserved = false
 	p_base.process_mode = Node.PROCESS_MODE_ALWAYS
 	p_base.released.emit()
