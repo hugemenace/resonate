@@ -2,10 +2,12 @@ extends Node
 
 
 signal loaded
+signal banks_updated
 
 var has_loaded: bool = false
 
 var _music_table: Dictionary = {}
+var _music_table_hash: int
 var _music_streams: Array[StemmedMusicStreamPlayer] = []
 var _volume: float
 
@@ -16,14 +18,36 @@ func _init():
 
 func _ready() -> void:
 	auto_add_music()
+	
+	var scene_root = get_tree().root.get_tree()
+	scene_root.node_added.connect(on_scene_node_added)
+	scene_root.node_removed.connect(on_scene_node_removed)
 
 
 func _process(_p_delta) -> void:
+	if _music_table_hash != _music_table.hash():
+		banks_updated.emit()
+		_music_table_hash = _music_table.hash()
+		
 	if has_loaded:
 		return
 		
 	has_loaded = true
 	loaded.emit()
+
+
+func on_scene_node_added(p_node: Node) -> void:
+	if not p_node is MusicBank:
+		return
+		
+	add_bank(p_node)
+	
+	
+func on_scene_node_removed(p_node: Node) -> void:
+	if not p_node is MusicBank:
+		return
+		
+	remove_bank(p_node)
 
 
 func auto_add_music() -> void:
@@ -35,6 +59,8 @@ func auto_add_music() -> void:
 	
 	for music_bank in music_banks:
 		add_bank(music_bank)
+		
+	_music_table_hash = _music_table.hash()
 
 
 func add_bank(p_bank: MusicBank) -> void:
@@ -44,6 +70,10 @@ func add_bank(p_bank: MusicBank) -> void:
 		"mode": p_bank.mode,
 		"tracks": create_tracks(p_bank.tracks)
 	}
+
+
+func remove_bank(p_bank: MusicBank) -> void:
+	_music_table.erase(p_bank.label)
 
 
 func create_tracks(p_tracks: Array[MusicTrackResource]) -> Dictionary:

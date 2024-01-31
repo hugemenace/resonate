@@ -2,6 +2,7 @@ extends Node
 
 
 signal loaded
+signal banks_updated
 
 var has_loaded: bool = false
 
@@ -9,6 +10,7 @@ var _1d_players: Array[PooledAudioStreamPlayer] = []
 var _2d_players: Array[PooledAudioStreamPlayer2D] = []
 var _3d_players: Array[PooledAudioStreamPlayer3D] = []
 var _event_table: Dictionary = {}
+var _event_table_hash: int
 
 
 func _init():
@@ -33,13 +35,35 @@ func _ready() -> void:
 	
 	auto_add_events()
 	
+	var scene_root = get_tree().root.get_tree()
+	scene_root.node_added.connect(on_scene_node_added)
+	scene_root.node_removed.connect(on_scene_node_removed)
+	
 
 func _process(_p_delta) -> void:
+	if _event_table_hash != _event_table.hash():
+		banks_updated.emit()
+		_event_table_hash = _event_table.hash()
+		
 	if has_loaded:
 		return
 		
 	has_loaded = true
 	loaded.emit()
+
+
+func on_scene_node_added(p_node: Node) -> void:
+	if not p_node is SoundBank:
+		return
+		
+	add_bank(p_node)
+	
+	
+func on_scene_node_removed(p_node: Node) -> void:
+	if not p_node is SoundBank:
+		return
+		
+	remove_bank(p_node)
 
 
 func initialise_pool(p_size: int, p_creator_fn: Callable) -> void:
@@ -56,7 +80,9 @@ func auto_add_events() -> void:
 	
 	for sound_bank in sound_banks:
 		add_bank(sound_bank)
-			
+		
+	_event_table_hash = _event_table.hash()
+		
 
 func add_bank(p_bank: SoundBank) -> void:
 	_event_table[p_bank.label] = {
@@ -65,7 +91,11 @@ func add_bank(p_bank: SoundBank) -> void:
 		"mode": p_bank.mode,
 		"events": create_events(p_bank.events)
 	}
+	
 
+func remove_bank(p_bank: SoundBank) -> void:
+	_event_table.erase(p_bank.label)
+	
 
 func create_events(p_events: Array[SoundEventResource]) -> Dictionary:
 	var events = {}
