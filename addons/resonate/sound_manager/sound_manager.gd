@@ -263,6 +263,19 @@ func create_player_2d() -> PooledAudioStreamPlayer2D:
 	
 func create_player_3d() -> PooledAudioStreamPlayer3D:
 	return add_player_to_pool(PooledAudioStreamPlayer3D.create(), _3d_players)
+
+
+func auto_release(p_base: Node, p_instance: Node, p_finish_playing: bool = false) -> Variant:
+	if p_instance == null:
+		return p_instance
+		
+	p_base.tree_exiting.connect(on_player_reserver_exiting.bind(p_instance, p_finish_playing))
+	
+	return p_instance
+
+
+func on_player_reserver_exiting(p_instance: Node, p_finish_playing: bool) -> void:
+	p_instance.release(p_finish_playing)
 	
 
 func on_player_released(p_player: Node) -> void:

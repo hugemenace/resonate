@@ -84,6 +84,29 @@ func on_sound_manager_updated() -> void:
 	_instance = SoundManager.instance("scene_one", "note")
 ```
 
+If you prefer to have instances or music tracks released or stopped automatically, you can call the `SoundBank.auto_release` and `MusicManager.auto_stop` methods. These replace the need to use the `_exit_tree` lifecycle method or the `tree_exiting` signal. You could rewrite the example above as:
+
+```GDScript
+var _instance: PooledAudioStreamPlayer
+
+func _ready():
+	SoundManager.loaded.connect(on_sound_manager_updated)
+	SoundManager.banks_updated.connect(on_sound_manager_updated)
+
+func _process(delta):
+	if _instance == null:
+		return
+
+	_instance.trigger()
+
+func on_sound_manager_updated() -> void:
+	if _instance != null or not SoundManager.has_loaded:
+		return
+	
+	_instance = SoundManager.instance("scene_one", "note")
+	SoundManager.auto_release(self, _instance)
+```
+
 ## Digging deeper
 
 To understand the music or sound managers in more detail, view examples of setting up banks, or inspect their corresponding APIs, check out the dedicated [MusicManager](music-manager.md) or [SoundManager](sound-manager.md) documentation.

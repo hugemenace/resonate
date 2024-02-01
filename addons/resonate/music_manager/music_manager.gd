@@ -249,6 +249,17 @@ func get_stem_details(p_name: String) -> Variant:
 	return current_player.get_stem_details(p_name)
 
 
+func auto_stop(p_base: Node, p_bank_label: String, p_track_name: String, p_fade_time: float = 5.0) -> void:
+	p_base.tree_exiting.connect(on_music_player_exiting.bind(p_bank_label, p_track_name, p_fade_time))
+
+
+func on_music_player_exiting(p_bank_label: String, p_track_name: String, p_fade_time: float) -> void:
+	if not is_playing(p_bank_label, p_track_name):
+		return
+	
+	stop(p_fade_time)
+	
+
 func on_player_stopped(p_player: StemmedMusicStreamPlayer) -> void:
 	if not is_playing_music():
 		return
