@@ -147,6 +147,9 @@ func play(p_bank_label: String, p_track_name: String, p_crossfade_time: float = 
 		if stem.stream == null:
 			push_error("Resonate - The stem [%s] on the music track [%s] on bank [%s] does not have an audio stream, you'll need to add one." % [stem.name, p_track_name, p_bank_label])
 			return
+			
+		if not ResonateUtils.is_stream_looped(stem.stream):
+			push_warning("Resonate - The stem [%s] on the music track [%s] on bank [%s] is not set to loop, which will cause it to work incorrectly." % [stem.name, p_track_name, p_bank_label])
 	
 	var bus = get_bus(bank.bus, track.bus)
 	var player = StemmedMusicStreamPlayer.create(p_bank_label, p_track_name, bus, bank.mode, _volume)
