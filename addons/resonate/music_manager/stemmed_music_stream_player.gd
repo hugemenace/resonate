@@ -36,6 +36,9 @@ static func create(p_bank_label: String, p_track_name: String, p_bus: String, p_
 
 
 func start_stems(p_stems: Array, p_crossfade_time: float) -> void:
+	if playing:
+		return
+		
 	stream.polyphony = p_stems.size()
 	max_polyphony = p_stems.size()
 	
@@ -123,6 +126,9 @@ func set_stem_volume(p_name: String, p_volume: float) -> void:
 
 
 func stop_stems(p_fade_time: float) -> void:
+	if is_stopping:
+		return
+		
 	is_stopping = true
 	
 	var tween = create_tween()
