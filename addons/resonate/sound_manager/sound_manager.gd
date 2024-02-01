@@ -72,11 +72,7 @@ func initialise_pool(p_size: int, p_creator_fn: Callable) -> void:
 
 
 func auto_add_events() -> void:
-	var root_nodes = get_tree().root.get_children()
-	var sound_banks: Array[SoundBank] = []
-	
-	for node in root_nodes:
-		sound_banks.append_array(node.find_children("*", "SoundBank"))
+	var sound_banks = ResonateUtils.find_all_nodes(self, "SoundBank")
 	
 	for sound_bank in sound_banks:
 		add_bank(sound_bank)

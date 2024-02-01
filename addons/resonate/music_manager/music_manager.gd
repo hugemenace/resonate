@@ -51,11 +51,7 @@ func on_scene_node_removed(p_node: Node) -> void:
 
 
 func auto_add_music() -> void:
-	var root_nodes = get_tree().root.get_children()
-	var music_banks: Array[MusicBank] = []
-	
-	for node in root_nodes:
-		music_banks.append_array(node.find_children("*", "MusicBank"))
+	var music_banks = ResonateUtils.find_all_nodes(self, "MusicBank")
 	
 	for music_bank in music_banks:
 		add_bank(music_bank)
