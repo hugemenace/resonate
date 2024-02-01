@@ -1,5 +1,19 @@
 # Changelog
 
+## [2.2.0](https://github.com/hugemenace/resonate/compare/v2.1.0...v2.2.0) (2024-02-01)
+
+
+### Features
+
+* add a warning for when a music track contains non-looping stems ([3577b09](https://github.com/hugemenace/resonate/commit/3577b09a8fa80547891ddc97916319a112b5d90b))
+* add auto_release and auto_stop convenience methods to the sound and music managers ([5640a57](https://github.com/hugemenace/resonate/commit/5640a57725bedd0098cbf08337a82c71c52d180f))
+
+
+### Bug Fixes
+
+* ensure that pooled audio stream players immediately stop playback (by default) on release ([3cf44cd](https://github.com/hugemenace/resonate/commit/3cf44cd075035d2879e9c1ec722cc0741217ee19))
+* ensure the pool entity release method immediately stops the playback of looping stems even if finish_playing is set ([8014e20](https://github.com/hugemenace/resonate/commit/8014e205ba32b4dcdd9fdf1484c1c7423b79348a))
+
 ## [2.1.0](https://github.com/hugemenace/resonate/compare/v2.0.0...v2.1.0) (2024-01-31)
 
 
