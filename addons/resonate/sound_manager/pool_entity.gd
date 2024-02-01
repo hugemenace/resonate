@@ -50,7 +50,10 @@ static func trigger(p_base, p_varied: bool, p_pitch: float, p_volume: float) -> 
 
 
 static func release(p_base, p_finish_playing: bool) -> void:
-	if not p_finish_playing:
+	var streams = p_base.streams as Array
+	var contains_looping_streams = streams.any(ResonateUtils.is_stream_looped)
+	
+	if contains_looping_streams or not p_finish_playing:
 		p_base.stop()
 		
 	p_base.reserved = false
