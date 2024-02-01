@@ -1,32 +1,17 @@
-[gd_scene load_steps=12 format=3 uid="uid://cyme2yjik1ioe"]
+[gd_scene load_steps=8 format=3 uid="uid://cyme2yjik1ioe"]
 
 [ext_resource type="Script" path="res://addons/resonate/sound_manager/sound_bank.gd" id="1_cdph3"]
 [ext_resource type="Script" path="res://examples/scene_changes/scene_two.gd" id="1_fw31x"]
 [ext_resource type="Script" path="res://addons/resonate/sound_manager/sound_event_resource.gd" id="2_la3fn"]
 [ext_resource type="AudioStream" uid="uid://de550fklyhu88" path="res://audio/sounds/note_c5.wav" id="3_ll4y0"]
-[ext_resource type="Script" path="res://addons/resonate/music_manager/music_bank.gd" id="4_rqdpk"]
-[ext_resource type="Script" path="res://addons/resonate/music_manager/music_track_resource.gd" id="5_tfpgq"]
-[ext_resource type="Script" path="res://addons/resonate/music_manager/music_stem_resource.gd" id="6_4nepn"]
-[ext_resource type="AudioStream" uid="uid://clkjvyfm227dt" path="res://audio/music_stems/breakbeat_drums_stem.mp3" id="8_bjixm"]
+[ext_resource type="AudioStream" uid="uid://b35ao3bdtstka" path="res://audio/sounds/note_e5.wav" id="5_a7sct"]
+[ext_resource type="AudioStream" uid="uid://bmg3dvylup5k" path="res://audio/sounds/note_g5.wav" id="6_37wm4"]
 
 [sub_resource type="Resource" id="Resource_tk6xx"]
 script = ExtResource("2_la3fn")
 name = "note"
 bus = ""
-streams = Array[AudioStream]([ExtResource("3_ll4y0")])
-
-[sub_resource type="Resource" id="Resource_hhwhe"]
-script = ExtResource("6_4nepn")
-name = "stem_a"
-enabled = true
-volume = 0.0
-stream = ExtResource("8_bjixm")
-
-[sub_resource type="Resource" id="Resource_gxaub"]
-script = ExtResource("5_tfpgq")
-name = "track_a"
-bus = ""
-stems = Array[ExtResource("6_4nepn")]([SubResource("Resource_hhwhe")])
+streams = Array[AudioStream]([ExtResource("3_ll4y0"), ExtResource("5_a7sct"), ExtResource("6_37wm4")])
 
 [node name="SceneTwo" type="Node2D"]
 script = ExtResource("1_fw31x")
@@ -35,11 +20,6 @@ script = ExtResource("1_fw31x")
 script = ExtResource("1_cdph3")
 label = "scene_two"
 events = Array[ExtResource("2_la3fn")]([SubResource("Resource_tk6xx")])
-
-[node name="MusicBank" type="Node" parent="."]
-script = ExtResource("4_rqdpk")
-label = "scene_two"
-tracks = Array[ExtResource("5_tfpgq")]([SubResource("Resource_gxaub")])
 
 [node name="Timer" type="Timer" parent="."]
 autostart = true

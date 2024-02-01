@@ -22,15 +22,14 @@ offset_left = 100.0
 offset_top = 125.0
 offset_right = 824.0
 offset_bottom = 185.0
-text = "This example loads different scenes at runtime to demostrate the Sound and Music manager bank detection.
-Press \"1\" on your keyboard to cycle scenes.
-Each scene will play a single music track and trigger a sound regularly."
+text = "This example loads different scenes at runtime to demonstrate automatic bank detection.
+Press \"1\" on your keyboard to cycle scenes."
 label_settings = ExtResource("3_k4a5g")
 
 [node name="SceneDetails" type="Label" parent="."]
 offset_left = 100.0
-offset_top = 250.0
+offset_top = 215.0
 offset_right = 824.0
-offset_bottom = 310.0
+offset_bottom = 275.0
 text = "{ scene details }"
 label_settings = ExtResource("4_gpwbw")
