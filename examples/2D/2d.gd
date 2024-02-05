@@ -18,8 +18,8 @@ func _ready() -> void:
 	
 
 func on_sound_manager_loaded() -> void:
-	# The SoundManager's play_on_node and instance_on_node functions are designed
-	# so that you can pass them any Node2D or Node3D class (or child thereof)
-	# and they'll automatically detect whether the player should be spawned
-	# in 2D or 3D space. It'll also return the appropriate Pooled* player.
-	SoundManager.play_on_node("2d", "drums", moving_target)
+	# As the sound event below is a loop, we need to instance and trigger it manually. 
+	# Looped sounds are not automatically returned back to the pool as their playback 
+	# never ends. If you attempt to play* an event with variations that are looped, 
+	# you will not hear them and a warning will be emitted to the console.
+	SoundManager.instance_on_node("2d", "drums", moving_target).trigger()
