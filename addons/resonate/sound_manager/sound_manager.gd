@@ -179,6 +179,18 @@ func should_skip_instancing(p_instance) -> bool:
 	return not has_loaded or not p_instance.is_null()
 
 
+func quick_instance(p_instance, p_factory: Callable, p_auto_release_base: Node = null, p_finish_playing: bool = false) -> Variant:
+	if should_skip_instancing(p_instance):
+		return
+		
+	var new_instance = p_factory.call()
+	
+	if p_auto_release_base != null:
+		auto_release(p_auto_release_base, new_instance, p_finish_playing)
+		
+	return new_instance
+
+
 func play(p_bank_label: String, p_event_name: String, p_bus: String = "") -> void:
 	var instance = instance_manual(p_bank_label, p_event_name, false, p_bus, false, null)
 	instance.trigger()
