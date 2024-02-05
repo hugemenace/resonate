@@ -38,7 +38,7 @@ static func trigger(p_base, p_varied: bool, p_pitch: float, p_volume: float) -> 
 	
 	if not p_base.poly:
 		if p_varied:
-			p_base.volume = p_volume
+			p_base.volume_db = p_volume
 			p_base.pitch_scale = p_pitch
 		p_base.stream = next_stream
 		return true
