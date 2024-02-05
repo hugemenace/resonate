@@ -17,7 +17,11 @@ func _ready() -> void:
 
 static func create() -> PooledAudioStreamPlayer2D:
 	return PoolEntity.create(PooledAudioStreamPlayer2D.new())
-	
+
+
+func is_null() -> bool:
+	return false
+
 
 func configure(p_streams: Array, p_reserved: bool, p_bus: String, p_poly: bool, p_volume: float, p_mode: Node.ProcessMode) -> void:
 	var is_polyphonic = PoolEntity.configure(self, p_streams, p_reserved, p_bus, p_poly, p_volume, p_mode)

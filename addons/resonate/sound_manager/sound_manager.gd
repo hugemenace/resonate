@@ -3,6 +3,8 @@ extends Node
 
 signal loaded
 signal banks_updated
+signal pools_updated
+signal updated
 
 var has_loaded: bool = false
 
@@ -11,6 +13,18 @@ var _2d_players: Array[PooledAudioStreamPlayer2D] = []
 var _3d_players: Array[PooledAudioStreamPlayer3D] = []
 var _event_table: Dictionary = {}
 var _event_table_hash: int
+
+
+func null_instance() -> NullPooledAudioStreamPlayer:
+	return NullPooledAudioStreamPlayer.new()
+	
+
+func null_instance_2d() -> NullPooledAudioStreamPlayer2D:
+	return NullPooledAudioStreamPlayer2D.new()
+	
+
+func null_instance_3d() -> NullPooledAudioStreamPlayer3D:
+	return NullPooledAudioStreamPlayer3D.new()
 
 
 func _init():
@@ -42,14 +56,16 @@ func _ready() -> void:
 
 func _process(_p_delta) -> void:
 	if _event_table_hash != _event_table.hash():
-		banks_updated.emit()
 		_event_table_hash = _event_table.hash()
+		banks_updated.emit()
+		updated.emit()
 		
 	if has_loaded:
 		return
 		
 	has_loaded = true
 	loaded.emit()
+	updated.emit()
 
 
 func on_scene_node_added(p_node: Node) -> void:
@@ -122,28 +138,28 @@ func get_bus(p_bank_bus: String, p_event_bus: String) -> String:
 func instance_manual(p_bank_label: String, p_event_name: String, p_reserved: bool = false, p_bus: String = "", p_poly: bool = false, p_attachment = null) -> Variant:
 	if not has_loaded:
 		push_error("Resonate - The event [%s] on bank [%s] can't be instanced as the SoundManager has not loaded yet. Use the [loaded] signal/event to determine when it is ready." % [p_event_name, p_bank_label])
-		return null
+		return get_null_player(p_attachment)
 		
 	if not _event_table.has(p_bank_label):
 		push_error("Resonate - Tried to instance the event [%s] from an unknown bank [%s]." % [p_event_name, p_bank_label])
-		return null
+		return get_null_player(p_attachment)
 		
 	if not _event_table[p_bank_label]["events"].has(p_event_name):
 		push_error("Resonate - Tried to instance an unknown event [%s] from the bank [%s]." % [p_event_name, p_bank_label])
-		return null
+		return get_null_player(p_attachment)
 	
 	var bank = _event_table[p_bank_label] as Dictionary
 	var event = bank["events"][p_event_name] as Dictionary
 	
 	if event.streams.size() == 0:
 		push_error("Resonate - The event [%s] on bank [%s] has no streams, you'll need to add one at minimum." % [p_event_name, p_bank_label])
-		return
+		return get_null_player(p_attachment)
 		
 	var player = get_player(p_attachment)
 	
 	if player == null:
-		push_warning("Resonate - The event [%s] on bank [%s] can't be played; no pooled players available." % [p_event_name, p_bank_label])
-		return null
+		push_warning("Resonate - The event [%s] on bank [%s] can't be instanced; no pooled players available." % [p_event_name, p_bank_label])
+		return get_null_player(p_attachment)
 	
 	if is_vector_attachment(p_attachment):
 		player.global_position = p_attachment
@@ -157,6 +173,10 @@ func instance_manual(p_bank_label: String, p_event_name: String, p_reserved: boo
 	player.configure(event.streams, p_reserved, bus, p_poly, event.volume, bank.mode)
 	
 	return player
+
+
+func should_skip_instancing(p_instance) -> bool:
+	return not has_loaded or not p_instance.is_null()
 
 
 func play(p_bank_label: String, p_event_name: String, p_bus: String = "") -> void:
@@ -258,6 +278,16 @@ func get_player(p_attachment = null) -> Variant:
 	return get_player_1d()
 
 
+func get_null_player(p_attachment = null) -> Variant:
+	if p_attachment is Vector2 or p_attachment is Node2D:
+		return null_instance_2d()
+	
+	if p_attachment is Vector3 or p_attachment is Node3D:
+		return null_instance_3d()
+		
+	return null_instance()
+
+
 func is_vector_attachment(p_attachment = null) -> bool:
 	return true if p_attachment is Vector2 or p_attachment is Vector3 else false
 	
@@ -270,6 +300,7 @@ func add_player_to_pool(p_player, p_pool) -> Variant:
 	add_child(p_player)
 	
 	p_player.released.connect(on_player_released.bind(p_player))
+	p_player.finished.connect(on_player_finished.bind(p_player))
 	p_pool.append(p_player)
 	
 	return p_player
@@ -305,4 +336,15 @@ func on_player_released(p_player: Node) -> void:
 	
 	if player_parent == null or not player_parent == self:
 		p_player.reparent(self)
+		
+	if not p_player.playing:
+		pools_updated.emit()
+		updated.emit()
 	
+
+func on_player_finished(p_player: Node) -> void:
+	if p_player.reserved:
+		return
+		
+	pools_updated.emit()
+	updated.emit()
