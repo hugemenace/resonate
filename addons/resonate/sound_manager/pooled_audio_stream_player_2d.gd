@@ -8,6 +8,7 @@ var pool_type
 var reserved: bool
 var poly: bool
 var streams: Array
+var base_volume: float
 
 
 func _ready() -> void:

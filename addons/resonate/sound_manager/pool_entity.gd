@@ -14,7 +14,8 @@ static func configure(p_base, p_streams: Array, p_reserved: bool, p_bus: String,
 	p_base.bus = p_bus
 	p_base.process_mode = p_mode
 	p_base.reserved = p_reserved
-	p_base.volume_db = p_volume
+	p_base.volume_db = p_volume if not p_poly else 0.0
+	p_base.base_volume = p_volume
 	
 	if not p_base.poly:
 		return false
@@ -41,11 +42,18 @@ static func trigger(p_base, p_varied: bool, p_pitch: float, p_volume: float) -> 
 		if p_varied:
 			p_base.volume_db = p_volume
 			p_base.pitch_scale = p_pitch
+		else:
+			p_base.volume_db = p_base.base_volume
+			
 		p_base.stream = next_stream
 		return true
 	
 	var playback = p_base.get_stream_playback() as AudioStreamPlaybackPolyphonic
-	playback.play_stream(next_stream, 0, p_volume, p_pitch)
+	
+	if p_varied:
+		playback.play_stream(next_stream, 0, p_volume, p_pitch)
+	else:
+		playback.play_stream(next_stream, 0, p_base.base_volume, 1.0)
 	
 	return false
 
