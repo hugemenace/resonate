@@ -4,7 +4,6 @@ extends AudioStreamPlayer2D
 
 signal released
 
-var pool_type
 var reserved: bool
 var poly: bool
 var streams: Array
