@@ -136,13 +136,13 @@ func instance_manual(p_bank_label: String, p_event_name: String, p_reserved: boo
 	var event = bank["events"][p_event_name] as Dictionary
 	
 	if event.streams.size() == 0:
-		push_error("Resonate - The music track [%s] on bank [%s] has no stems, you'll need to add one at minimum." % [p_event_name, p_bank_label])
+		push_error("Resonate - The event [%s] on bank [%s] has no streams, you'll need to add one at minimum." % [p_event_name, p_bank_label])
 		return
 		
 	var player = get_player(p_attachment)
 	
-	if event.streams.size() == 0 or player == null:
-		push_error("Resonate - The event [%s] on bank [%s] can't be played; no streams or players available." % [p_event_name, p_bank_label])
+	if player == null:
+		push_warning("Resonate - The event [%s] on bank [%s] can't be played; no pooled players available." % [p_event_name, p_bank_label])
 		return null
 	
 	if is_vector_attachment(p_attachment):
