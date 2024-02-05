@@ -59,10 +59,13 @@ static func trigger(p_base, p_varied: bool, p_pitch: float, p_volume: float) -> 
 
 
 static func release(p_base, p_finish_playing: bool) -> void:
-	var streams = p_base.streams as Array
-	var contains_looping_streams = streams.any(ResonateUtils.is_stream_looped)
+	var has_loops = p_base.streams.any(ResonateUtils.is_stream_looped)
 	
-	if contains_looping_streams or not p_finish_playing:
+	if p_finish_playing and has_loops:
+		push_warning("Resonate - The player [%s] has looping streams and therefore will never release itself back to the pool (as playback continues indefinitely). It will be forced to stop." % p_base.name)
+		p_base.stop()
+		
+	if not p_finish_playing:
 		p_base.stop()
 		
 	p_base.reserved = false
