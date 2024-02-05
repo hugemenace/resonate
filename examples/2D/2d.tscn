@@ -12,6 +12,7 @@
 script = ExtResource("3_cnd76")
 name = "drums"
 bus = ""
+volume = 0.0
 streams = Array[AudioStream]([ExtResource("4_q31s7")])
 
 [sub_resource type="BoxMesh" id="BoxMesh_rk1yn"]

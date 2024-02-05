@@ -11,6 +11,7 @@
 script = ExtResource("2_la3fn")
 name = "note"
 bus = ""
+volume = 0.0
 streams = Array[AudioStream]([ExtResource("3_ll4y0"), ExtResource("5_a7sct"), ExtResource("6_37wm4")])
 
 [node name="SceneTwo" type="Node2D"]
