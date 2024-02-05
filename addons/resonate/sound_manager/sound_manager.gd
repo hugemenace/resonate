@@ -156,22 +156,43 @@ func instance_manual(p_bank_label: String, p_event_name: String, p_reserved: boo
 	
 	player.configure(event.streams, p_reserved, bus, p_poly, event.volume, bank.mode)
 	
-	if not p_reserved:
-		player.trigger()
-		
 	return player
 
 
 func play(p_bank_label: String, p_event_name: String, p_bus: String = "") -> void:
-	instance_manual(p_bank_label, p_event_name, false, p_bus, false, null)
+	var instance = instance_manual(p_bank_label, p_event_name, false, p_bus, false, null)
+	instance.trigger()
+	instance.release(true)
 	
 
 func play_at_position(p_bank_label: String, p_event_name: String, p_position, p_bus: String = "") -> void:
-	instance_manual(p_bank_label, p_event_name, false, p_bus, false, p_position)
+	var instance = instance_manual(p_bank_label, p_event_name, false, p_bus, false, p_position)
+	instance.trigger()
+	instance.release(true)
 	
 
 func play_on_node(p_bank_label: String, p_event_name: String, p_node, p_bus: String = "") -> void:
-	instance_manual(p_bank_label, p_event_name, false, p_bus, false, p_node)
+	var instance = instance_manual(p_bank_label, p_event_name, false, p_bus, false, p_node)
+	instance.trigger()
+	instance.release(true)
+	
+
+func play_varied(p_bank_label: String, p_event_name: String, p_pitch: float = 1.0, p_volume: float = 0.0, p_bus: String = "") -> void:
+	var instance = instance_manual(p_bank_label, p_event_name, false, p_bus, false, null)
+	instance.trigger_varied(p_pitch, p_volume)
+	instance.release(true)
+	
+
+func play_at_position_varied(p_bank_label: String, p_event_name: String, p_position, p_pitch: float = 1.0, p_volume: float = 0.0, p_bus: String = "") -> void:
+	var instance = instance_manual(p_bank_label, p_event_name, false, p_bus, false, p_position)
+	instance.trigger_varied(p_pitch, p_volume)
+	instance.release(true)
+	
+
+func play_on_node_varied(p_bank_label: String, p_event_name: String, p_node, p_pitch: float = 1.0, p_volume: float = 0.0, p_bus: String = "") -> void:
+	var instance = instance_manual(p_bank_label, p_event_name, false, p_bus, false, p_node)
+	instance.trigger_varied(p_pitch, p_volume)
+	instance.release(true)
 
 
 func instance(p_bank_label: String, p_event_name: String, p_bus: String = "") -> Variant:
