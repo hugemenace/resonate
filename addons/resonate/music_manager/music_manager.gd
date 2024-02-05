@@ -3,6 +3,7 @@ extends Node
 
 signal loaded
 signal banks_updated
+signal updated
 
 var has_loaded: bool = false
 
@@ -26,14 +27,16 @@ func _ready() -> void:
 
 func _process(_p_delta) -> void:
 	if _music_table_hash != _music_table.hash():
-		banks_updated.emit()
 		_music_table_hash = _music_table.hash()
+		banks_updated.emit()
+		updated.emit()
 		
 	if has_loaded:
 		return
 		
 	has_loaded = true
 	loaded.emit()
+	updated.emit()
 
 
 func on_scene_node_added(p_node: Node) -> void:
@@ -122,18 +125,18 @@ func get_current_player() -> StemmedMusicStreamPlayer:
 	return _music_streams.back() as StemmedMusicStreamPlayer
 
 
-func play(p_bank_label: String, p_track_name: String, p_crossfade_time: float = 5.0) -> void:
+func play(p_bank_label: String, p_track_name: String, p_crossfade_time: float = 5.0) -> bool:
 	if not has_loaded:
 		push_error("Resonate - The music track [%s] on bank [%s] can't be played as the MusicManager has not loaded yet. Use the [loaded] signal/event to determine when it is ready." % [p_track_name, p_bank_label])
-		return
+		return false
 		
 	if not _music_table.has(p_bank_label):
 		push_error("Resonate - Tried to play the music track [%s] from an unknown bank [%s]." % [p_track_name, p_bank_label])
-		return
+		return false
 		
 	if not _music_table[p_bank_label]["tracks"].has(p_track_name):
 		push_error("Resonate - Tried to play an unknown music track [%s] from the bank [%s]." % [p_track_name, p_bank_label])
-		return
+		return false
 	
 	var bank = _music_table[p_bank_label] as Dictionary
 	var track = bank["tracks"][p_track_name] as Dictionary
@@ -141,12 +144,12 @@ func play(p_bank_label: String, p_track_name: String, p_crossfade_time: float = 
 	
 	if stems.size() == 0:
 		push_error("Resonate - The music track [%s] on bank [%s] has no stems, you'll need to add one at minimum." % [p_track_name, p_bank_label])
-		return
+		return false
 		
 	for stem in stems:
 		if stem.stream == null:
 			push_error("Resonate - The stem [%s] on the music track [%s] on bank [%s] does not have an audio stream, you'll need to add one." % [stem.name, p_track_name, p_bank_label])
-			return
+			return false
 			
 		if not ResonateUtils.is_stream_looped(stem.stream):
 			push_warning("Resonate - The stem [%s] on the music track [%s] on bank [%s] is not set to loop, which will cause it to work incorrectly." % [stem.name, p_track_name, p_bank_label])
@@ -164,6 +167,8 @@ func play(p_bank_label: String, p_track_name: String, p_crossfade_time: float = 
 	
 	player.start_stems(stems, p_crossfade_time)
 	player.stopped.connect(on_player_stopped.bind(player))
+	
+	return true
 
 
 func is_playing(p_bank_label: String = "", p_track_name: String = "") -> bool:
@@ -198,6 +203,10 @@ func stop(p_fade_time: float = 5.0) -> void:
 	var current_player = get_current_player()
 	
 	current_player.stop_stems(p_fade_time)
+
+
+func should_skip_playing(p_flag) -> bool:
+	return not has_loaded or (p_flag != false and p_flag != null)
 
 
 func set_volume(p_volume: float) -> void:
