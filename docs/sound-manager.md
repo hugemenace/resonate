@@ -122,6 +122,19 @@ Will immediately trigger the event in 1D space when called.
 | `p_event_name` | **Required** | The name of the event to trigger |
 | `p_bus` | Optional | The name of the audio bus you want this event to play through |
 
+#### Play varied
+
+Will immediately trigger the event in 1D space when called with optional pitch and volume variation.
+
+`play_varied(p_bank_label: String, p_event_name: String, p_pitch: float = 1.0, p_volume: float = 0.0, p_bus: String = "") -> void`
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `p_bank_label` | **Required** | The label of the bank you want to trigger an event from |
+| `p_event_name` | **Required** | The name of the event to trigger |
+| `p_pitch` | Optional | The pitch to play the event at |
+| `p_volume` | Optional | The volume to play the event at |
+| `p_bus` | Optional | The name of the audio bus you want this event to play through |
 
 #### Play at position
 
@@ -136,6 +149,21 @@ Will immediately trigger the event in 2D or 3D space when called.
 | `p_position` | **Required** | The position you want to play this event from (supports `Vector2` and `Vector3` types.) |
 | `p_bus` | Optional | The name of the audio bus you want this event to play through |
 
+#### Play at position varied
+
+Will immediately trigger the event in 2D or 3D space when called with optional pitch and volume variation.
+
+`play_at_position_varied(p_bank_label: String, p_event_name: String, p_position, p_pitch: float = 1.0, p_volume: float = 0.0, p_bus: String = "") -> void`
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `p_bank_label` | **Required** | The label of the bank you want to trigger an event from |
+| `p_event_name` | **Required** | The name of the event to trigger |
+| `p_position` | **Required** | The position you want to play this event from (supports `Vector2` and `Vector3` types.) |
+| `p_pitch` | Optional | The pitch to play the event at |
+| `p_volume` | Optional | The volume to play the event at |
+| `p_bus` | Optional | The name of the audio bus you want this event to play through |
+
 
 #### Play on node
 
@@ -148,6 +176,21 @@ Will immediately trigger the event in 2D or 3D space when called.
 | `p_bank_label` | **Required** | The label of the bank you want to trigger an event from |
 | `p_event_name` | **Required** | The name of the event to trigger |
 | `p_node` | **Required** | The node you want to attach (and trigger) this event on (supports `Node2D` and `Node3D` types or subtypes.) |
+| `p_bus` | Optional | The name of the audio bus you want this event to play through |
+
+#### Play on node varied
+
+Will immediately trigger the event in 2D or 3D space when called with optional pitch and volume variation.
+
+`play_on_node_varied(p_bank_label: String, p_event_name: String, p_node, p_pitch: float = 1.0, p_volume: float = 0.0, p_bus: String = "") -> void`
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `p_bank_label` | **Required** | The label of the bank you want to trigger an event from |
+| `p_event_name` | **Required** | The name of the event to trigger |
+| `p_node` | **Required** | The node you want to attach (and trigger) this event on (supports `Node2D` and `Node3D` types or subtypes.) |
+| `p_pitch` | Optional | The pitch to play the event at |
+| `p_volume` | Optional | The volume to play the event at |
 | `p_bus` | Optional | The name of the audio bus you want this event to play through |
 
 #### Instance
@@ -226,6 +269,24 @@ Will return a reserved polyphonic `PooledAudioStreamPlayer2D` or `PooledAudioStr
 | `p_node` | **Required** | The node you want to attach (and trigger) this event on (supports `Node2D` and `Node3D` types or subtypes.) |
 | `p_bus` | Optional | The name of the audio bus you want this event to play through |
 
+#### Null instance
+
+Will return a `NullPooledAudioStreamPlayer` which mimics a `PooledAudioStreamPlayer` but does not trigger any events or come from the pool. Useful to avoid `null` checks in your scripts. See the repo example scenes for usage.
+
+`null_instance() -> NullPooledAudioStreamPlayer`
+
+#### Null instance 2D
+
+Will return a `NullPooledAudioStreamPlayer2D` which mimics a `PooledAudioStreamPlayer2D` but does not trigger any events or come from the pool. Useful to avoid `null` checks in your scripts. See the repo example scenes for usage.
+
+`null_instance_2d() -> NullPooledAudioStreamPlayer2D`
+
+#### Null instance 3D
+
+Will return a `NullPooledAudioStreamPlayer3D` which mimics a `PooledAudioStreamPlayer3D` but does not trigger any events or come from the pool. Useful to avoid `null` checks in your scripts. See the repo example scenes for usage.
+
+`null_instance_3d() -> NullPooledAudioStreamPlayer3D`
+
 ### Signals
 
 #### Loaded
@@ -239,3 +300,15 @@ Emitted when the SoundManager has loaded and is ready to play sounds.
 Emitted when the MusicManager has detected scene changes (node insertion & deletion) that resulted in MusicBanks being added or removed.
 
 `signal banks_updated`
+
+#### Pools updated
+
+Emmited whenever any of the player pools have had a new instance returned to them.
+
+`signal pools_updated`
+
+#### Updated
+
+Emitted alongside `loaded`, `banks_updated`, and `pools_updated` as a signal to hook into if you're wanting to fire the same callback for all of those events.
+
+`signal updated`

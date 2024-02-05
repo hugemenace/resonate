@@ -50,61 +50,27 @@ func on_music_manager_loaded() -> void:
 
 You can also perform a safety check to ensure `MusicManager.has_loaded` is true before a function call.
 
-## Scene changes
+## Scene changes & runtime node creation
 
-Resonate will scan the scene tree for all music and sound banks when your game launches. Resonate uses these internally to create lookup tables. It will also automatically update the lookup tables whenever a node is inserted or removed from the scene tree. Suppose you load a script at runtime attempting to use either the MusicManager or SoundManager. In that case, you can leverage the `banks_updated` signal on top of the `loaded` signal to ensure you're ready to play music or trigger sound events without issues:
-
-```GDScript
-var _instance: PooledAudioStreamPlayer
-
-func _ready():
-	# Leveraging the `banks_updated` and `loaded` events ensures that this script 
-	# will create an event instance irrespective of whether it's in the scene 
-	# tree when the game loads or is dynamically loaded at runtime.
-	
-	SoundManager.loaded.connect(on_sound_manager_updated)
-	SoundManager.banks_updated.connect(on_sound_manager_updated)
-
-func _process(delta):
-	if _instance == null:
-		return
-
-	_instance.trigger()
-
-func _exit_tree():
-	if _instance == null:
-		return
-		
-	_instance.release()
-
-func on_sound_manager_updated() -> void:
-	if _instance != null or not SoundManager.has_loaded:
-		return
-	
-	_instance = SoundManager.instance("scene_one", "note")
-```
-
-If you prefer to have instances or music tracks released or stopped automatically, you can call the `SoundBank.auto_release` and `MusicManager.auto_stop` methods. These replace the need to use the `_exit_tree` lifecycle method or the `tree_exiting` signal. You could rewrite the example above as:
+Resonate will scan the scene tree for all music and sound banks when your game launches, which it uses internally to create lookup tables. It will also automatically update those tables whenever a node is inserted or removed from the scene tree. If you load a script at runtime attempting to use either the MusicManager or SoundManager, you can leverage the `updated` signal to ensure you're ready to play music or trigger sound events without issues:
 
 ```GDScript
-var _instance: PooledAudioStreamPlayer
+var _instance_jump: PooledAudioStreamPlayer = SoundManager.null_instance()
 
 func _ready():
-	SoundManager.loaded.connect(on_sound_manager_updated)
-	SoundManager.banks_updated.connect(on_sound_manager_updated)
+	SoundManager.updated.connect(on_sound_manager_updated)
 
-func _process(delta):
-	if _instance == null:
-		return
-
-	_instance.trigger()
+func _input(p_event: InputEvent) -> void:
+	if p_event.is_action_pressed("jump"):
+		_instance_jump.trigger()
 
 func on_sound_manager_updated() -> void:
-	if _instance != null or not SoundManager.has_loaded:
+	if SoundManager.should_skip_instancing(_instance_jump):
 		return
 	
-	_instance = SoundManager.instance("scene_one", "note")
-	SoundManager.auto_release(self, _instance)
+	_instance_jump = SoundManager.instance("player", "jump")
+
+	SoundManager.auto_release(self, _instance_jump)
 ```
 
 ## Digging deeper

@@ -151,3 +151,9 @@ Emitted when the MusicManager has loaded and is ready to play music tracks.
 Emitted when the MusicManager has detected scene changes (node insertion & deletion) that resulted in MusicBanks being added or removed.
 
 `signal banks_updated`
+
+#### Updated
+
+Emitted alongside `loaded` and `banks_updated` as a signal to hook into if you're wanting to fire the same callback for both events.
+
+`signal updated`
