@@ -100,6 +100,7 @@ func create_events(p_events: Array[SoundEventResource]) -> Dictionary:
 		events[event.name] = {
 			"name": event.name,
 			"bus": event.bus,
+			"volume": event.volume,
 			"streams": event.streams,
 		}
 		
@@ -153,7 +154,7 @@ func instance_manual(p_bank_label: String, p_event_name: String, p_reserved: boo
 		
 	var bus = p_bus if p_bus != "" else get_bus(bank.bus, event.bus)
 	
-	player.configure(event.streams, p_reserved, bus, p_poly, bank.mode)
+	player.configure(event.streams, p_reserved, bus, p_poly, event.volume, bank.mode)
 	
 	if not p_reserved:
 		player.trigger()

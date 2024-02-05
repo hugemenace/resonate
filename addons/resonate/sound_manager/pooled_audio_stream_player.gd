@@ -18,8 +18,8 @@ static func create() -> PooledAudioStreamPlayer:
 	return PoolEntity.create(PooledAudioStreamPlayer.new())
 
 
-func configure(p_streams: Array, p_reserved: bool, p_bus: String, p_poly: bool, p_mode: Node.ProcessMode) -> void:
-	var is_polyphonic = PoolEntity.configure(self, p_streams, p_reserved, p_bus, p_poly, p_mode)
+func configure(p_streams: Array, p_reserved: bool, p_bus: String, p_poly: bool, p_volume: float, p_mode: Node.ProcessMode) -> void:
+	var is_polyphonic = PoolEntity.configure(self, p_streams, p_reserved, p_bus, p_poly, p_volume, p_mode)
 	
 	if is_polyphonic:
 		super.play()

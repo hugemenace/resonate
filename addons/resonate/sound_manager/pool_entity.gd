@@ -8,12 +8,13 @@ static func create(p_base) -> Variant:
 	return p_base
 
 
-static func configure(p_base, p_streams: Array, p_reserved: bool, p_bus: String, p_poly: bool, p_mode: Node.ProcessMode) -> bool:
+static func configure(p_base, p_streams: Array, p_reserved: bool, p_bus: String, p_poly: bool, p_volume: float, p_mode: Node.ProcessMode) -> bool:
 	p_base.streams = p_streams
 	p_base.poly = p_poly
 	p_base.bus = p_bus
 	p_base.process_mode = p_mode
 	p_base.reserved = p_reserved
+	p_base.volume_db = p_volume
 	
 	if not p_base.poly:
 		return false
