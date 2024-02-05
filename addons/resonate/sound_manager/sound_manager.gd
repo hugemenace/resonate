@@ -322,14 +322,10 @@ func auto_release(p_base: Node, p_instance: Node, p_finish_playing: bool = false
 	if p_instance == null:
 		return p_instance
 		
-	p_base.tree_exiting.connect(on_player_reserver_exiting.bind(p_instance, p_finish_playing))
+	p_base.tree_exiting.connect(p_instance.release.bind(p_finish_playing), CONNECT_DEFERRED)
 	
 	return p_instance
 
-
-func on_player_reserver_exiting(p_instance: Node, p_finish_playing: bool) -> void:
-	p_instance.release(p_finish_playing)
-	
 
 func on_player_released(p_player: Node) -> void:
 	var player_parent = p_player.get_parent()
