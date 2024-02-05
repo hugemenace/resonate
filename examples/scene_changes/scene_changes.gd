@@ -1,6 +1,11 @@
 extends Node2D
 
 
+# This script is simply glue code for the two other example scenes in this folder.
+# It's worth inspecting scene_one and scene_two to learn how to handle runtime 
+# scene insertion and deletion while utilising the Sound and Music Managers.
+
+
 @onready var scene_details = $SceneDetails
 
 const _SCENE_NAMES: Array[String] = ["scene_one", "scene_two"]
