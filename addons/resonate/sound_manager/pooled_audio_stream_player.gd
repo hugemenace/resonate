@@ -8,6 +8,7 @@ var reserved: bool
 var poly: bool
 var streams: Array
 var base_volume: float
+var base_pitch: float
 
 
 func _ready() -> void:
@@ -22,8 +23,8 @@ func is_null() -> bool:
 	return false
 
 
-func configure(p_streams: Array, p_reserved: bool, p_bus: String, p_poly: bool, p_volume: float, p_mode: Node.ProcessMode) -> void:
-	var is_polyphonic = PoolEntity.configure(self, p_streams, p_reserved, p_bus, p_poly, p_volume, p_mode)
+func configure(p_streams: Array, p_reserved: bool, p_bus: String, p_poly: bool, p_volume: float, p_pitch: float, p_mode: Node.ProcessMode) -> void:
+	var is_polyphonic = PoolEntity.configure(self, p_streams, p_reserved, p_bus, p_poly, p_volume, p_pitch, p_mode)
 	
 	if is_polyphonic:
 		super.play()
