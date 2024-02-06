@@ -12,6 +12,7 @@ script = ExtResource("3_s5fje")
 name = "blaster"
 bus = ""
 volume = 0.0
+pitch = 1.0
 streams = Array[AudioStream]([ExtResource("4_pis6r")])
 
 [node name="Polyphonic" type="Node2D"]

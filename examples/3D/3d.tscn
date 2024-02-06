@@ -13,6 +13,7 @@ script = ExtResource("3_3oot1")
 name = "drums"
 bus = ""
 volume = 0.0
+pitch = 1.0
 streams = Array[AudioStream]([ExtResource("4_lnff3")])
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_ajqyv"]
