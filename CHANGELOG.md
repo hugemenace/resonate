@@ -1,5 +1,28 @@
 # Changelog
 
+## [2.3.0](https://github.com/hugemenace/resonate/compare/v2.2.0...v2.3.0) (2024-02-06)
+
+
+### Features
+
+* add a volume variable to sound events (bank-configured) ([6b3d66d](https://github.com/hugemenace/resonate/commit/6b3d66d97bb4258e1f6f50b226604b548e682571))
+* add enhanced return types, signals, and helper methods to the music manager ([e621269](https://github.com/hugemenace/resonate/commit/e6212692baaf777bab0391c8ab7fddb876cc8117))
+* add null object pattern to the sound manager for instances and some additional helper methods and events for implementation ([df8eb86](https://github.com/hugemenace/resonate/commit/df8eb86ee2d979ed220388d19ed57e21730005e0))
+* add pitch variable to sound event resources and fix pitch and volume behaviour across audio stream players ([5918f8e](https://github.com/hugemenace/resonate/commit/5918f8eef87a2b14c4d71fdda4911ecc90a1b8a9))
+* add play_varied, play_at_position_varied, and play_on_node_varied methods to the sound manager ([3f2ec86](https://github.com/hugemenace/resonate/commit/3f2ec86ac70c414039c274a21cc6c84d157894ea))
+* add reset_volume, reset_pitch, and reset_all methods to pooled audio stream players ([07ec5ef](https://github.com/hugemenace/resonate/commit/07ec5efb70742ee874641d048ab3616f368e8dc4))
+* add the quick_instance method to the sound manager for bulk instances, or for shorter registration calls ([03f2515](https://github.com/hugemenace/resonate/commit/03f2515a84c9b19395ffe118d25132dbc9f2663d))
+
+
+### Bug Fixes
+
+* ensure that pooled audio stream players return the player volume back to the base volume when calling trigger after trigger_varied, and that trigger_varied isn't affected by the base volume on polyphonic playback ([f53f709](https://github.com/hugemenace/resonate/commit/f53f709e314ef54f537736b903290492acb94ed8))
+* fix the "signal already connected" error in multiple single-script auto_released instances and ensure the connection is deferred ([f7b2553](https://github.com/hugemenace/resonate/commit/f7b25535f8b8bfc0d40330bfb2ea7307330b69e5))
+* fix the error handling & messages for missing streams or players in the sound manager ([9e4d27d](https://github.com/hugemenace/resonate/commit/9e4d27d60c11cff8e2c0f4088c2170c0c598e775))
+* fix the volume adjustment in the trigger_varied method on non-polyphonic pooled audio stream players ([1ed5ebd](https://github.com/hugemenace/resonate/commit/1ed5ebd23d657f66b487fae326b6170d448254f4))
+* increase the volume step resolution on music stem resources to allow for fractional dBs ([51cf761](https://github.com/hugemenace/resonate/commit/51cf76164dbad187179501da3c39f072d6f67a66))
+* push a warning when instanced sound events that contain looping variations are released with "finish playing" - these will be forced to stop playback ([fdce4d2](https://github.com/hugemenace/resonate/commit/fdce4d2764a8ffd2c617064a5a352bdb6484e6bd))
+
 ## [2.2.0](https://github.com/hugemenace/resonate/compare/v2.1.0...v2.2.0) (2024-02-01)
 
 
