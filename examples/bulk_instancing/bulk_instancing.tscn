@@ -14,6 +14,7 @@ script = ExtResource("3_hf22l")
 name = "one"
 bus = ""
 volume = 0.0
+pitch = 1.0
 streams = Array[AudioStream]([ExtResource("4_uqepo")])
 
 [sub_resource type="Resource" id="Resource_5d8ei"]
@@ -21,6 +22,7 @@ script = ExtResource("3_hf22l")
 name = "two"
 bus = ""
 volume = 0.0
+pitch = 1.0
 streams = Array[AudioStream]([ExtResource("5_w24x2")])
 
 [sub_resource type="Resource" id="Resource_8ke84"]
@@ -28,6 +30,7 @@ script = ExtResource("3_hf22l")
 name = "three"
 bus = ""
 volume = 0.0
+pitch = 1.0
 streams = Array[AudioStream]([ExtResource("6_1thix")])
 
 [node name="BulkInstancing" type="Node2D"]
