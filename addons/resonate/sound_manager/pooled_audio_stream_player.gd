@@ -44,6 +44,18 @@ func trigger_varied(p_pitch: float = 1.0, p_volume: float = 0.0) -> void:
 		super.play()
 
 
+func reset_volume() -> void:
+	PoolEntity.reset_volume(self)
+	
+	
+func reset_pitch() -> void:
+	PoolEntity.reset_pitch(self)
+	
+
+func reset_all() -> void:
+	PoolEntity.reset_all(self)
+
+
 func release(p_finish_playing: bool = false) -> void:
 	PoolEntity.release(self, p_finish_playing)
 

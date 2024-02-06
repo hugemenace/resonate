@@ -58,6 +58,19 @@ static func trigger(p_base, p_varied: bool, p_pitch: float, p_volume: float) -> 
 	return false
 
 
+static func reset_volume(p_base) -> void:
+	p_base.volume_db = p_base.base_volume
+	
+
+static func reset_pitch(p_base) -> void:
+	p_base.pitch_scale = p_base.base_pitch
+	
+
+static func reset_all(p_base) -> void:
+	p_base.volume_db = p_base.base_volume
+	p_base.pitch_scale = p_base.base_pitch
+
+
 static func release(p_base, p_finish_playing: bool) -> void:
 	var has_loops = p_base.streams.any(ResonateUtils.is_stream_looped)
 	
