@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.3.1](https://github.com/hugemenace/resonate/compare/v2.3.0...v2.3.1) (2024-02-07)
+
+
+### Bug Fixes
+
+* ensure 3D players registered as auto-released aren't lost during scene tree exiting events ([aa0d702](https://github.com/hugemenace/resonate/commit/aa0d702d7c4f8494e9fc50dd98594aabee2b90db))
+* fix the project settings registration process when the addon loads ([4b17eec](https://github.com/hugemenace/resonate/commit/4b17eecbb3998c5c8d8c0f8fc8f781f5d7ffd66c))
+
 ## [2.3.0](https://github.com/hugemenace/resonate/compare/v2.2.0...v2.3.0) (2024-02-06)
 
 
