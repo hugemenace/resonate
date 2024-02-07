@@ -344,7 +344,7 @@ func auto_release(p_base: Node, p_instance: Node, p_finish_playing: bool = false
 	if p_instance == null:
 		return p_instance
 		
-	p_base.tree_exiting.connect(p_instance.release.bind(p_finish_playing), CONNECT_DEFERRED)
+	p_base.tree_exiting.connect(p_instance.release.bind(p_finish_playing))
 	
 	return p_instance
 
@@ -353,7 +353,8 @@ func on_player_released(p_player: Node) -> void:
 	var player_parent = p_player.get_parent()
 	
 	if player_parent == null or not player_parent == self:
-		p_player.reparent(self)
+		player_parent.remove_child(p_player)
+		add_child(p_player)
 		
 	if not p_player.playing:
 		pools_updated.emit()
