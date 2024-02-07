@@ -177,7 +177,16 @@ func instance_manual(p_bank_label: String, p_event_name: String, p_reserved: boo
 
 
 func should_skip_instancing(p_instance) -> bool:
-	return not has_loaded or (p_instance != null and not p_instance.is_null())
+	if not has_loaded:
+		return true
+		
+	if p_instance != null and p_instance.releasing:
+		return true
+	
+	if p_instance != null and not p_instance.is_null():
+		return true
+		
+	return false
 
 
 func quick_instance(p_instance, p_factory: Callable, p_auto_release_base: Node = null, p_finish_playing: bool = false) -> Variant:

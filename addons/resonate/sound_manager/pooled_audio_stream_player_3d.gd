@@ -5,6 +5,7 @@ extends AudioStreamPlayer3D
 signal released
 
 var reserved: bool
+var releasing: bool
 var poly: bool
 var streams: Array
 var base_volume: float

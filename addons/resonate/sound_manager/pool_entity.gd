@@ -14,6 +14,7 @@ static func configure(p_base, p_streams: Array, p_reserved: bool, p_bus: String,
 	p_base.bus = p_bus
 	p_base.process_mode = p_mode
 	p_base.reserved = p_reserved
+	p_base.releasing = false
 	p_base.volume_db = p_volume if not p_poly else 0.0
 	p_base.pitch_scale = p_pitch if not p_poly else 1.0
 	p_base.base_volume = p_volume
@@ -72,6 +73,9 @@ static func reset_all(p_base) -> void:
 
 
 static func release(p_base, p_finish_playing: bool) -> void:
+	if p_base.releasing:
+		return
+		
 	var has_loops = p_base.streams.any(ResonateUtils.is_stream_looped)
 	
 	if p_finish_playing and has_loops:
@@ -83,6 +87,7 @@ static func release(p_base, p_finish_playing: bool) -> void:
 		
 	p_base.reserved = false
 	p_base.process_mode = Node.PROCESS_MODE_ALWAYS
+	p_base.releasing = true
 	p_base.released.emit()
 
 
