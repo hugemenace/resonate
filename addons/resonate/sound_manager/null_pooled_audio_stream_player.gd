@@ -14,5 +14,17 @@ func trigger_varied(p_pitch: float = 1.0, p_volume: float = 0.0) -> void:
 	return
 
 
+func reset_volume() -> void:
+	return
+	
+
+func reset_pitch() -> void:
+	return
+	
+
+func reset_all() -> void:
+	return
+
+
 func release(p_finish_playing: bool = false) -> void:
 	return
