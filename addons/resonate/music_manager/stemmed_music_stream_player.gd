@@ -1,11 +1,19 @@
 class_name StemmedMusicStreamPlayer
 extends AudioStreamPlayer
+## An extended AudioStreamPlayer capable of managing and playing a 
+## collection of stems that make up a music track.
 
 
+## Emitted when this player has completely stopped playing a track.
 signal stopped
 
+## True when this player is in the process of shutting down and stopping a track.
 var is_stopping: bool
+
+## The label of the bank that this player's track came from.
 var bank_label: String
+
+## The name of the track associated with this player.
 var track_name: String
 
 const _DISABLED_VOLUME: float = -80
@@ -19,6 +27,12 @@ var _stems: Dictionary
 var _max_volume: float
 
 
+# ------------------------------------------------------------------------------
+# Public methods
+# ------------------------------------------------------------------------------
+
+
+## Create a new player associated with a given bank and track.
 static func create(p_bank_label: String, p_track_name: String, p_bus: String, p_mode: Node.ProcessMode, p_max_volume: float) -> StemmedMusicStreamPlayer:
 	var player = StemmedMusicStreamPlayer.new()
 	var stream = AudioStreamPolyphonic.new()
@@ -35,6 +49,9 @@ static func create(p_bank_label: String, p_track_name: String, p_bus: String, p_
 	return player
 
 
+## Start the collection of stems associated with the track on this player.
+## This is what fundamentally starts the music track.[br][br]
+## [b]Note:[/b] this should only be called once.
 func start_stems(p_stems: Array, p_crossfade_time: float) -> void:
 	if playing:
 		return
@@ -69,6 +86,7 @@ func start_stems(p_stems: Array, p_crossfade_time: float) -> void:
 			.set_ease(_START_EASE)
 	
 
+## Toggle (enable or disable) the specified stem associated with the track on this player.
 func toggle_stem(p_name: String, p_enabled: bool, p_fade_time: float) -> void:
 	if not _stems.has(p_name):
 		push_warning("Resonate - Cannot toggle the stem [%s] on music track [%s] from bank [%s] as it does not exist." % [p_name, track_name, bank_label])
@@ -90,11 +108,14 @@ func toggle_stem(p_name: String, p_enabled: bool, p_fade_time: float) -> void:
 	var easing = _START_EASE if p_enabled else _STOP_EASE
 	
 	new_tween \
-			.tween_method(tween_stem_volume.bind(p_name), stem.volume, target_volume, p_fade_time) \
+			.tween_method(_tween_stem_volume.bind(p_name), stem.volume, target_volume, p_fade_time) \
 			.set_trans(transition) \
 			.set_ease(easing)
 
 
+## Set the volume of this player.[br][br]
+## [b]Note:[/b] if called when the player is still fading in or out, it will 
+## immediately cancel the fade and set the volume at specified level.
 func set_volume(p_volume: float) -> void:
 	if _fade_tween != null and _fade_tween.is_running():
 		_fade_tween.kill()
@@ -103,15 +124,9 @@ func set_volume(p_volume: float) -> void:
 	volume_db = p_volume
 	
 
-func tween_stem_volume(p_target_volume: float, p_name: String) -> void:
-	var playback = get_stream_playback() as AudioStreamPlaybackPolyphonic
-	var stem = _stems[p_name]
-	
-	playback.set_stream_volume(stem.stream_id, p_target_volume)
-	
-	_stems[p_name]["volume"] = p_target_volume
-
-
+## Set the volume of a specific stem associated with this track.[br][br]
+## [b]Note:[/b] if called when the stem is still fading in or out, it will 
+## immediately cancel the fade and set the volume at specified level.
 func set_stem_volume(p_name: String, p_volume: float) -> void:
 	var playback = get_stream_playback() as AudioStreamPlaybackPolyphonic
 	var stem = _stems[p_name]
@@ -125,6 +140,7 @@ func set_stem_volume(p_name: String, p_volume: float) -> void:
 	_stems[p_name]["max_volume"] = p_volume
 
 
+## This will stop all stems associated with this player, causing it to shut-down and stop.
 func stop_stems(p_fade_time: float) -> void:
 	if is_stopping:
 		return
@@ -137,9 +153,10 @@ func stop_stems(p_fade_time: float) -> void:
 			.set_trans(_STOP_TRANS) \
 			.set_ease(_STOP_EASE)
 	
-	tween.finished.connect(on_stop_stems_tween_finished)
+	tween.finished.connect(_on_stop_stems_tween_finished)
 
 
+## Get the underlying details of the provided stem for the currently playing music track.
 func get_stem_details(p_name: String) -> Variant:
 	if not _stems.has(p_name):
 		push_warning("Resonate - Cannot get the details for stem [%s] on music track [%s] from bank [%s] as it does not exist." % [p_name, track_name, bank_label])
@@ -154,5 +171,19 @@ func get_stem_details(p_name: String) -> Variant:
 	}
 
 
-func on_stop_stems_tween_finished() -> void:
+# ------------------------------------------------------------------------------
+# Private methods
+# ------------------------------------------------------------------------------
+
+
+func _tween_stem_volume(p_target_volume: float, p_name: String) -> void:
+	var playback = get_stream_playback() as AudioStreamPlaybackPolyphonic
+	var stem = _stems[p_name]
+	
+	playback.set_stream_volume(stem.stream_id, p_target_volume)
+	
+	_stems[p_name]["volume"] = p_target_volume
+
+
+func _on_stop_stems_tween_finished() -> void:
 	stopped.emit()
