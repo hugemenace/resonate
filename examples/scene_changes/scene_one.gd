@@ -31,4 +31,4 @@ func on_music_manager_updated() -> void:
 	# If you know that a scene will be inserted or removed at runtime, and you
 	# don't want to hook into lifecycle events to ensure your music tracks
 	# stop playing, you can instruct the MusicManager to do it for you.
-	MusicManager.auto_stop(self, "scene_one", "track_a")
+	MusicManager.stop_on_exit(self, "scene_one", "track_a")
