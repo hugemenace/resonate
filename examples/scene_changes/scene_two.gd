@@ -35,7 +35,7 @@ func on_sound_manager_updated() -> void:
 	# If you know that a scene will be inserted or removed at runtime, and you
 	# don't want to hook into lifecycle events to ensure your instances are
 	# being released, you can instruct the SoundManager to do it for you.
-	SoundManager.auto_release(self, _instance, true)
+	SoundManager.release_on_exit(self, _instance, true)
 
 
 func on_timer_timeout():
