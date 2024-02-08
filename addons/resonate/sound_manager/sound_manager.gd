@@ -11,6 +11,7 @@ var has_loaded: bool = false
 var _1d_players: Array[PooledAudioStreamPlayer] = []
 var _2d_players: Array[PooledAudioStreamPlayer2D] = []
 var _3d_players: Array[PooledAudioStreamPlayer3D] = []
+var _node_attachments: Dictionary = {}
 var _event_table: Dictionary = {}
 var _event_table_hash: int
 
@@ -165,15 +166,24 @@ func instance_manual(p_bank_label: String, p_event_name: String, p_reserved: boo
 	if is_vector_attachment(p_attachment):
 		player.global_position = p_attachment
 		
-	if is_node_attachment(p_attachment):
-		player.global_position = p_attachment.global_position
-		player.reparent(p_attachment)
+	if is_node_attachment(p_attachment) and is_attachment_2d(p_attachment):
+		create_node_attachment(p_attachment, RemoteTransform2D.new(), player)
+	
+	if is_node_attachment(p_attachment) and is_attachment_3d(p_attachment):
+		create_node_attachment(p_attachment, RemoteTransform3D.new(), player)
 		
 	var bus = p_bus if p_bus != "" else get_bus(bank.bus, event.bus)
 	
 	player.configure(event.streams, p_reserved, bus, p_poly, event.volume, event.pitch, bank.mode)
 	
 	return player
+
+
+func create_node_attachment(p_remote_node, p_remote_transform, p_player) -> void:
+	p_remote_transform.remote_path = p_player.get_path()
+	p_remote_node.add_child(p_remote_transform)
+	
+	_node_attachments[p_player] = p_remote_transform
 
 
 func should_skip_instancing(p_instance) -> bool:
@@ -196,7 +206,7 @@ func quick_instance(p_instance, p_factory: Callable, p_auto_release_base: Node =
 	var new_instance = p_factory.call()
 	
 	if p_auto_release_base != null:
-		auto_release(p_auto_release_base, new_instance, p_finish_playing)
+		release_on_exit(p_auto_release_base, new_instance, p_finish_playing)
 		
 	return new_instance
 
@@ -290,21 +300,29 @@ func get_player_3d() -> PooledAudioStreamPlayer3D:
 	return get_player_from_pool(_3d_players)
 
 
+func is_attachment_2d(p_attachment = null) -> bool:
+	return p_attachment is Vector2 or p_attachment is Node2D
+
+
+func is_attachment_3d(p_attachment = null) -> bool:
+	return p_attachment is Vector3 or p_attachment is Node3D
+
+
 func get_player(p_attachment = null) -> Variant:
-	if p_attachment is Vector2 or p_attachment is Node2D:
+	if is_attachment_2d(p_attachment):
 		return get_player_2d()
 	
-	if p_attachment is Vector3 or p_attachment is Node3D:
+	if is_attachment_3d(p_attachment):
 		return get_player_3d()
 		
 	return get_player_1d()
 
 
 func get_null_player(p_attachment = null) -> Variant:
-	if p_attachment is Vector2 or p_attachment is Node2D:
+	if is_attachment_2d(p_attachment):
 		return null_instance_2d()
 	
-	if p_attachment is Vector3 or p_attachment is Node3D:
+	if is_attachment_3d(p_attachment):
 		return null_instance_3d()
 		
 	return null_instance()
@@ -340,22 +358,34 @@ func create_player_3d() -> PooledAudioStreamPlayer3D:
 	return add_player_to_pool(PooledAudioStreamPlayer3D.create(), _3d_players)
 
 
+func release_on_exit(p_base: Node, p_instance: Node, p_finish_playing: bool = false) -> void:
+	if p_instance == null or p_base == null:
+		return
+	
+	p_base.tree_exiting.connect(
+			on_player_attachment_exiting.bind(p_base, p_instance, p_finish_playing),
+			CONNECT_REFERENCE_COUNTED)
+
 func auto_release(p_base: Node, p_instance: Node, p_finish_playing: bool = false) -> Variant:
+	push_warning("Resonate - auto_release has been deprecated, please use release_on_exit instead.")
+	
 	if p_instance == null:
 		return p_instance
-		
-	p_base.tree_exiting.connect(p_instance.release.bind(p_finish_playing))
+	
+	release_on_exit(p_base, p_instance, p_finish_playing)
 	
 	return p_instance
 
 
-func on_player_released(p_player: Node) -> void:
-	var player_parent = p_player.get_parent()
+func on_player_attachment_exiting(p_base: Node, p_instance: Node, p_finish_playing: bool = false) -> void:
+	if _node_attachments.has(p_instance):
+		p_instance.global_position = p_base.global_position
+		_node_attachments.erase(p_instance)
 	
-	if player_parent == null or not player_parent == self:
-		player_parent.remove_child(p_player)
-		add_child(p_player)
-		
+	p_instance.release(p_finish_playing)
+
+
+func on_player_released(p_player: Node) -> void:
 	if not p_player.playing:
 		pools_updated.emit()
 		updated.emit()
