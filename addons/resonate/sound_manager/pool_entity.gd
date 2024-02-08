@@ -1,13 +1,16 @@
 class_name PoolEntity
 extends RefCounted
+## An abstract/static class to house all of the common PooledAudioStreamPlayer* functionality.
 
 
+## Create a new PooledAudioStreamPlayer*.
 static func create(p_base) -> Variant:
 	p_base.process_mode = Node.PROCESS_MODE_ALWAYS
 	
 	return p_base
 
 
+## Configure a PooledAudioStreamPlayer*.
 static func configure(p_base, p_streams: Array, p_reserved: bool, p_bus: String, p_poly: bool, p_volume: float, p_pitch: float, p_mode: Node.ProcessMode) -> bool:
 	p_base.streams = p_streams
 	p_base.poly = p_poly
@@ -34,6 +37,7 @@ static func configure(p_base, p_streams: Array, p_reserved: bool, p_bus: String,
 	return true
 
 
+## Trigger a PooledAudioStreamPlayer*.
 static func trigger(p_base, p_varied: bool, p_pitch: float, p_volume: float) -> bool:
 	if p_base.streams.size() == 0:
 		push_warning("Resonate - The player [%s] does not contain any streams, ensure you're using the SoundManager to instance it correctly." % p_base.name)
@@ -59,19 +63,23 @@ static func trigger(p_base, p_varied: bool, p_pitch: float, p_volume: float) -> 
 	return false
 
 
+## Reset the volume of a PooledAudioStreamPlayer*.
 static func reset_volume(p_base) -> void:
 	p_base.volume_db = p_base.base_volume
 	
 
+## Reset the pitch of a PooledAudioStreamPlayer*.
 static func reset_pitch(p_base) -> void:
 	p_base.pitch_scale = p_base.base_pitch
 	
 
+## Reset both the volume and pitch of a PooledAudioStreamPlayer*.
 static func reset_all(p_base) -> void:
 	p_base.volume_db = p_base.base_volume
 	p_base.pitch_scale = p_base.base_pitch
 
 
+## Release a PooledAudioStreamPlayer* back into the pool.
 static func release(p_base, p_finish_playing: bool) -> void:
 	if p_base.releasing:
 		return
@@ -91,6 +99,7 @@ static func release(p_base, p_finish_playing: bool) -> void:
 	p_base.released.emit()
 
 
+## A callback to release a PooledAudioStreamPlayer* when it finishes playing.
 static func finished(p_base) -> void:
 	if p_base.reserved:
 		return
