@@ -70,7 +70,7 @@ func on_sound_manager_updated() -> void:
 	
 	_instance_jump = SoundManager.instance("player", "jump")
 
-	SoundManager.auto_release(self, _instance_jump)
+	SoundManager.release_on_exit(self, _instance_jump)
 ```
 
 ## Digging deeper
