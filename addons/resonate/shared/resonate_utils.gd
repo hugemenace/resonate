@@ -23,3 +23,19 @@ static func find_all_nodes(p_base: Node, p_type: String) -> Array:
 		results.append_array(node.find_children("*", p_type))
 		
 	return results
+
+
+static func is_vector(p_node: Variant) -> bool:
+	return p_node is Vector2 or p_node is Vector3
+	
+
+static func is_node(p_node: Variant) -> bool:
+	return p_node is Node2D or p_node is Node3D
+	
+
+static func is_2d_node(p_node: Variant) -> bool:
+	return p_node is Vector2 or p_node is Node2D
+
+
+static func is_3d_node(p_node: Variant) -> bool:
+	return p_node is Vector3 or p_node is Node3D

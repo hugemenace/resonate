@@ -25,6 +25,12 @@ var base_volume: float
 ## The base/fallback pitch of this player.
 var base_pitch: float
 
+## The target this player should follow in 2D or 3D space.
+var follow_target: Node
+
+## When the player should sync its transform when following a target.
+var follow_type: PoolEntity.FollowType
+
 
 # ------------------------------------------------------------------------------
 # Lifecycle methods
@@ -33,6 +39,14 @@ var base_pitch: float
 
 func _ready() -> void:
 	finished.connect(_on_finished)
+	
+
+func _process(_p_delta) -> void:
+	PoolEntity.sync_process(self)
+	
+
+func _physics_process(_p_delta) -> void:
+	PoolEntity.sync_physics_process(self)
 
 
 # ------------------------------------------------------------------------------
@@ -56,6 +70,11 @@ func configure(p_streams: Array, p_reserved: bool, p_bus: String, p_poly: bool, 
 	
 	if is_polyphonic:
 		super.play()
+
+
+## Attach this player to a 2D/3D position or node.
+func attach_to(p_node: Variant) -> void:
+	PoolEntity.attach_to(self, p_node)
 
 
 ## Trigger (play) a random variation associated with this player.

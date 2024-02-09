@@ -29,7 +29,6 @@ var has_loaded: bool = false
 var _1d_players: Array[PooledAudioStreamPlayer] = []
 var _2d_players: Array[PooledAudioStreamPlayer2D] = []
 var _3d_players: Array[PooledAudioStreamPlayer3D] = []
-var _node_attachments: Dictionary = {}
 var _event_table: Dictionary = {}
 var _event_table_hash: int
 
@@ -245,9 +244,7 @@ func release_on_exit(p_base: Node, p_instance: Node, p_finish_playing: bool = fa
 	if p_instance == null or p_base == null:
 		return
 	
-	p_base.tree_exiting.connect(
-			_on_player_attachment_exiting.bind(p_base, p_instance, p_finish_playing),
-			CONNECT_REFERENCE_COUNTED)
+	p_base.tree_exiting.connect(p_instance.release.bind(p_finish_playing))
 
 
 ## Will automatically release the given [b]p_instance[/b] when the provided 
@@ -363,28 +360,13 @@ func _instance_manual(p_bank_label: String, p_event_name: String, p_reserved: bo
 	if player == null:
 		push_warning("Resonate - The event [%s] on bank [%s] can't be instanced; no pooled players available." % [p_event_name, p_bank_label])
 		return _get_null_player(p_attachment)
-	
-	if _is_vector_attachment(p_attachment):
-		player.global_position = p_attachment
-		
-	if _is_node_attachment(p_attachment) and _is_attachment_2d(p_attachment):
-		_create_node_attachment(p_attachment, RemoteTransform2D.new(), player)
-	
-	if _is_node_attachment(p_attachment) and _is_attachment_3d(p_attachment):
-		_create_node_attachment(p_attachment, RemoteTransform3D.new(), player)
 		
 	var bus = p_bus if p_bus != "" else _get_bus(bank.bus, event.bus)
 	
 	player.configure(event.streams, p_reserved, bus, p_poly, event.volume, event.pitch, bank.mode)
+	player.attach_to(p_attachment)
 	
 	return player
-
-
-func _create_node_attachment(p_remote_node, p_remote_transform, p_player) -> void:
-	p_remote_transform.remote_path = p_player.get_path()
-	p_remote_node.add_child(p_remote_transform)
-	
-	_node_attachments[p_player] = p_remote_transform
 
 
 func _is_player_free(p_player) -> bool:
@@ -416,40 +398,24 @@ func _get_player_3d() -> PooledAudioStreamPlayer3D:
 	return _get_player_from_pool(_3d_players)
 
 
-func _is_attachment_2d(p_attachment = null) -> bool:
-	return p_attachment is Vector2 or p_attachment is Node2D
-
-
-func _is_attachment_3d(p_attachment = null) -> bool:
-	return p_attachment is Vector3 or p_attachment is Node3D
-
-
 func _get_player(p_attachment = null) -> Variant:
-	if _is_attachment_2d(p_attachment):
+	if ResonateUtils.is_2d_node(p_attachment):
 		return _get_player_2d()
 	
-	if _is_attachment_3d(p_attachment):
+	if ResonateUtils.is_3d_node(p_attachment):
 		return _get_player_3d()
 		
 	return _get_player_1d()
 
 
 func _get_null_player(p_attachment = null) -> Variant:
-	if _is_attachment_2d(p_attachment):
+	if ResonateUtils.is_2d_node(p_attachment):
 		return null_instance_2d()
 	
-	if _is_attachment_3d(p_attachment):
+	if ResonateUtils.is_3d_node(p_attachment):
 		return null_instance_3d()
 		
 	return null_instance()
-
-
-func _is_vector_attachment(p_attachment = null) -> bool:
-	return true if p_attachment is Vector2 or p_attachment is Vector3 else false
-	
-
-func _is_node_attachment(p_attachment = null) -> bool:
-	return true if p_attachment is Node2D or p_attachment is Node3D else false
 
 
 func _add_player_to_pool(p_player, p_pool) -> Variant:
@@ -474,18 +440,12 @@ func _create_player_3d() -> PooledAudioStreamPlayer3D:
 	return _add_player_to_pool(PooledAudioStreamPlayer3D.create(), _3d_players)
 
 
-func _on_player_attachment_exiting(p_base: Node, p_instance: Node, p_finish_playing: bool = false) -> void:
-	if _node_attachments.has(p_instance):
-		p_instance.global_position = p_base.global_position
-		_node_attachments.erase(p_instance)
-	
-	p_instance.release(p_finish_playing)
-
-
 func _on_player_released(p_player: Node) -> void:
-	if not p_player.playing:
-		pools_updated.emit()
-		updated.emit()
+	if p_player.playing:
+		return
+	
+	pools_updated.emit()
+	updated.emit()
 	
 
 func _on_player_finished(p_player: Node) -> void:

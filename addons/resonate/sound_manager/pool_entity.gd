@@ -3,6 +3,9 @@ extends RefCounted
 ## An abstract/static class to house all of the common PooledAudioStreamPlayer* functionality.
 
 
+enum FollowType {DISABLED, IDLE, PHYSICS}
+
+
 ## Create a new PooledAudioStreamPlayer*.
 static func create(p_base) -> Variant:
 	p_base.process_mode = Node.PROCESS_MODE_ALWAYS
@@ -22,6 +25,8 @@ static func configure(p_base, p_streams: Array, p_reserved: bool, p_bus: String,
 	p_base.pitch_scale = p_pitch if not p_poly else 1.0
 	p_base.base_volume = p_volume
 	p_base.base_pitch = p_pitch
+	p_base.follow_target = null
+	p_base.follow_type = FollowType.DISABLED
 	
 	if not p_base.poly:
 		return false
@@ -35,6 +40,48 @@ static func configure(p_base, p_streams: Array, p_reserved: bool, p_bus: String,
 	p_base.stream.polyphony = max_polyphony
 	
 	return true
+
+
+## Attach a PooledAudioStreamPlayer* to a position or node.
+static func attach_to(p_base, p_node: Variant) -> void:
+	if p_node == null:
+		return
+	
+	if ResonateUtils.is_vector(p_node):
+		p_base.global_position = p_node
+	
+	if ResonateUtils.is_node(p_node):
+		p_base.follow_target = p_node
+		p_base.follow_type = FollowType.IDLE
+
+
+## Sync a PooledAudioStreamPlayer*'s transform with its target's when applicable. 
+static func sync_process(p_base) -> void:
+	if p_base.follow_target == null:
+		return
+		
+	if not is_instance_valid(p_base.follow_target):
+		return
+		
+	if p_base.follow_type != FollowType.IDLE:
+		return
+	
+	p_base.global_position = p_base.follow_target.global_position
+	
+
+## Sync a PooledAudioStreamPlayer*'s transform with its target's
+## when applicable during the physics step. 
+static func sync_physics_process(p_base) -> void:
+	if p_base.follow_target == null:
+		return
+		
+	if not is_instance_valid(p_base.follow_target):
+		return
+		
+	if p_base.follow_type != FollowType.PHYSICS:
+		return
+	
+	p_base.global_position = p_base.follow_target.global_position
 
 
 ## Trigger a PooledAudioStreamPlayer*.
