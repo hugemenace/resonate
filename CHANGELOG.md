@@ -1,5 +1,14 @@
 # Changelog
 
+## [2.3.2](https://github.com/hugemenace/resonate/compare/v2.3.1...v2.3.2) (2024-02-09)
+
+
+### Bug Fixes
+
+* add missing reset_* methods to the null audio players ([8cd9b7c](https://github.com/hugemenace/resonate/commit/8cd9b7c7c0d68a15532ea0fb5053de1788a2b4cd))
+* alter the attachment logic for 2D and 3D players to avoid issues with players being freed before returning to the pool (deprecates auto_release) ([d53d856](https://github.com/hugemenace/resonate/commit/d53d856683b7d15f2b0ef9a55c7ebbf8de57956b))
+* replace the remote transform behaviour with an inbuilt follow-target mechanism to avoid audio artifacts ([b741318](https://github.com/hugemenace/resonate/commit/b7413187e8863e47888b7e520adf8c2d863cf23e))
+
 ## [2.3.1](https://github.com/hugemenace/resonate/compare/v2.3.0...v2.3.1) (2024-02-07)
 
 
