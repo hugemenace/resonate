@@ -262,6 +262,24 @@ func auto_release(p_base: Node, p_instance: Node, p_finish_playing: bool = false
 	return p_instance
 
 
+## Manually add a new SoundBank into the event cache.
+func add_bank(p_bank: SoundBank) -> void:
+	_add_bank(p_bank)
+
+
+## Remove the provided bank from the event cache.
+func remove_bank(p_bank_label: String) -> void:
+	if not _event_table.has(p_bank_label):
+		return
+		
+	_event_table.erase(p_bank_label)
+
+
+## Clear all banks from the event cache.
+func clear_banks() -> void:
+	_event_table.clear()
+
+
 # ------------------------------------------------------------------------------
 # Private methods
 # ------------------------------------------------------------------------------
@@ -296,16 +314,31 @@ func _auto_add_events() -> void:
 		
 
 func _add_bank(p_bank: SoundBank) -> void:
+	if _event_table.has(p_bank.label):
+		_event_table[p_bank.label]["ref_count"] = \
+				_event_table[p_bank.label]["ref_count"] + 1
+		
+		return
+		
 	_event_table[p_bank.label] = {
 		"name": p_bank.label,
 		"bus": p_bank.bus,
 		"mode": p_bank.mode,
-		"events": _create_events(p_bank.events)
+		"events": _create_events(p_bank.events),
+		"ref_count": 1,
 	}
 	
 
 func _remove_bank(p_bank: SoundBank) -> void:
-	_event_table.erase(p_bank.label)
+	if not _event_table.has(p_bank.label):
+		return
+	
+	if _event_table[p_bank.label]["ref_count"] == 1:
+		_event_table.erase(p_bank.label)
+		return
+	
+	_event_table[p_bank.label]["ref_count"] = \
+			_event_table[p_bank.label]["ref_count"] - 1
 	
 
 func _create_events(p_events: Array[SoundEventResource]) -> Dictionary:
