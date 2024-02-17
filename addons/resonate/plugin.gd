@@ -3,9 +3,9 @@ class_name ResonatePlugin
 extends EditorPlugin
 
 
-static var SOUND_BANK_SETTING_NAME = "audio/manager/sound/bank"
-static var SOUND_BANK_SETTING_DEFAULT = ""
-static var SOUND_BANK_SETTING_ACTUAL = "Sound"
+static var SOUND_BANK_BUS_SETTING_NAME = "audio/manager/sound/bus"
+static var SOUND_BANK_BUS_SETTING_DEFAULT = ""
+static var SOUND_BANK_BUS_SETTING_ACTUAL = "Sound"
 
 static var POOL_1D_SIZE_SETTING_NAME = "audio/manager/sound/pool_1D_size"
 static var POOL_1D_SIZE_SETTING_DEFAULT = 1
@@ -23,9 +23,9 @@ static var MAX_POLYPHONY_SETTING_NAME = "audio/manager/sound/max_polyphony"
 static var MAX_POLYPHONY_SETTING_DEFAULT = 8
 static var MAX_POLYPHONY_SETTING_ACTUAL = 32
 
-static var MUSIC_BANK_SETTING_NAME = "audio/manager/music/bank"
-static var MUSIC_BANK_SETTING_DEFAULT = ""
-static var MUSIC_BANK_SETTING_ACTUAL = "Music"
+static var MUSIC_BANK_BUS_SETTING_NAME = "audio/manager/music/bus"
+static var MUSIC_BANK_BUS_SETTING_DEFAULT = ""
+static var MUSIC_BANK_BUS_SETTING_ACTUAL = "Music"
 
 
 func _enter_tree():
@@ -35,9 +35,9 @@ func _enter_tree():
 	add_custom_type("MusicBank", "Node", preload("music_manager/music_bank.gd"), preload("music_manager/music_bank.svg"))
 	
 	add_project_setting(
-		SOUND_BANK_SETTING_NAME,
-		SOUND_BANK_SETTING_DEFAULT,
-		SOUND_BANK_SETTING_ACTUAL,
+		SOUND_BANK_BUS_SETTING_NAME,
+		SOUND_BANK_BUS_SETTING_DEFAULT,
+		SOUND_BANK_BUS_SETTING_ACTUAL,
 		TYPE_STRING)
 		
 	add_project_setting(
@@ -65,10 +65,12 @@ func _enter_tree():
 		TYPE_INT, PROPERTY_HINT_RANGE, "1,128")
 		
 	add_project_setting(
-		MUSIC_BANK_SETTING_NAME,
-		MUSIC_BANK_SETTING_DEFAULT,
-		MUSIC_BANK_SETTING_ACTUAL,
+		MUSIC_BANK_BUS_SETTING_NAME,
+		MUSIC_BANK_BUS_SETTING_DEFAULT,
+		MUSIC_BANK_BUS_SETTING_ACTUAL,
 		TYPE_STRING)
+		
+	migrate_old_bus_settings()
 
 
 func _exit_tree():
@@ -97,3 +99,26 @@ func add_project_setting(p_name: String, p_default, p_actual, p_type: int, p_hin
 	
 	if error: 
 		push_error("Resonate - Encountered error %d when saving project settings." % error)
+
+
+func migrate_old_bus_settings():
+	# This migration helps to ensure that users upgrading from an old version of Resonate
+	# to a version that uses the "*_BANK_BUS_SETTING*" ids won't loose their previous
+	# audio bus settings. After migration occurs, the old settings are deleted.
+	
+	if ProjectSettings.has_setting("audio/manager/sound/bank"):
+		var value = ProjectSettings.get_setting(
+				"audio/manager/sound/bank",
+				SOUND_BANK_BUS_SETTING_ACTUAL)
+		
+		ProjectSettings.set_setting(SOUND_BANK_BUS_SETTING_NAME, value)
+		ProjectSettings.clear("audio/manager/sound/bank")
+		
+	if ProjectSettings.has_setting("audio/manager/music/bank"):
+		var value = ProjectSettings.get_setting(
+				"audio/manager/music/bank",
+				MUSIC_BANK_BUS_SETTING_ACTUAL)
+		
+		ProjectSettings.set_setting(MUSIC_BANK_BUS_SETTING_NAME, value)
+		ProjectSettings.clear("audio/manager/music/bank")
+		

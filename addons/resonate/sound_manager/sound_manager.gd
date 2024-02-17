@@ -364,8 +364,8 @@ func _get_bus(p_bank_bus: String, p_event_bus: String) -> String:
 		return p_bank_bus
 		
 	return ProjectSettings.get_setting(
-		ResonatePlugin.SOUND_BANK_SETTING_NAME,
-		ResonatePlugin.SOUND_BANK_SETTING_DEFAULT)
+		ResonatePlugin.SOUND_BANK_BUS_SETTING_NAME,
+		ResonatePlugin.SOUND_BANK_BUS_SETTING_DEFAULT)
 
 
 func _instance_manual(p_bank_label: String, p_event_name: String, p_reserved: bool = false, p_bus: String = "", p_poly: bool = false, p_attachment = null) -> Variant:
