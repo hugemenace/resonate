@@ -216,6 +216,24 @@ func auto_stop(p_base: Node, p_bank_label: String, p_track_name: String, p_fade_
 	stop_on_exit(p_base, p_bank_label, p_track_name, p_fade_time)
 
 
+## Manually add a new SoundBank into the music track cache.
+func add_bank(p_bank: MusicBank) -> void:
+	_add_bank(p_bank)
+
+
+## Remove the provided bank from the music track cache.
+func remove_bank(p_bank_label: String) -> void:
+	if not _music_table.has(p_bank_label):
+		return
+		
+	_music_table.erase(p_bank_label)
+
+
+## Clear all banks from the music track cache.
+func clear_banks() -> void:
+	_music_table.clear()
+
+
 # ------------------------------------------------------------------------------
 # Private methods
 # ------------------------------------------------------------------------------
@@ -245,16 +263,31 @@ func _auto_add_music() -> void:
 
 
 func _add_bank(p_bank: MusicBank) -> void:
+	if _music_table.has(p_bank.label):
+		_music_table[p_bank.label]["ref_count"] = \
+				_music_table[p_bank.label]["ref_count"] + 1
+		
+		return
+		
 	_music_table[p_bank.label] = {
 		"name": p_bank.label,
 		"bus": p_bank.bus,
 		"mode": p_bank.mode,
-		"tracks": _create_tracks(p_bank.tracks)
+		"tracks": _create_tracks(p_bank.tracks),
+		"ref_count": 1,
 	}
 
 
 func _remove_bank(p_bank: MusicBank) -> void:
-	_music_table.erase(p_bank.label)
+	if not _music_table.has(p_bank.label):
+		return
+	
+	if _music_table[p_bank.label]["ref_count"] == 1:
+		_music_table.erase(p_bank.label)
+		return
+	
+	_music_table[p_bank.label]["ref_count"] = \
+			_music_table[p_bank.label]["ref_count"] - 1
 
 
 func _create_tracks(p_tracks: Array[MusicTrackResource]) -> Dictionary:
