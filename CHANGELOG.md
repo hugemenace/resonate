@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.3.3](https://github.com/hugemenace/resonate/compare/v2.3.2...v2.3.3) (2024-02-17)
+
+
+### Bug Fixes
+
+* ensure that the Sound and Music managers ref-count banks to avoid unexpected removal for multi-users ([2fb7223](https://github.com/hugemenace/resonate/commit/2fb72237d8cc217721a8d1fa92d4be5b9202515d))
+* fix the Music and Sound manager default bank bus settings and migrate older addon values if present ([9d614db](https://github.com/hugemenace/resonate/commit/9d614db05e4744c885c22f2def05459bfe9ac176))
+
 ## [2.3.2](https://github.com/hugemenace/resonate/compare/v2.3.1...v2.3.2) (2024-02-09)
 
 
