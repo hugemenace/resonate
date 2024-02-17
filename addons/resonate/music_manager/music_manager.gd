@@ -292,8 +292,8 @@ func _get_bus(p_bank_bus: String, p_track_bus: String) -> String:
 		return p_bank_bus
 		
 	return ProjectSettings.get_setting(
-		ResonatePlugin.MUSIC_BANK_SETTING_NAME,
-		ResonatePlugin.MUSIC_BANK_SETTING_DEFAULT)
+		ResonatePlugin.MUSIC_BANK_BUS_SETTING_NAME,
+		ResonatePlugin.MUSIC_BANK_BUS_SETTING_DEFAULT)
 
 
 func _is_playing_music() -> bool:

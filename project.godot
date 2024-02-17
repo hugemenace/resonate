@@ -16,12 +16,12 @@ config/icon="res://icon.svg"
 
 [audio]
 
-manager/sound/bank="Sound"
 manager/sound/pool_1D_size=16
 manager/sound/pool_2D_size=16
 manager/sound/pool_3D_size=16
 manager/sound/max_polyphony=32
-manager/music/bank="Music"
+manager/sound/bus="Sound"
+manager/music/bus="Music"
 
 [autoload]
 
