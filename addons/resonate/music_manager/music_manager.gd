@@ -8,6 +8,9 @@ extends Node
 ## @tutorial(View example scenes): https://github.com/hugemenace/resonate/tree/main/examples
 
 
+const ResonateSettings = preload("../shared/resonate_settings.gd")
+var _settings = ResonateSettings.new()
+
 ## Emitted only once when the MusicManager has finished setting up and 
 ## is ready to play music tracks and enable and disable stems.
 signal loaded
@@ -325,8 +328,8 @@ func _get_bus(p_bank_bus: String, p_track_bus: String) -> String:
 		return p_bank_bus
 		
 	return ProjectSettings.get_setting(
-		ResonatePlugin.MUSIC_BANK_BUS_SETTING_NAME,
-		ResonatePlugin.MUSIC_BANK_BUS_SETTING_DEFAULT)
+		_settings.MUSIC_BANK_BUS_SETTING_NAME,
+		_settings.MUSIC_BANK_BUS_SETTING_DEFAULT)
 
 
 func _is_playing_music() -> bool:

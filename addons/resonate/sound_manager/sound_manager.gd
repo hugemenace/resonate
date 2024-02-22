@@ -8,6 +8,10 @@ extends Node
 ##
 ## @tutorial(View example scenes): https://github.com/hugemenace/resonate/tree/main/examples
 
+
+const ResonateSettings = preload("../shared/resonate_settings.gd")
+var _settings = ResonateSettings.new()
+
 ## Emitted only once when the SoundManager has finished setting up and 
 ## is ready to play or instance sound events.
 signal loaded
@@ -44,18 +48,18 @@ func _init():
 
 func _ready() -> void:
 	_initialise_pool(ProjectSettings.get_setting(
-			ResonatePlugin.POOL_1D_SIZE_SETTING_NAME,
-			ResonatePlugin.POOL_1D_SIZE_SETTING_DEFAULT),
+			_settings.POOL_1D_SIZE_SETTING_NAME,
+			_settings.POOL_1D_SIZE_SETTING_DEFAULT),
 			_create_player_1d)
 			
 	_initialise_pool(ProjectSettings.get_setting(
-			ResonatePlugin.POOL_2D_SIZE_SETTING_NAME,
-			ResonatePlugin.POOL_2D_SIZE_SETTING_DEFAULT),
+			_settings.POOL_2D_SIZE_SETTING_NAME,
+			_settings.POOL_2D_SIZE_SETTING_DEFAULT),
 			_create_player_2d)
 			
 	_initialise_pool(ProjectSettings.get_setting(
-			ResonatePlugin.POOL_3D_SIZE_SETTING_NAME,
-			ResonatePlugin.POOL_3D_SIZE_SETTING_DEFAULT),
+			_settings.POOL_3D_SIZE_SETTING_NAME,
+			_settings.POOL_3D_SIZE_SETTING_DEFAULT),
 			_create_player_3d)
 	
 	_auto_add_events()
@@ -364,8 +368,8 @@ func _get_bus(p_bank_bus: String, p_event_bus: String) -> String:
 		return p_bank_bus
 		
 	return ProjectSettings.get_setting(
-		ResonatePlugin.SOUND_BANK_BUS_SETTING_NAME,
-		ResonatePlugin.SOUND_BANK_BUS_SETTING_DEFAULT)
+		_settings.SOUND_BANK_BUS_SETTING_NAME,
+		_settings.SOUND_BANK_BUS_SETTING_DEFAULT)
 
 
 func _instance_manual(p_bank_label: String, p_event_name: String, p_reserved: bool = false, p_bus: String = "", p_poly: bool = false, p_attachment = null) -> Variant:

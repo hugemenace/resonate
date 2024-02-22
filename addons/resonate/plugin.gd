@@ -1,31 +1,9 @@
 @tool
-class_name ResonatePlugin
 extends EditorPlugin
 
 
-static var SOUND_BANK_BUS_SETTING_NAME = "audio/manager/sound/bus"
-static var SOUND_BANK_BUS_SETTING_DEFAULT = ""
-static var SOUND_BANK_BUS_SETTING_ACTUAL = "Sound"
-
-static var POOL_1D_SIZE_SETTING_NAME = "audio/manager/sound/pool_1D_size"
-static var POOL_1D_SIZE_SETTING_DEFAULT = 1
-static var POOL_1D_SIZE_SETTING_ACTUAL = 16
-
-static var POOL_2D_SIZE_SETTING_NAME = "audio/manager/sound/pool_2D_size"
-static var POOL_2D_SIZE_SETTING_DEFAULT = 1
-static var POOL_2D_SIZE_SETTING_ACTUAL = 16
-
-static var POOL_3D_SIZE_SETTING_NAME = "audio/manager/sound/pool_3D_size"
-static var POOL_3D_SIZE_SETTING_DEFAULT = 1
-static var POOL_3D_SIZE_SETTING_ACTUAL = 16
-
-static var MAX_POLYPHONY_SETTING_NAME = "audio/manager/sound/max_polyphony"
-static var MAX_POLYPHONY_SETTING_DEFAULT = 8
-static var MAX_POLYPHONY_SETTING_ACTUAL = 32
-
-static var MUSIC_BANK_BUS_SETTING_NAME = "audio/manager/music/bus"
-static var MUSIC_BANK_BUS_SETTING_DEFAULT = ""
-static var MUSIC_BANK_BUS_SETTING_ACTUAL = "Music"
+const ResonateSettings = preload("shared/resonate_settings.gd")
+var _settings = ResonateSettings.new()
 
 
 func _enter_tree():
@@ -35,39 +13,39 @@ func _enter_tree():
 	add_custom_type("MusicBank", "Node", preload("music_manager/music_bank.gd"), preload("music_manager/music_bank.svg"))
 	
 	add_project_setting(
-		SOUND_BANK_BUS_SETTING_NAME,
-		SOUND_BANK_BUS_SETTING_DEFAULT,
-		SOUND_BANK_BUS_SETTING_ACTUAL,
+		_settings.SOUND_BANK_BUS_SETTING_NAME,
+		_settings.SOUND_BANK_BUS_SETTING_DEFAULT,
+		_settings.SOUND_BANK_BUS_SETTING_ACTUAL,
 		TYPE_STRING)
 		
 	add_project_setting(
-		POOL_1D_SIZE_SETTING_NAME,
-		POOL_1D_SIZE_SETTING_DEFAULT,
-		POOL_1D_SIZE_SETTING_ACTUAL,
+		_settings.POOL_1D_SIZE_SETTING_NAME,
+		_settings.POOL_1D_SIZE_SETTING_DEFAULT,
+		_settings.POOL_1D_SIZE_SETTING_ACTUAL,
 		TYPE_INT, PROPERTY_HINT_RANGE, "1,128")
 		
 	add_project_setting(
-		POOL_2D_SIZE_SETTING_NAME,
-		POOL_2D_SIZE_SETTING_DEFAULT,
-		POOL_2D_SIZE_SETTING_ACTUAL,
+		_settings.POOL_2D_SIZE_SETTING_NAME,
+		_settings.POOL_2D_SIZE_SETTING_DEFAULT,
+		_settings.POOL_2D_SIZE_SETTING_ACTUAL,
 		TYPE_INT, PROPERTY_HINT_RANGE, "1,128")
 		
 	add_project_setting(
-		POOL_3D_SIZE_SETTING_NAME,
-		POOL_3D_SIZE_SETTING_DEFAULT,
-		POOL_3D_SIZE_SETTING_ACTUAL,
+		_settings.POOL_3D_SIZE_SETTING_NAME,
+		_settings.POOL_3D_SIZE_SETTING_DEFAULT,
+		_settings.POOL_3D_SIZE_SETTING_ACTUAL,
 		TYPE_INT, PROPERTY_HINT_RANGE, "1,128")
 		
 	add_project_setting(
-		MAX_POLYPHONY_SETTING_NAME,
-		MAX_POLYPHONY_SETTING_DEFAULT,
-		MAX_POLYPHONY_SETTING_ACTUAL,
+		_settings.MAX_POLYPHONY_SETTING_NAME,
+		_settings.MAX_POLYPHONY_SETTING_DEFAULT,
+		_settings.MAX_POLYPHONY_SETTING_ACTUAL,
 		TYPE_INT, PROPERTY_HINT_RANGE, "1,128")
 		
 	add_project_setting(
-		MUSIC_BANK_BUS_SETTING_NAME,
-		MUSIC_BANK_BUS_SETTING_DEFAULT,
-		MUSIC_BANK_BUS_SETTING_ACTUAL,
+		_settings.MUSIC_BANK_BUS_SETTING_NAME,
+		_settings.MUSIC_BANK_BUS_SETTING_DEFAULT,
+		_settings.MUSIC_BANK_BUS_SETTING_ACTUAL,
 		TYPE_STRING)
 		
 	migrate_old_bus_settings()
@@ -109,16 +87,16 @@ func migrate_old_bus_settings():
 	if ProjectSettings.has_setting("audio/manager/sound/bank"):
 		var value = ProjectSettings.get_setting(
 				"audio/manager/sound/bank",
-				SOUND_BANK_BUS_SETTING_ACTUAL)
+				_settings.SOUND_BANK_BUS_SETTING_ACTUAL)
 		
-		ProjectSettings.set_setting(SOUND_BANK_BUS_SETTING_NAME, value)
+		ProjectSettings.set_setting(_settings.SOUND_BANK_BUS_SETTING_NAME, value)
 		ProjectSettings.clear("audio/manager/sound/bank")
 		
 	if ProjectSettings.has_setting("audio/manager/music/bank"):
 		var value = ProjectSettings.get_setting(
 				"audio/manager/music/bank",
-				MUSIC_BANK_BUS_SETTING_ACTUAL)
+				_settings.MUSIC_BANK_BUS_SETTING_ACTUAL)
 		
-		ProjectSettings.set_setting(MUSIC_BANK_BUS_SETTING_NAME, value)
+		ProjectSettings.set_setting(_settings.MUSIC_BANK_BUS_SETTING_NAME, value)
 		ProjectSettings.clear("audio/manager/music/bank")
 		

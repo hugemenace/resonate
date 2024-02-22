@@ -3,6 +3,8 @@ extends RefCounted
 ## An abstract/static class to house all of the common PooledAudioStreamPlayer* functionality.
 
 
+const ResonateSettings = preload("../shared/resonate_settings.gd")
+
 enum FollowType {DISABLED, IDLE, PHYSICS}
 
 
@@ -31,9 +33,11 @@ static func configure(p_base, p_streams: Array, p_reserved: bool, p_bus: String,
 	if not p_base.poly:
 		return false
 	
+	var _settings = ResonateSettings.new()
+	
 	var max_polyphony = ProjectSettings.get_setting(
-		ResonatePlugin.MAX_POLYPHONY_SETTING_NAME,
-		ResonatePlugin.MAX_POLYPHONY_SETTING_DEFAULT)
+		_settings.MAX_POLYPHONY_SETTING_NAME,
+		_settings.MAX_POLYPHONY_SETTING_DEFAULT)
 	
 	p_base.stream = AudioStreamPolyphonic.new()
 	p_base.max_polyphony = max_polyphony
