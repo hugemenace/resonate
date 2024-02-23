@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.3.4](https://github.com/hugemenace/resonate/compare/v2.3.3...v2.3.4) (2024-02-23)
+
+
+### Bug Fixes
+
+* fix sound and music manager parse errors on exported projects ([081e753](https://github.com/hugemenace/resonate/commit/081e75382c5a984790051986a5b8da48cb484759))
+
 ## [2.3.3](https://github.com/hugemenace/resonate/compare/v2.3.2...v2.3.3) (2024-02-17)
 
 
