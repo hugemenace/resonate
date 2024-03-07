@@ -69,9 +69,11 @@ func _process(_p_delta) -> void:
 # ------------------------------------------------------------------------------
 
 
-## Play a music track from a SoundBank, and optionally fade-in 
-## or crossfade over the provided [b]p_crossfade_time[/b].
-func play(p_bank_label: String, p_track_name: String, p_crossfade_time: float = 5.0) -> bool:
+## Play a music track from a SoundBank, and optionally fade-in or crossfade over
+## the provided [b]p_crossfade_time[/b]. If [b]p_auto_loop[/b] is set, the track 
+## will be automatically played again once its longest stem is about to finish playing,
+## taking into account the amount of time required to crossfade into the next loop.
+func play(p_bank_label: String, p_track_name: String, p_crossfade_time: float = 5.0, p_auto_loop: bool = false) -> bool:
 	if not has_loaded:
 		push_error("Resonate - The music track [%s] on bank [%s] can't be played as the MusicManager has not loaded yet. Use the [loaded] signal/event to determine when it is ready." % [p_track_name, p_bank_label])
 		return false
@@ -97,11 +99,11 @@ func play(p_bank_label: String, p_track_name: String, p_crossfade_time: float = 
 			push_error("Resonate - The stem [%s] on the music track [%s] on bank [%s] does not have an audio stream, you'll need to add one." % [stem.name, p_track_name, p_bank_label])
 			return false
 			
-		if not ResonateUtils.is_stream_looped(stem.stream):
+		if not p_auto_loop and not ResonateUtils.is_stream_looped(stem.stream):
 			push_warning("Resonate - The stem [%s] on the music track [%s] on bank [%s] is not set to loop, which will cause it to work incorrectly." % [stem.name, p_track_name, p_bank_label])
 	
 	var bus = _get_bus(bank.bus, track.bus)
-	var player = StemmedMusicStreamPlayer.create(p_bank_label, p_track_name, bus, bank.mode, _volume)
+	var player = StemmedMusicStreamPlayer.create(p_bank_label, p_track_name, bus, bank.mode, _volume, p_auto_loop)
 	
 	if _music_streams.size() > 0:
 		for stream in _music_streams:
@@ -113,6 +115,9 @@ func play(p_bank_label: String, p_track_name: String, p_crossfade_time: float = 
 	
 	player.start_stems(stems, p_crossfade_time)
 	player.stopped.connect(_on_player_stopped.bind(player))
+	
+	if p_auto_loop:
+		player.auto_loop_completed.connect(_on_auto_loop_completed, CONNECT_REFERENCE_COUNTED)
 	
 	return true
 
@@ -358,7 +363,7 @@ func _on_music_player_exiting(p_bank_label: String, p_track_name: String, p_fade
 		return
 	
 	stop(p_fade_time)
-	
+
 
 func _on_player_stopped(p_player: StemmedMusicStreamPlayer) -> void:
 	if not _is_playing_music():
@@ -366,3 +371,7 @@ func _on_player_stopped(p_player: StemmedMusicStreamPlayer) -> void:
 		
 	_music_streams.erase(p_player)
 	remove_child(p_player)
+
+
+func _on_auto_loop_completed(p_bank_label: String, p_track_name: String, p_crossfade_time: float) -> void:
+	play(p_bank_label, p_track_name, p_crossfade_time, true)
