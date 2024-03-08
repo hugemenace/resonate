@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.4.0](https://github.com/hugemenace/resonate/compare/v2.3.4...v2.4.0) (2024-03-08)
+
+
+### Features
+
+* add an auto-loop option to the MusicManager's play method to allow non-looping tracks to repeat playback with an integrated crossfade ([f3885c7](https://github.com/hugemenace/resonate/commit/f3885c7263788ec097cf5369768823829dcfdd9d))
+* allow polyphonic players to be stopped and synchronise the is_playing state with the underlying polyphonic streams ([b91e062](https://github.com/hugemenace/resonate/commit/b91e06279a45a5b50aa1d84f7389cf9a06f1a718))
+
 ## [2.3.4](https://github.com/hugemenace/resonate/compare/v2.3.3...v2.3.4) (2024-02-23)
 
 
