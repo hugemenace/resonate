@@ -16,7 +16,7 @@ static func create(p_base) -> Variant:
 
 
 ## Configure a PooledAudioStreamPlayer*.
-static func configure(p_base, p_streams: Array, p_reserved: bool, p_bus: String, p_poly: bool, p_volume: float, p_pitch: float, p_mode: Node.ProcessMode) -> bool:
+static func configure(p_base, p_streams: Array, p_reserved: bool, p_bus: String, p_poly: bool, p_volume: float, p_pitch: float, p_mode: Node.ProcessMode) -> void:
 	p_base.streams = p_streams
 	p_base.poly = p_poly
 	p_base.bus = p_bus
@@ -31,7 +31,7 @@ static func configure(p_base, p_streams: Array, p_reserved: bool, p_bus: String,
 	p_base.follow_type = FollowType.DISABLED
 	
 	if not p_base.poly:
-		return false
+		return
 	
 	var _settings = ResonateSettings.new()
 	
@@ -43,8 +43,6 @@ static func configure(p_base, p_streams: Array, p_reserved: bool, p_bus: String,
 	p_base.max_polyphony = max_polyphony
 	p_base.stream.polyphony = max_polyphony
 	
-	return true
-
 
 ## Attach a PooledAudioStreamPlayer* to a position or node.
 static func attach_to(p_base, p_node: Variant) -> void:
@@ -58,6 +56,28 @@ static func attach_to(p_base, p_node: Variant) -> void:
 		p_base.follow_target = p_node
 		p_base.follow_type = FollowType.IDLE
 
+
+## Stop the underlying stream player if not polyphonic streams are currently playing.
+static func update_poly_playback_state(p_base) -> void:
+	if not p_base.poly:
+		return
+	
+	if not p_base.playing:
+		return
+	
+	var playback = p_base.get_stream_playback() as AudioStreamPlaybackPolyphonic
+	
+	if playback == null:
+		p_base.stop()
+		return
+	
+	for stream_id in p_base.poly_stream_ids:
+		if playback.is_stream_playing(stream_id):
+			return
+	
+	p_base.poly_stream_ids.clear()
+	p_base.stop()
+	
 
 ## Sync a PooledAudioStreamPlayer*'s transform with its target's when applicable. 
 static func sync_process(p_base) -> void:
@@ -89,10 +109,10 @@ static func sync_physics_process(p_base) -> void:
 
 
 ## Trigger a PooledAudioStreamPlayer*.
-static func trigger(p_base, p_varied: bool, p_pitch: float, p_volume: float) -> bool:
+static func trigger(p_base, p_varied: bool, p_pitch: float, p_volume: float) -> void:
 	if p_base.streams.size() == 0:
 		push_warning("Resonate - The player [%s] does not contain any streams, ensure you're using the SoundManager to instance it correctly." % p_base.name)
-		return false
+		return
 		
 	var next_stream = p_base.streams.pick_random()
 	
@@ -102,16 +122,20 @@ static func trigger(p_base, p_varied: bool, p_pitch: float, p_volume: float) -> 
 	
 	if not p_base.poly:
 		p_base.stream = next_stream
-		return true
+		p_base.play()
+		return
+	
+	if not p_base.playing:
+		p_base.play()
 	
 	var playback = p_base.get_stream_playback() as AudioStreamPlaybackPolyphonic
+	var stream_volume = p_volume if p_varied else p_base.base_volume
+	var stream_pitch = p_pitch if p_varied else p_base.base_pitch
 	
-	if p_varied:
-		playback.play_stream(next_stream, 0, p_volume, p_pitch)
-	else:
-		playback.play_stream(next_stream, 0, p_base.base_volume, p_base.base_pitch)
+	var stream_id = playback.play_stream(next_stream, 0, stream_volume, stream_pitch)
 	
-	return false
+	if stream_id != AudioStreamPlaybackPolyphonic.INVALID_ID:
+		p_base.poly_stream_ids.append(stream_id)
 
 
 ## Reset the volume of a PooledAudioStreamPlayer*.

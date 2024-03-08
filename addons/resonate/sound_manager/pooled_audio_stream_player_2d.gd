@@ -16,6 +16,9 @@ var releasing: bool
 ## Whether this player has been configured to support polyphonic playback.
 var poly: bool
 
+## A collection of all active polyphonic stream IDs.
+var poly_stream_ids: Array
+
 ## The collection of streams configured on this player.
 var streams: Array
 
@@ -43,6 +46,7 @@ func _ready() -> void:
 
 func _process(_p_delta) -> void:
 	PoolEntity.sync_process(self)
+	PoolEntity.update_poly_playback_state(self)
 	
 
 func _physics_process(_p_delta) -> void:
@@ -66,11 +70,8 @@ func is_null() -> bool:
 
 ## Configure this player with the given streams and charateristics.
 func configure(p_streams: Array, p_reserved: bool, p_bus: String, p_poly: bool, p_volume: float, p_pitch: float, p_mode: Node.ProcessMode) -> void:
-	var is_polyphonic = PoolEntity.configure(self, p_streams, p_reserved, p_bus, p_poly, p_volume, p_pitch, p_mode)
+	PoolEntity.configure(self, p_streams, p_reserved, p_bus, p_poly, p_volume, p_pitch, p_mode)
 	
-	if is_polyphonic:
-		super.play()
-
 
 ## Attach this player to a 2D/3D position or node.
 func attach_to(p_node: Variant) -> void:
@@ -79,19 +80,13 @@ func attach_to(p_node: Variant) -> void:
 
 ## Trigger (play) a random variation associated with this player.
 func trigger() -> void:
-	var should_play = PoolEntity.trigger(self, false, 1.0, 0.0)
+	PoolEntity.trigger(self, false, 1.0, 0.0)
 	
-	if should_play:
-		super.play()
-
 
 ## Trigger (play) a random variation associated with this
 ## player with the given volume and pitch settings.
 func trigger_varied(p_pitch: float = 1.0, p_volume: float = 0.0) -> void:
-	var should_play = PoolEntity.trigger(self, true, p_pitch, p_volume)
-	
-	if should_play:
-		super.play()
+	PoolEntity.trigger(self, true, p_pitch, p_volume)
 
 
 ## Reset the volume of this player back to the default set in its bank.
