@@ -2,7 +2,7 @@
 
 # ***Resonate***
 
-An all-in-one sound and music management addon for the Godot game engine.
+An all-in-one sound and music management addon for the Godot game engine (see compatibility).
 
 [![Static Badge](https://img.shields.io/badge/Godot-Asset_Library-red?style=for-the-badge&logo=godotengine&logoColor=white&color=%23558bbe)](https://godotengine.org/asset-library/asset/2546)
 [![Discord](https://img.shields.io/discord/796535676136718356?style=for-the-badge&logo=discord&logoColor=white&label=Discord&color=%235865F2)](https://hugemenace.co/discord)
@@ -13,6 +13,10 @@ An all-in-one sound and music management addon for the Godot game engine.
 - Polyphonic playback.
 - Stemmed music tracks.
 - Music crossfading.
+
+## Compatibility
+
+**Untested on 4.3 or greater** - Resonate is compatible with Godot 4.0 to 4.2, but development is on hold whilst we assess the new interactive audio steam features of Godot 4.3.
 
 ## TL;DR
 
