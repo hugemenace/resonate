@@ -16,7 +16,8 @@ An all-in-one sound and music management addon for the Godot game engine (see co
 
 ## Compatibility
 
-**Untested on 4.3 or greater** - Resonate is compatible with Godot 4.0 to 4.2, but development is on hold whilst we assess the new interactive audio steam features of Godot 4.3.
+> [!NOTE]  
+> **Untested on 4.3 or greater** - Resonate is compatible with Godot 4.0 to 4.2, however, development is on hold whilst we assess the new interactive audio features of Godot 4.3.
 
 ## TL;DR
 
