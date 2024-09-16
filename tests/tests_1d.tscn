@@ -1,0 +1,24 @@
+[gd_scene load_steps=8 format=3 uid="uid://bcw76g0ko5tul"]
+
+[ext_resource type="Script" path="res://tests/tests_1d.gd" id="1_5jmug"]
+[ext_resource type="Script" path="res://addons/resonate/sound_manager/sound_bank.gd" id="2_pqqm2"]
+[ext_resource type="Script" path="res://addons/resonate/sound_manager/sound_event_resource.gd" id="3_01p25"]
+[ext_resource type="AudioStream" uid="uid://de550fklyhu88" path="res://audio/sounds/note_c5.wav" id="4_n1fk3"]
+[ext_resource type="AudioStream" uid="uid://b35ao3bdtstka" path="res://audio/sounds/note_e5.wav" id="5_snbt1"]
+[ext_resource type="AudioStream" uid="uid://bmg3dvylup5k" path="res://audio/sounds/note_g5.wav" id="6_d4avv"]
+
+[sub_resource type="Resource" id="Resource_4efxg"]
+script = ExtResource("3_01p25")
+name = "note"
+bus = ""
+volume = 0.0
+pitch = 1.0
+streams = Array[AudioStream]([ExtResource("4_n1fk3"), ExtResource("5_snbt1"), ExtResource("6_d4avv")])
+
+[node name="Tests1D" type="Node2D"]
+script = ExtResource("1_5jmug")
+
+[node name="SoundBank" type="Node" parent="."]
+script = ExtResource("2_pqqm2")
+label = "tests"
+events = Array[ExtResource("3_01p25")]([SubResource("Resource_4efxg")])
