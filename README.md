@@ -2,6 +2,9 @@
 
 # ***Resonate***
 
+> [!WARNING]  
+> **Resonate has been deprecated.** — No further development will occur. It's still compatible with Godot 4.0-4.2, but higher versions are untested. If you would like to take over its development, please reach out via our Discord server.
+
 An all-in-one sound and music management addon for the Godot game engine (see compatibility).
 
 [![Static Badge](https://img.shields.io/badge/Godot-Asset_Library-red?style=for-the-badge&logo=godotengine&logoColor=white&color=%23558bbe)](https://godotengine.org/asset-library/asset/2546)
@@ -13,11 +16,6 @@ An all-in-one sound and music management addon for the Godot game engine (see co
 - Polyphonic playback.
 - Stemmed music tracks.
 - Music crossfading.
-
-## Compatibility
-
-> [!NOTE]  
-> **Untested on 4.3 or greater** - Resonate is compatible with Godot 4.0 to 4.2, however, development is on hold whilst we assess the new interactive audio features of Godot 4.3.
 
 ## TL;DR
 
@@ -37,7 +35,7 @@ The **MusicManager** composes music tracks built from ***stems*** and supports t
 
 This repo is a Godot project you can clone and run.
 
-Inside of the `examples/` folder are scenes demonstrating all the Sound and Music manager's features.
+Inside the `examples/` folder are scenes demonstrating all the Sound and Music Manager's features.
 
 ## Getting the addon
 
@@ -45,7 +43,7 @@ You have a few different options:
 
 - You can download Resonate from the [Godot Asset Library](https://godotengine.org/asset-library/asset/2546) (or from within the editor). 
 - You can grab the latest version from the [Github releases page](https://github.com/hugemenace/resonate/releases).
-- You can also clone or download this repo, then extract the `addons/resonate` directory into the root folder of your Godot project.
+- You can also clone or download this repo, and extract the `addons/resonate` directory into the root folder of your Godot project.
 - You can grab the addon from [Gumroad](https://hugemenace.gumroad.com/l/resonate-godot-addon) (if you'd like to financially support this project).
 
 ## Supporting this project
